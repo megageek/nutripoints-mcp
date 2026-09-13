@@ -30,6 +30,9 @@ nutripoints-mcp = "nutripoints_mcp.server:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+nutripoints_mcp = ["contracts/*.json"]
+
 [tool.ruff]
 line-length = 120
 target-version = "py311"

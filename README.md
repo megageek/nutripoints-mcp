@@ -4,6 +4,23 @@ An MCP server exposing the [Nutri Points](https://github.com/megageek/nutripoint
 
 This repository currently holds the development container, release, and Docker packaging setup plus a placeholder server; real Nutri Points tools are not yet implemented.
 
+## API contract
+
+The server is pinned to Nutri Points `stable-rw-v12` through the public
+[`nutripoints-api-contracts` v12.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v12.0.0).
+The pinned version and wheel SHA-256 are recorded in `contract-version.json`. Its
+OpenAPI document is checked into `src/nutripoints_mcp/contracts/openapi.json` and
+included in the Python package and Docker image, so development and runtime do not
+depend on GitHub availability. The snapshot is the source for future MCP tool
+schemas; the detailed contract and generation changelog are in
+[`docs/dev/api.md`](https://github.com/megageek/nutripoints/blob/main/docs/dev/api.md).
+
+To refresh the snapshot after deliberately updating the pin and reviewing that
+generation's changelog, run `python scripts/sync_contract.py`. The script verifies
+the release wheel's SHA-256 before extracting OpenAPI. For local cross-repository
+development, pass `--wheel path/to/nutripoints_api_contracts-<version>-py3-none-any.whl`.
+Update affected tools and tests in the same change when advancing the generation.
+
 ## Development
 
 Open this repository in the Dev Container (VS Code "Reopen in Container", or GitHub Codespaces). It provisions Python 3.11 with [uv](https://docs.astral.sh/uv/) and Node.js (for the MCP Inspector via `npx`, and for Commitlint).

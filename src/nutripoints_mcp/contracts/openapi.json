@@ -1,0 +1,7399 @@
+{
+  "components": {
+    "schemas": {
+      "ActivityLogCreate": {
+        "additionalProperties": false,
+        "properties": {
+          "activity_category": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Category"
+          },
+          "activity_code": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Code"
+          },
+          "activity_met": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Met"
+          },
+          "activity_name": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Name"
+          },
+          "applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applies To Date"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "maximum": 600.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "kcal": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kcal"
+          },
+          "logged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged At"
+          }
+        },
+        "title": "ActivityLogCreate",
+        "type": "object"
+      },
+      "ActivityLogRead": {
+        "properties": {
+          "activity_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Category"
+          },
+          "activity_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Code"
+          },
+          "activity_met": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Met"
+          },
+          "activity_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Name"
+          },
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "derived_points": {
+            "title": "Derived Points",
+            "type": "integer"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "entry_mode": {
+            "enum": [
+              "direct",
+              "met"
+            ],
+            "title": "Entry Mode",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "kcal": {
+            "title": "Kcal",
+            "type": "number"
+          },
+          "logged_at": {
+            "format": "date-time",
+            "title": "Logged At",
+            "type": "string"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "weight_kg_used": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weight Kg Used"
+          }
+        },
+        "required": [
+          "id",
+          "kcal",
+          "entry_mode",
+          "activity_code",
+          "activity_name",
+          "activity_category",
+          "activity_met",
+          "duration_minutes",
+          "weight_kg_used",
+          "derived_points",
+          "applies_to_date",
+          "logged_at"
+        ],
+        "title": "ActivityLogRead",
+        "type": "object"
+      },
+      "DailyStepCountRead": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "estimate_status": {
+            "default": "missing_inputs",
+            "enum": [
+              "available",
+              "missing_inputs"
+            ],
+            "title": "Estimate Status",
+            "type": "string"
+          },
+          "estimated_kcal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Kcal"
+          },
+          "estimated_points": {
+            "default": 0,
+            "title": "Estimated Points",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "logged_at": {
+            "format": "date-time",
+            "title": "Logged At",
+            "type": "string"
+          },
+          "missing_inputs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Inputs",
+            "type": "array"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "steps": {
+            "title": "Steps",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "applies_to_date",
+          "steps",
+          "logged_at"
+        ],
+        "title": "DailyStepCountRead",
+        "type": "object"
+      },
+      "DailyStepCountUpsert": {
+        "properties": {
+          "applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applies To Date"
+          },
+          "mode": {
+            "default": "replace_total",
+            "enum": [
+              "replace_total",
+              "add_delta"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "steps": {
+            "minimum": 0.0,
+            "title": "Steps",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "steps"
+        ],
+        "title": "DailyStepCountUpsert",
+        "type": "object"
+      },
+      "DayDrinkTotalRead": {
+        "properties": {
+          "display_order": {
+            "title": "Display Order",
+            "type": "integer"
+          },
+          "drink_type_id": {
+            "title": "Drink Type Id",
+            "type": "integer"
+          },
+          "drink_type_name": {
+            "title": "Drink Type Name",
+            "type": "string"
+          },
+          "is_hidden_on_day": {
+            "title": "Is Hidden On Day",
+            "type": "boolean"
+          },
+          "total_volume_ml": {
+            "title": "Total Volume Ml",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "drink_type_id",
+          "drink_type_name",
+          "total_volume_ml",
+          "display_order",
+          "is_hidden_on_day"
+        ],
+        "title": "DayDrinkTotalRead",
+        "type": "object"
+      },
+      "DayStatusDetail": {
+        "properties": {
+          "error_code": {
+            "const": "budget_not_ready",
+            "title": "Error Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "retryable": {
+            "const": false,
+            "title": "Retryable",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "message",
+          "error_code",
+          "retryable"
+        ],
+        "title": "DayStatusDetail",
+        "type": "object"
+      },
+      "DayStatusReady": {
+        "properties": {
+          "activity_entries": {
+            "items": {
+              "$ref": "#/components/schemas/ActivityLogRead"
+            },
+            "title": "Activity Entries",
+            "type": "array"
+          },
+          "activity_points": {
+            "title": "Activity Points",
+            "type": "integer"
+          },
+          "base_daily_points": {
+            "title": "Base Daily Points",
+            "type": "integer"
+          },
+          "budget_points": {
+            "title": "Budget Points",
+            "type": "integer"
+          },
+          "carryover_points": {
+            "title": "Carryover Points",
+            "type": "integer"
+          },
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "drink_totals": {
+            "items": {
+              "$ref": "#/components/schemas/DayDrinkTotalRead"
+            },
+            "title": "Drink Totals",
+            "type": "array"
+          },
+          "exercise_points": {
+            "title": "Exercise Points",
+            "type": "integer"
+          },
+          "food_entries": {
+            "items": {
+              "$ref": "#/components/schemas/FoodLogRead"
+            },
+            "title": "Food Entries",
+            "type": "array"
+          },
+          "food_points": {
+            "title": "Food Points",
+            "type": "integer"
+          },
+          "remaining_points": {
+            "title": "Remaining Points",
+            "type": "integer"
+          },
+          "status": {
+            "const": "ready",
+            "default": "ready",
+            "title": "Status",
+            "type": "string"
+          },
+          "step_entry": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DailyStepCountRead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "step_points": {
+            "title": "Step Points",
+            "type": "integer"
+          },
+          "timezone": {
+            "title": "Timezone",
+            "type": "string"
+          },
+          "total_drink_volume_ml": {
+            "default": 0,
+            "title": "Total Drink Volume Ml",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "date",
+          "timezone",
+          "base_daily_points",
+          "carryover_points",
+          "budget_points",
+          "food_points",
+          "step_points",
+          "exercise_points",
+          "activity_points",
+          "remaining_points",
+          "food_entries",
+          "step_entry",
+          "activity_entries"
+        ],
+        "title": "DayStatusReady",
+        "type": "object"
+      },
+      "DayStatusSetupBlocked": {
+        "properties": {
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "detail": {
+            "$ref": "#/components/schemas/DayStatusDetail"
+          },
+          "status": {
+            "const": "setup_blocked",
+            "default": "setup_blocked",
+            "title": "Status",
+            "type": "string"
+          },
+          "timezone": {
+            "title": "Timezone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "timezone",
+          "detail"
+        ],
+        "title": "DayStatusSetupBlocked",
+        "type": "object"
+      },
+      "FoodBasisType": {
+        "enum": [
+          "weight",
+          "volume",
+          "serving"
+        ],
+        "title": "FoodBasisType",
+        "type": "string"
+      },
+      "FoodItemBarcodeRead": {
+        "properties": {
+          "barcode": {
+            "title": "Barcode",
+            "type": "string"
+          },
+          "format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Format"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_primary": {
+            "title": "Is Primary",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "barcode",
+          "format",
+          "is_primary"
+        ],
+        "title": "FoodItemBarcodeRead",
+        "type": "object"
+      },
+      "FoodItemRead": {
+        "properties": {
+          "barcodes": {
+            "items": {
+              "$ref": "#/components/schemas/FoodItemBarcodeRead"
+            },
+            "title": "Barcodes",
+            "type": "array"
+          },
+          "base_serving_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Label"
+          },
+          "basis_type": {
+            "$ref": "#/components/schemas/FoodBasisType"
+          },
+          "brand_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Name"
+          },
+          "carbs_g": {
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "fat_g": {
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url"
+          },
+          "instruction_steps": {
+            "items": {
+              "$ref": "#/components/schemas/FoodItemStepRead"
+            },
+            "title": "Instruction Steps",
+            "type": "array"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "is_archived": {
+            "title": "Is Archived",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "protein_g": {
+            "title": "Protein G",
+            "type": "number"
+          },
+          "serving_variants": {
+            "items": {
+              "$ref": "#/components/schemas/FoodItemServingRead"
+            },
+            "title": "Serving Variants",
+            "type": "array"
+          },
+          "source_kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "open_food_facts",
+                  "cofid",
+                  "alcohol_reference"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Kind"
+          },
+          "source_last_imported_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Last Imported At"
+          },
+          "source_last_synced_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Last Synced At"
+          },
+          "source_product_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Product Id"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "brand_name",
+          "notes",
+          "instructions",
+          "basis_type",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g",
+          "base_serving_label",
+          "image_url",
+          "source_kind",
+          "source_product_id",
+          "source_url",
+          "source_last_imported_at",
+          "source_last_synced_at",
+          "is_archived",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "FoodItemRead",
+        "type": "object"
+      },
+      "FoodItemServingRead": {
+        "properties": {
+          "grams": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grams"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "milliliters": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Milliliters"
+          },
+          "serving_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Multiplier"
+          },
+          "sort_order": {
+            "title": "Sort Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "grams",
+          "milliliters",
+          "serving_multiplier",
+          "sort_order"
+        ],
+        "title": "FoodItemServingRead",
+        "type": "object"
+      },
+      "FoodItemStepRead": {
+        "properties": {
+          "automation_actions": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RecipeTimerAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeOvenAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeHobAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeMicrowaveAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeAirFryerAction"
+                }
+              ]
+            },
+            "maxItems": 8,
+            "title": "Automation Actions",
+            "type": "array"
+          },
+          "body_markdown": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Body Markdown",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "section": {
+            "const": "cook",
+            "default": "cook",
+            "title": "Section",
+            "type": "string"
+          },
+          "sort_order": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "body_markdown",
+          "id"
+        ],
+        "title": "FoodItemStepRead",
+        "type": "object"
+      },
+      "FoodLogCreate": {
+        "properties": {
+          "applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applies To Date"
+          },
+          "calories_kcal": {
+            "anyOf": [
+              {
+                "maximum": 50000.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calories Kcal"
+          },
+          "carbs_g": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Carbs G"
+          },
+          "fat_g": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fat G"
+          },
+          "fiber_g": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fiber G"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "logged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged At"
+          },
+          "logged_quantity_display_label": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Label"
+          },
+          "logged_quantity_display_multiplier": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Multiplier"
+          },
+          "logged_quantity_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FoodLoggedQuantityMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "logged_quantity_value": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Value"
+          },
+          "meal_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MealType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "nutrition_entry_mode": {
+            "$ref": "#/components/schemas/FoodNutritionEntryMode",
+            "default": "macros"
+          },
+          "points": {
+            "anyOf": [
+              {
+                "maximum": 1000.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Points"
+          },
+          "protein_g": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein G"
+          },
+          "recipe_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Id"
+          },
+          "recipe_logged_servings": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Logged Servings"
+          },
+          "recipe_total_servings": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Total Servings"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "FoodLogCreate",
+        "type": "object"
+      },
+      "FoodLogRead": {
+        "properties": {
+          "ai_task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Task Id"
+          },
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "calories_kcal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calories Kcal"
+          },
+          "carbs_g": {
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "cooking_instance_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cooking Instance Id"
+          },
+          "estimate_alcohol_g": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Alcohol G"
+          },
+          "estimate_calories_high_kcal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Calories High Kcal"
+          },
+          "estimate_calories_kcal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Calories Kcal"
+          },
+          "estimate_calories_low_kcal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Calories Low Kcal"
+          },
+          "estimate_confidence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Confidence"
+          },
+          "estimate_original_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Original Description"
+          },
+          "estimate_uncertainty_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Uncertainty Reason"
+          },
+          "fat_g": {
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "logged_at": {
+            "format": "date-time",
+            "title": "Logged At",
+            "type": "string"
+          },
+          "logged_quantity_display_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Label"
+          },
+          "logged_quantity_display_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Multiplier"
+          },
+          "logged_quantity_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FoodLoggedQuantityMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "logged_quantity_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Value"
+          },
+          "meal_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MealType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "nutrition_entry_mode": {
+            "$ref": "#/components/schemas/FoodNutritionEntryMode"
+          },
+          "nutrition_source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nutrition Source"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "points": {
+            "title": "Points",
+            "type": "integer"
+          },
+          "protein_g": {
+            "title": "Protein G",
+            "type": "number"
+          },
+          "recipe_batch_barcode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Batch Barcode"
+          },
+          "recipe_batch_human_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Batch Human Code"
+          },
+          "recipe_batch_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Batch Id"
+          },
+          "recipe_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Id"
+          },
+          "recipe_logged_servings": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Logged Servings"
+          },
+          "recipe_total_servings": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Total Servings"
+          }
+        },
+        "required": [
+          "id",
+          "food_item_id",
+          "name",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g",
+          "nutrition_entry_mode",
+          "calories_kcal",
+          "nutrition_source",
+          "ai_task_id",
+          "estimate_original_description",
+          "estimate_calories_kcal",
+          "estimate_calories_low_kcal",
+          "estimate_calories_high_kcal",
+          "estimate_alcohol_g",
+          "estimate_confidence",
+          "estimate_uncertainty_reason",
+          "meal_type",
+          "logged_quantity_mode",
+          "logged_quantity_value",
+          "logged_quantity_display_label",
+          "logged_quantity_display_multiplier",
+          "recipe_id",
+          "cooking_instance_id",
+          "recipe_logged_servings",
+          "recipe_total_servings",
+          "recipe_batch_id",
+          "recipe_batch_human_code",
+          "recipe_batch_barcode",
+          "points",
+          "applies_to_date",
+          "logged_at"
+        ],
+        "title": "FoodLogRead",
+        "type": "object"
+      },
+      "FoodLoggedQuantityMode": {
+        "enum": [
+          "grams",
+          "milliliters",
+          "base_servings"
+        ],
+        "title": "FoodLoggedQuantityMode",
+        "type": "string"
+      },
+      "FoodNutritionEntryMode": {
+        "enum": [
+          "macros",
+          "calories",
+          "points"
+        ],
+        "title": "FoodNutritionEntryMode",
+        "type": "string"
+      },
+      "FoodPointsCalculationDescriptor": {
+        "properties": {
+          "carbs_coefficient": {
+            "const": 19,
+            "default": 19,
+            "title": "Carbs Coefficient",
+            "type": "integer"
+          },
+          "divisor": {
+            "const": 175,
+            "default": 175,
+            "title": "Divisor",
+            "type": "integer"
+          },
+          "fat_coefficient": {
+            "const": 45,
+            "default": 45,
+            "title": "Fat Coefficient",
+            "type": "integer"
+          },
+          "fiber_cap_g": {
+            "const": 4,
+            "default": 4,
+            "title": "Fiber Cap G",
+            "type": "integer"
+          },
+          "fiber_coefficient": {
+            "const": -14,
+            "default": -14,
+            "title": "Fiber Coefficient",
+            "type": "integer"
+          },
+          "macro_decimal_places": {
+            "const": 4,
+            "default": 4,
+            "title": "Macro Decimal Places",
+            "type": "integer"
+          },
+          "macro_rounding": {
+            "const": "half_even",
+            "default": "half_even",
+            "title": "Macro Rounding",
+            "type": "string"
+          },
+          "minimum_points": {
+            "const": 0,
+            "default": 0,
+            "title": "Minimum Points",
+            "type": "integer"
+          },
+          "protein_coefficient": {
+            "const": 16,
+            "default": 16,
+            "title": "Protein Coefficient",
+            "type": "integer"
+          },
+          "rounding": {
+            "const": "half_up",
+            "default": "half_up",
+            "title": "Rounding",
+            "type": "string"
+          },
+          "version": {
+            "const": "food_points_macros_v1",
+            "default": "food_points_macros_v1",
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "title": "FoodPointsCalculationDescriptor",
+        "type": "object"
+      },
+      "FoodWeighingCompletion": {
+        "properties": {
+          "grams": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100000.0,
+            "title": "Grams",
+            "type": "number"
+          }
+        },
+        "required": [
+          "grams"
+        ],
+        "title": "FoodWeighingCompletion",
+        "type": "object"
+      },
+      "FoodWeighingMeasurement": {
+        "properties": {
+          "grams": {
+            "maximum": 100000.0,
+            "minimum": 0.0,
+            "title": "Grams",
+            "type": "number"
+          }
+        },
+        "required": [
+          "grams"
+        ],
+        "title": "FoodWeighingMeasurement",
+        "type": "object"
+      },
+      "FoodWeighingNutritionSnapshot": {
+        "properties": {
+          "basis_grams": {
+            "const": 100,
+            "default": 100,
+            "title": "Basis Grams",
+            "type": "integer"
+          },
+          "carbs_g": {
+            "minimum": 0.0,
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "fat_g": {
+            "minimum": 0.0,
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "minimum": 0.0,
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "protein_g": {
+            "minimum": 0.0,
+            "title": "Protein G",
+            "type": "number"
+          }
+        },
+        "required": [
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g"
+        ],
+        "title": "FoodWeighingNutritionSnapshot",
+        "type": "object"
+      },
+      "FoodWeighingPreviewRead": {
+        "properties": {
+          "authoritative": {
+            "const": true,
+            "default": true,
+            "title": "Authoritative",
+            "type": "boolean"
+          },
+          "calculation_version": {
+            "title": "Calculation Version",
+            "type": "string"
+          },
+          "carbs_g": {
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "fat_g": {
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "grams": {
+            "title": "Grams",
+            "type": "number"
+          },
+          "points": {
+            "minimum": 0.0,
+            "title": "Points",
+            "type": "integer"
+          },
+          "protein_g": {
+            "title": "Protein G",
+            "type": "number"
+          },
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id",
+          "calculation_version",
+          "grams",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g",
+          "points"
+        ],
+        "title": "FoodWeighingPreviewRead",
+        "type": "object"
+      },
+      "FoodWeighingSessionCreate": {
+        "properties": {
+          "applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applies To Date"
+          },
+          "food_item_id": {
+            "exclusiveMinimum": 0.0,
+            "title": "Food Item Id",
+            "type": "integer"
+          },
+          "meal_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MealType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "food_item_id"
+        ],
+        "title": "FoodWeighingSessionCreate",
+        "type": "object"
+      },
+      "FoodWeighingSessionLinks": {
+        "properties": {
+          "cancel": {
+            "title": "Cancel",
+            "type": "string"
+          },
+          "complete": {
+            "title": "Complete",
+            "type": "string"
+          },
+          "preview": {
+            "title": "Preview",
+            "type": "string"
+          },
+          "read": {
+            "title": "Read",
+            "type": "string"
+          }
+        },
+        "required": [
+          "read",
+          "preview",
+          "complete",
+          "cancel"
+        ],
+        "title": "FoodWeighingSessionLinks",
+        "type": "object"
+      },
+      "FoodWeighingSessionRead": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "completed_food_log_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed Food Log Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "food_name": {
+            "title": "Food Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "links": {
+            "$ref": "#/components/schemas/FoodWeighingSessionLinks"
+          },
+          "meal_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MealType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nutrition_per_100g": {
+            "$ref": "#/components/schemas/FoodWeighingNutritionSnapshot"
+          },
+          "points_calculation": {
+            "$ref": "#/components/schemas/FoodPointsCalculationDescriptor"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "completed",
+              "cancelled",
+              "expired"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "terminal_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Terminal At"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "food_item_id",
+          "food_name",
+          "nutrition_per_100g",
+          "points_calculation",
+          "meal_type",
+          "applies_to_date",
+          "created_at",
+          "expires_at",
+          "terminal_at",
+          "completed_food_log_id",
+          "links"
+        ],
+        "title": "FoodWeighingSessionRead",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "ListMeta": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "count"
+        ],
+        "title": "ListMeta",
+        "type": "object"
+      },
+      "ListResponse_ActivityLogRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ActivityLogRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[ActivityLogRead]",
+        "type": "object"
+      },
+      "ListResponse_DailyStepCountRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DailyStepCountRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[DailyStepCountRead]",
+        "type": "object"
+      },
+      "ListResponse_FoodItemRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FoodItemRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[FoodItemRead]",
+        "type": "object"
+      },
+      "ListResponse_FoodLogRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FoodLogRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[FoodLogRead]",
+        "type": "object"
+      },
+      "ListResponse_MealTemplateListItem_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MealTemplateListItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[MealTemplateListItem]",
+        "type": "object"
+      },
+      "ListResponse_RecipeListItem_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeListItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[RecipeListItem]",
+        "type": "object"
+      },
+      "ListResponse_WeightLogRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/WeightLogRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[WeightLogRead]",
+        "type": "object"
+      },
+      "MealTemplateItemRead": {
+        "properties": {
+          "carbs_g": {
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "fat_g": {
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "logged_quantity_display_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Label"
+          },
+          "logged_quantity_display_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Multiplier"
+          },
+          "logged_quantity_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FoodLoggedQuantityMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "logged_quantity_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Value"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "protein_g": {
+            "title": "Protein G",
+            "type": "number"
+          },
+          "sort_order": {
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "source_kind": {
+            "$ref": "#/components/schemas/MealTemplateItemSourceKind"
+          }
+        },
+        "required": [
+          "id",
+          "source_kind",
+          "food_item_id",
+          "name",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g",
+          "logged_quantity_mode",
+          "logged_quantity_value",
+          "logged_quantity_display_label",
+          "logged_quantity_display_multiplier",
+          "sort_order"
+        ],
+        "title": "MealTemplateItemRead",
+        "type": "object"
+      },
+      "MealTemplateItemSourceKind": {
+        "enum": [
+          "food_item",
+          "snapshot"
+        ],
+        "title": "MealTemplateItemSourceKind",
+        "type": "string"
+      },
+      "MealTemplateListItem": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "item_count": {
+            "title": "Item Count",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "points_total": {
+            "title": "Points Total",
+            "type": "integer"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "points_total",
+          "item_count",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "MealTemplateListItem",
+        "type": "object"
+      },
+      "MealTemplateRead": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "item_count": {
+            "title": "Item Count",
+            "type": "integer"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MealTemplateItemRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "points_total": {
+            "title": "Points Total",
+            "type": "integer"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "points_total",
+          "item_count",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "MealTemplateRead",
+        "type": "object"
+      },
+      "MealType": {
+        "enum": [
+          "breakfast",
+          "lunch",
+          "dinner",
+          "snack"
+        ],
+        "title": "MealType",
+        "type": "string"
+      },
+      "PlateauBudgetSuggestion": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "recommended_base_daily_points": {
+            "title": "Recommended Base Daily Points",
+            "type": "integer"
+          },
+          "slope_kg_per_week": {
+            "title": "Slope Kg Per Week",
+            "type": "number"
+          },
+          "suggested_adjustment_points": {
+            "title": "Suggested Adjustment Points",
+            "type": "integer"
+          },
+          "suggested_base_daily_points": {
+            "title": "Suggested Base Daily Points",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "applies_to_date",
+          "recommended_base_daily_points",
+          "suggested_adjustment_points",
+          "suggested_base_daily_points",
+          "slope_kg_per_week"
+        ],
+        "title": "PlateauBudgetSuggestion",
+        "type": "object"
+      },
+      "ProfileReadiness": {
+        "properties": {
+          "is_complete": {
+            "title": "Is Complete",
+            "type": "boolean"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Fields",
+            "type": "array"
+          }
+        },
+        "required": [
+          "is_complete",
+          "missing_fields"
+        ],
+        "title": "ProfileReadiness",
+        "type": "object"
+      },
+      "ReadinessResponse": {
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/ProfileReadiness"
+          },
+          "weigh_in": {
+            "$ref": "#/components/schemas/WeighInReadiness"
+          }
+        },
+        "required": [
+          "profile",
+          "weigh_in"
+        ],
+        "title": "ReadinessResponse",
+        "type": "object"
+      },
+      "RecipeAirFryerAction": {
+        "properties": {
+          "action_kind": {
+            "const": "air_fryer",
+            "title": "Action Kind",
+            "type": "string"
+          },
+          "duration_seconds": {
+            "maximum": 604800.0,
+            "minimum": 1.0,
+            "title": "Duration Seconds",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "shake": {
+            "default": false,
+            "title": "Shake",
+            "type": "boolean"
+          },
+          "temperature_c": {
+            "maximum": 300.0,
+            "minimum": 30.0,
+            "title": "Temperature C",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "action_kind",
+          "temperature_c",
+          "duration_seconds"
+        ],
+        "title": "RecipeAirFryerAction",
+        "type": "object"
+      },
+      "RecipeHobAction": {
+        "properties": {
+          "action_kind": {
+            "const": "hob",
+            "title": "Action Kind",
+            "type": "string"
+          },
+          "duration_seconds": {
+            "maximum": 604800.0,
+            "minimum": 1.0,
+            "title": "Duration Seconds",
+            "type": "integer"
+          },
+          "level": {
+            "maximum": 9.0,
+            "minimum": 1.0,
+            "title": "Level",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "required": [
+          "action_kind",
+          "level",
+          "duration_seconds"
+        ],
+        "title": "RecipeHobAction",
+        "type": "object"
+      },
+      "RecipeIngredientRead": {
+        "properties": {
+          "carbs_g": {
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "fat_g": {
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "ingredient_type_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Type Id"
+          },
+          "logged_quantity_display_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Label"
+          },
+          "logged_quantity_display_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Display Multiplier"
+          },
+          "logged_quantity_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FoodLoggedQuantityMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "logged_quantity_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged Quantity Value"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "preparation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation"
+          },
+          "protein_g": {
+            "title": "Protein G",
+            "type": "number"
+          },
+          "resolution_policy": {
+            "enum": [
+              "fixed_food",
+              "resolve_required",
+              "generic_allowed",
+              "legacy_snapshot"
+            ],
+            "title": "Resolution Policy",
+            "type": "string"
+          },
+          "sort_order": {
+            "title": "Sort Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "food_item_id",
+          "ingredient_type_id",
+          "resolution_policy",
+          "name",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g",
+          "logged_quantity_mode",
+          "logged_quantity_value",
+          "logged_quantity_display_label",
+          "logged_quantity_display_multiplier",
+          "preparation",
+          "sort_order"
+        ],
+        "title": "RecipeIngredientRead",
+        "type": "object"
+      },
+      "RecipeListItem": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url"
+          },
+          "ingredient_count": {
+            "title": "Ingredient Count",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "points_per_serving": {
+            "title": "Points Per Serving",
+            "type": "integer"
+          },
+          "points_total": {
+            "title": "Points Total",
+            "type": "integer"
+          },
+          "storage_life_freezer_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Life Freezer Days"
+          },
+          "storage_life_fridge_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Life Fridge Days"
+          },
+          "total_servings": {
+            "title": "Total Servings",
+            "type": "number"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image_url",
+          "total_servings",
+          "storage_life_fridge_days",
+          "storage_life_freezer_days",
+          "ingredient_count",
+          "points_per_serving",
+          "points_total",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "RecipeListItem",
+        "type": "object"
+      },
+      "RecipeMicrowaveAction": {
+        "properties": {
+          "action_kind": {
+            "const": "microwave",
+            "title": "Action Kind",
+            "type": "string"
+          },
+          "duration_seconds": {
+            "maximum": 604800.0,
+            "minimum": 1.0,
+            "title": "Duration Seconds",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "power_watts": {
+            "maximum": 1200.0,
+            "minimum": 100.0,
+            "title": "Power Watts",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "action_kind",
+          "power_watts",
+          "duration_seconds"
+        ],
+        "title": "RecipeMicrowaveAction",
+        "type": "object"
+      },
+      "RecipeOvenAction": {
+        "properties": {
+          "action_kind": {
+            "const": "oven",
+            "title": "Action Kind",
+            "type": "string"
+          },
+          "duration_seconds": {
+            "maximum": 604800.0,
+            "minimum": 1.0,
+            "title": "Duration Seconds",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "preheat": {
+            "default": false,
+            "title": "Preheat",
+            "type": "boolean"
+          },
+          "temperature_c": {
+            "maximum": 300.0,
+            "minimum": 30.0,
+            "title": "Temperature C",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "action_kind",
+          "temperature_c",
+          "duration_seconds"
+        ],
+        "title": "RecipeOvenAction",
+        "type": "object"
+      },
+      "RecipePrintDestinationRead": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "key"
+        ],
+        "title": "RecipePrintDestinationRead",
+        "type": "object"
+      },
+      "RecipePrintRequest": {
+        "properties": {
+          "destination_key": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$",
+            "title": "Destination Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "destination_key"
+        ],
+        "title": "RecipePrintRequest",
+        "type": "object"
+      },
+      "RecipePrintResponse": {
+        "properties": {
+          "destination": {
+            "$ref": "#/components/schemas/RecipePrintDestinationRead"
+          },
+          "event_id": {
+            "title": "Event Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "event_id",
+          "destination"
+        ],
+        "title": "RecipePrintResponse",
+        "type": "object"
+      },
+      "RecipeRead": {
+        "properties": {
+          "carbs_g_per_serving": {
+            "title": "Carbs G Per Serving",
+            "type": "number"
+          },
+          "cook_time_minutes": {
+            "title": "Cook Time Minutes",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "fat_g_per_serving": {
+            "title": "Fat G Per Serving",
+            "type": "number"
+          },
+          "fiber_g_per_serving": {
+            "title": "Fiber G Per Serving",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url"
+          },
+          "ingredient_count": {
+            "title": "Ingredient Count",
+            "type": "integer"
+          },
+          "ingredients": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeIngredientRead"
+            },
+            "title": "Ingredients",
+            "type": "array"
+          },
+          "instruction_steps": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeStepRead"
+            },
+            "title": "Instruction Steps",
+            "type": "array"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "passive_time_minutes": {
+            "title": "Passive Time Minutes",
+            "type": "integer"
+          },
+          "points_per_serving": {
+            "title": "Points Per Serving",
+            "type": "integer"
+          },
+          "points_total": {
+            "title": "Points Total",
+            "type": "integer"
+          },
+          "prep_time_minutes": {
+            "title": "Prep Time Minutes",
+            "type": "integer"
+          },
+          "protein_g_per_serving": {
+            "title": "Protein G Per Serving",
+            "type": "number"
+          },
+          "reheat_instructions_freezer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reheat Instructions Freezer"
+          },
+          "reheat_instructions_fridge": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reheat Instructions Fridge"
+          },
+          "reheat_steps_freezer": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeStepRead"
+            },
+            "title": "Reheat Steps Freezer",
+            "type": "array"
+          },
+          "reheat_steps_fridge": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeStepRead"
+            },
+            "title": "Reheat Steps Fridge",
+            "type": "array"
+          },
+          "storage_life_freezer_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Life Freezer Days"
+          },
+          "storage_life_fridge_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Life Fridge Days"
+          },
+          "total_servings": {
+            "title": "Total Servings",
+            "type": "number"
+          },
+          "total_time_minutes": {
+            "title": "Total Time Minutes",
+            "type": "integer"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "image_url",
+          "total_servings",
+          "storage_life_fridge_days",
+          "storage_life_freezer_days",
+          "ingredient_count",
+          "points_per_serving",
+          "points_total",
+          "created_at",
+          "updated_at",
+          "instructions",
+          "prep_time_minutes",
+          "cook_time_minutes",
+          "passive_time_minutes",
+          "total_time_minutes",
+          "protein_g_per_serving",
+          "carbs_g_per_serving",
+          "fat_g_per_serving",
+          "fiber_g_per_serving",
+          "reheat_instructions_fridge",
+          "reheat_instructions_freezer"
+        ],
+        "title": "RecipeRead",
+        "type": "object"
+      },
+      "RecipeStepRead": {
+        "properties": {
+          "automation_actions": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RecipeTimerAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeOvenAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeHobAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeMicrowaveAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeAirFryerAction"
+                }
+              ]
+            },
+            "maxItems": 8,
+            "title": "Automation Actions",
+            "type": "array"
+          },
+          "body_markdown": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Body Markdown",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "section": {
+            "enum": [
+              "cook",
+              "reheat_fridge",
+              "reheat_freezer"
+            ],
+            "title": "Section",
+            "type": "string"
+          },
+          "sort_order": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "section",
+          "body_markdown",
+          "id"
+        ],
+        "title": "RecipeStepRead",
+        "type": "object"
+      },
+      "RecipeTimerAction": {
+        "properties": {
+          "action_kind": {
+            "enum": [
+              "timer",
+              "rest"
+            ],
+            "title": "Action Kind",
+            "type": "string"
+          },
+          "duration_seconds": {
+            "maximum": 604800.0,
+            "minimum": 1.0,
+            "title": "Duration Seconds",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "required": [
+          "action_kind",
+          "duration_seconds"
+        ],
+        "title": "RecipeTimerAction",
+        "type": "object"
+      },
+      "RuntimeConfigRead": {
+        "properties": {
+          "app_environment": {
+            "title": "App Environment",
+            "type": "string"
+          },
+          "app_timezone": {
+            "title": "App Timezone",
+            "type": "string"
+          },
+          "session_cookie_samesite": {
+            "title": "Session Cookie Samesite",
+            "type": "string"
+          },
+          "session_cookie_secure": {
+            "title": "Session Cookie Secure",
+            "type": "boolean"
+          },
+          "trusted_hosts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Trusted Hosts",
+            "type": "array"
+          }
+        },
+        "required": [
+          "app_environment",
+          "app_timezone",
+          "session_cookie_secure",
+          "session_cookie_samesite",
+          "trusted_hosts"
+        ],
+        "title": "RuntimeConfigRead",
+        "type": "object"
+      },
+      "RuntimeMetadataRead": {
+        "properties": {
+          "api_contract_version": {
+            "title": "Api Contract Version",
+            "type": "string"
+          },
+          "app_name": {
+            "title": "App Name",
+            "type": "string"
+          },
+          "app_version": {
+            "title": "App Version",
+            "type": "string"
+          },
+          "capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
+          "deployment_mode": {
+            "title": "Deployment Mode",
+            "type": "string"
+          },
+          "runtime_config": {
+            "$ref": "#/components/schemas/RuntimeConfigRead"
+          },
+          "server_uuid": {
+            "format": "uuid",
+            "title": "Server Uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "server_uuid",
+          "app_name",
+          "app_version",
+          "api_contract_version",
+          "deployment_mode",
+          "runtime_config"
+        ],
+        "title": "RuntimeMetadataRead",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "Weekday": {
+        "enum": [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday"
+        ],
+        "title": "Weekday",
+        "type": "string"
+      },
+      "WeighInReadiness": {
+        "properties": {
+          "expected_weigh_in_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Weigh In Date"
+          },
+          "last_weigh_in_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Weigh In Date"
+          },
+          "preferred_weigh_in_weekday": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Weekday"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "WeighInReadiness",
+        "type": "object"
+      },
+      "WeightBudgetChangeAnnotation": {
+        "properties": {
+          "applies_from_date": {
+            "format": "date",
+            "title": "Applies From Date",
+            "type": "string"
+          },
+          "base_daily_points": {
+            "title": "Base Daily Points",
+            "type": "integer"
+          },
+          "change_points": {
+            "title": "Change Points",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "base_daily_points",
+          "change_points",
+          "applies_from_date"
+        ],
+        "title": "WeightBudgetChangeAnnotation",
+        "type": "object"
+      },
+      "WeightBudgetExplanation": {
+        "properties": {
+          "active_budget_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active Budget Note"
+          },
+          "activity_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Multiplier"
+          },
+          "calculation_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calculation Applies To Date"
+          },
+          "calculation_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calculation Weight Kg"
+          },
+          "current_base_daily_points": {
+            "title": "Current Base Daily Points",
+            "type": "integer"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "effective_activity_level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Activity Level"
+          },
+          "effective_from_date": {
+            "format": "date",
+            "title": "Effective From Date",
+            "type": "string"
+          },
+          "estimated_energy_expenditure_kcal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Energy Expenditure Kcal"
+          },
+          "goal_adjustment_kcal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Adjustment Kcal"
+          },
+          "goal_direction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Direction"
+          },
+          "headline": {
+            "title": "Headline",
+            "type": "string"
+          },
+          "manual_override": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightBudgetManualOverride"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "matches_recommended_budget": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Matches Recommended Budget"
+          },
+          "pending_adjustment_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Adjustment Points"
+          },
+          "pending_suggested_base_daily_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Suggested Base Daily Points"
+          },
+          "previous_base_daily_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Base Daily Points"
+          },
+          "recommended_base_daily_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Base Daily Points"
+          },
+          "recommended_vs_current_difference_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Vs Current Difference Points"
+          },
+          "source_kind": {
+            "enum": [
+              "initial_seed",
+              "budget_change",
+              "weight_review_change"
+            ],
+            "title": "Source Kind",
+            "type": "string"
+          },
+          "source_weight_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Weight Applies To Date"
+          },
+          "source_weight_log_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Weight Log Id"
+          }
+        },
+        "required": [
+          "current_base_daily_points",
+          "effective_from_date",
+          "source_kind",
+          "headline"
+        ],
+        "title": "WeightBudgetExplanation",
+        "type": "object"
+      },
+      "WeightBudgetManualOverride": {
+        "properties": {
+          "active_base_daily_points": {
+            "title": "Active Base Daily Points",
+            "type": "integer"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "difference_points": {
+            "title": "Difference Points",
+            "type": "integer"
+          },
+          "effective_from_date": {
+            "format": "date",
+            "title": "Effective From Date",
+            "type": "string"
+          },
+          "headline": {
+            "title": "Headline",
+            "type": "string"
+          },
+          "recommended_base_daily_points": {
+            "title": "Recommended Base Daily Points",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "active_base_daily_points",
+          "recommended_base_daily_points",
+          "difference_points",
+          "effective_from_date",
+          "headline",
+          "detail"
+        ],
+        "title": "WeightBudgetManualOverride",
+        "type": "object"
+      },
+      "WeightBudgetRecommendationTimelineEntry": {
+        "properties": {
+          "active_base_daily_points": {
+            "title": "Active Base Daily Points",
+            "type": "integer"
+          },
+          "activity_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Multiplier"
+          },
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "change_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Points"
+          },
+          "effective_activity_level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Activity Level"
+          },
+          "estimated_energy_expenditure_kcal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Energy Expenditure Kcal"
+          },
+          "goal_adjustment_kcal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Adjustment Kcal"
+          },
+          "matches_active_budget": {
+            "title": "Matches Active Budget",
+            "type": "boolean"
+          },
+          "previous_recommended_base_daily_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Recommended Base Daily Points"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "recommended_base_daily_points": {
+            "title": "Recommended Base Daily Points",
+            "type": "integer"
+          },
+          "weight_kg": {
+            "title": "Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "applies_to_date",
+          "recommended_base_daily_points",
+          "active_base_daily_points",
+          "matches_active_budget",
+          "weight_kg",
+          "reason"
+        ],
+        "title": "WeightBudgetRecommendationTimelineEntry",
+        "type": "object"
+      },
+      "WeightBudgetReview": {
+        "properties": {
+          "activity_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Multiplier"
+          },
+          "applies_from_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applies From Date"
+          },
+          "blocked_by_non_review_budget_change": {
+            "title": "Blocked By Non Review Budget Change",
+            "type": "boolean"
+          },
+          "current_effective_base_daily_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Effective Base Daily Points"
+          },
+          "difference_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Difference Points"
+          },
+          "effective_activity_level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Activity Level"
+          },
+          "is_preferred_weigh_in_day": {
+            "title": "Is Preferred Weigh In Day",
+            "type": "boolean"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "opposing_goal_threshold_points": {
+            "title": "Opposing Goal Threshold Points",
+            "type": "integer"
+          },
+          "plateau_decision_status": {
+            "default": "not_applicable",
+            "enum": [
+              "not_applicable",
+              "pending",
+              "accepted",
+              "rejected"
+            ],
+            "title": "Plateau Decision Status",
+            "type": "string"
+          },
+          "plateau_suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlateauBudgetSuggestion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recommended_base_daily_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Base Daily Points"
+          },
+          "significance_threshold_points": {
+            "title": "Significance Threshold Points",
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "applied",
+              "unchanged",
+              "missing_inputs",
+              "not_applicable_no_target",
+              "waiting_for_current_day_weigh_in",
+              "pending_plateau_decision",
+              "below_threshold",
+              "below_opposing_goal_threshold",
+              "blocked_existing_budget_change"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "target_kcal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Kcal"
+          }
+        },
+        "required": [
+          "status",
+          "recommended_base_daily_points",
+          "current_effective_base_daily_points",
+          "difference_points",
+          "significance_threshold_points",
+          "opposing_goal_threshold_points",
+          "is_preferred_weigh_in_day",
+          "effective_activity_level",
+          "activity_multiplier",
+          "target_kcal",
+          "applies_from_date",
+          "missing_fields",
+          "blocked_by_non_review_budget_change"
+        ],
+        "title": "WeightBudgetReview",
+        "type": "object"
+      },
+      "WeightBudgetTimelineEntry": {
+        "properties": {
+          "base_daily_points": {
+            "title": "Base Daily Points",
+            "type": "integer"
+          },
+          "change_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Points"
+          },
+          "effective_from_date": {
+            "format": "date",
+            "title": "Effective From Date",
+            "type": "string"
+          },
+          "previous_base_daily_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Base Daily Points"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "source_kind": {
+            "enum": [
+              "initial_seed",
+              "budget_change",
+              "weight_review_change"
+            ],
+            "title": "Source Kind",
+            "type": "string"
+          },
+          "source_label": {
+            "title": "Source Label",
+            "type": "string"
+          },
+          "source_weight_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Weight Applies To Date"
+          },
+          "source_weight_log_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Weight Log Id"
+          }
+        },
+        "required": [
+          "effective_from_date",
+          "base_daily_points",
+          "source_kind",
+          "source_label",
+          "reason"
+        ],
+        "title": "WeightBudgetTimelineEntry",
+        "type": "object"
+      },
+      "WeightGraph": {
+        "properties": {
+          "points": {
+            "items": {
+              "$ref": "#/components/schemas/WeightGraphPoint"
+            },
+            "title": "Points",
+            "type": "array"
+          },
+          "range_end_date": {
+            "format": "date",
+            "title": "Range End Date",
+            "type": "string"
+          },
+          "range_start_date": {
+            "format": "date",
+            "title": "Range Start Date",
+            "type": "string"
+          },
+          "trendline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightTrendline"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "range_start_date",
+          "range_end_date",
+          "points"
+        ],
+        "title": "WeightGraph",
+        "type": "object"
+      },
+      "WeightGraphPoint": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "is_latest_overall": {
+            "title": "Is Latest Overall",
+            "type": "boolean"
+          },
+          "milestone_hit_labels": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Milestone Hit Labels",
+            "type": "array"
+          },
+          "weight_kg": {
+            "title": "Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "applies_to_date",
+          "weight_kg",
+          "is_latest_overall",
+          "milestone_hit_labels"
+        ],
+        "title": "WeightGraphPoint",
+        "type": "object"
+      },
+      "WeightHistoryEntry": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "budget_change": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightBudgetChangeAnnotation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "change_from_previous_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change From Previous Kg"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "logged_at": {
+            "format": "date-time",
+            "title": "Logged At",
+            "type": "string"
+          },
+          "milestone_hit_labels": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Milestone Hit Labels",
+            "type": "array"
+          },
+          "weight_kg": {
+            "title": "Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "weight_kg",
+          "applies_to_date",
+          "logged_at",
+          "change_from_previous_kg",
+          "milestone_hit_labels"
+        ],
+        "title": "WeightHistoryEntry",
+        "type": "object"
+      },
+      "WeightLogCreate": {
+        "properties": {
+          "applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applies To Date"
+          },
+          "logged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged At"
+          },
+          "weight_kg": {
+            "exclusiveMinimum": 0.0,
+            "title": "Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "weight_kg"
+        ],
+        "title": "WeightLogCreate",
+        "type": "object"
+      },
+      "WeightLogRead": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "logged_at": {
+            "format": "date-time",
+            "title": "Logged At",
+            "type": "string"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "weight_kg": {
+            "title": "Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "weight_kg",
+          "applies_to_date",
+          "logged_at"
+        ],
+        "title": "WeightLogRead",
+        "type": "object"
+      },
+      "WeightLogUpdate": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "weight_kg": {
+            "exclusiveMinimum": 0.0,
+            "title": "Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "weight_kg",
+          "applies_to_date"
+        ],
+        "title": "WeightLogUpdate",
+        "type": "object"
+      },
+      "WeightMilestone": {
+        "properties": {
+          "hit_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hit Applies To Date"
+          },
+          "hit_logged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hit Logged At"
+          },
+          "hit_weight_log_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hit Weight Log Id"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "progress_percent": {
+            "title": "Progress Percent",
+            "type": "number"
+          },
+          "target_weight_kg": {
+            "title": "Target Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "target_weight_kg",
+          "progress_percent",
+          "hit_weight_log_id",
+          "hit_applies_to_date",
+          "hit_logged_at"
+        ],
+        "title": "WeightMilestone",
+        "type": "object"
+      },
+      "WeightMilestones": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/WeightMilestone"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "WeightMilestones",
+        "type": "object"
+      },
+      "WeightOverviewResponse": {
+        "properties": {
+          "budget_explanation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightBudgetExplanation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "budget_recommendation_timeline": {
+            "items": {
+              "$ref": "#/components/schemas/WeightBudgetRecommendationTimelineEntry"
+            },
+            "title": "Budget Recommendation Timeline",
+            "type": "array"
+          },
+          "budget_review": {
+            "$ref": "#/components/schemas/WeightBudgetReview"
+          },
+          "budget_timeline": {
+            "items": {
+              "$ref": "#/components/schemas/WeightBudgetTimelineEntry"
+            },
+            "title": "Budget Timeline",
+            "type": "array"
+          },
+          "graph": {
+            "$ref": "#/components/schemas/WeightGraph"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/WeightHistoryEntry"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "milestones": {
+            "$ref": "#/components/schemas/WeightMilestones"
+          },
+          "projection": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightProjection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selected_range": {
+            "enum": [
+              "30d",
+              "90d",
+              "1y",
+              "all"
+            ],
+            "title": "Selected Range",
+            "type": "string"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/WeightOverviewSummary"
+          },
+          "target_progress": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightTargetProgress"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "weekly_coaching": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightWeeklyCoaching"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "selected_range",
+          "summary",
+          "target_progress",
+          "budget_review",
+          "graph",
+          "milestones",
+          "history"
+        ],
+        "title": "WeightOverviewResponse",
+        "type": "object"
+      },
+      "WeightOverviewSummary": {
+        "properties": {
+          "budget_change": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightBudgetChangeAnnotation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "change_from_previous_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change From Previous Kg"
+          },
+          "change_from_start_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change From Start Kg"
+          },
+          "current_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Applies To Date"
+          },
+          "current_logged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Logged At"
+          },
+          "current_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Weight Kg"
+          },
+          "plateau": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightPlateau"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "previous_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Applies To Date"
+          },
+          "previous_logged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Logged At"
+          },
+          "previous_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Weight Kg"
+          },
+          "start_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Applies To Date"
+          },
+          "start_logged_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Logged At"
+          },
+          "start_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Weight Kg"
+          }
+        },
+        "required": [
+          "start_weight_kg",
+          "start_applies_to_date",
+          "start_logged_at",
+          "current_weight_kg",
+          "current_applies_to_date",
+          "current_logged_at",
+          "previous_weight_kg",
+          "previous_applies_to_date",
+          "previous_logged_at",
+          "change_from_start_kg",
+          "change_from_previous_kg"
+        ],
+        "title": "WeightOverviewSummary",
+        "type": "object"
+      },
+      "WeightPlateau": {
+        "properties": {
+          "days_span": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Span"
+          },
+          "points_used": {
+            "title": "Points Used",
+            "type": "integer"
+          },
+          "slope_kg_per_week": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slope Kg Per Week"
+          },
+          "status": {
+            "enum": [
+              "plateau",
+              "not_plateau",
+              "insufficient_data"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "threshold_kg_per_week": {
+            "title": "Threshold Kg Per Week",
+            "type": "number"
+          },
+          "window_days": {
+            "title": "Window Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "status",
+          "window_days",
+          "days_span",
+          "points_used",
+          "slope_kg_per_week",
+          "threshold_kg_per_week"
+        ],
+        "title": "WeightPlateau",
+        "type": "object"
+      },
+      "WeightProjection": {
+        "properties": {
+          "confidence_band_kind": {
+            "const": "simple_heuristic",
+            "title": "Confidence Band Kind",
+            "type": "string"
+          },
+          "days_span": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Span"
+          },
+          "estimate_limit_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Limit Note"
+          },
+          "estimated_target_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Target Applies To Date"
+          },
+          "estimated_target_days": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Target Days"
+          },
+          "horizon_days": {
+            "minimum": 0.0,
+            "title": "Horizon Days",
+            "type": "integer"
+          },
+          "points": {
+            "items": {
+              "$ref": "#/components/schemas/WeightProjectionPoint"
+            },
+            "title": "Points",
+            "type": "array"
+          },
+          "points_used": {
+            "minimum": 0.0,
+            "title": "Points Used",
+            "type": "integer"
+          },
+          "projected_target_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projected Target Applies To Date"
+          },
+          "projected_target_days": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projected Target Days"
+          },
+          "status": {
+            "enum": [
+              "available",
+              "insufficient_data",
+              "no_target",
+              "moving_away",
+              "flat_trend",
+              "at_target"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "weekly_rate_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weekly Rate Kg"
+          },
+          "window_days": {
+            "minimum": 1.0,
+            "title": "Window Days",
+            "type": "integer"
+          },
+          "window_end_applies_to_date": {
+            "format": "date",
+            "title": "Window End Applies To Date",
+            "type": "string"
+          },
+          "window_start_applies_to_date": {
+            "format": "date",
+            "title": "Window Start Applies To Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "window_start_applies_to_date",
+          "window_end_applies_to_date",
+          "window_days",
+          "points_used",
+          "horizon_days",
+          "confidence_band_kind"
+        ],
+        "title": "WeightProjection",
+        "type": "object"
+      },
+      "WeightProjectionPoint": {
+        "properties": {
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "lower_weight_kg": {
+            "title": "Lower Weight Kg",
+            "type": "number"
+          },
+          "projected_weight_kg": {
+            "title": "Projected Weight Kg",
+            "type": "number"
+          },
+          "upper_weight_kg": {
+            "title": "Upper Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "applies_to_date",
+          "projected_weight_kg",
+          "lower_weight_kg",
+          "upper_weight_kg"
+        ],
+        "title": "WeightProjectionPoint",
+        "type": "object"
+      },
+      "WeightProjectionSummary": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "estimate_limit_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Limit Note"
+          },
+          "estimated_target_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Target Applies To Date"
+          },
+          "estimated_target_days": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Target Days"
+          },
+          "headline": {
+            "title": "Headline",
+            "type": "string"
+          },
+          "projected_target_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projected Target Applies To Date"
+          },
+          "projected_target_days": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projected Target Days"
+          },
+          "status": {
+            "enum": [
+              "available",
+              "insufficient_data",
+              "no_target",
+              "moving_away",
+              "flat_trend",
+              "at_target"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "headline"
+        ],
+        "title": "WeightProjectionSummary",
+        "type": "object"
+      },
+      "WeightRecap": {
+        "properties": {
+          "acknowledge_through_weight_log_id": {
+            "title": "Acknowledge Through Weight Log Id",
+            "type": "integer"
+          },
+          "applies_to_date": {
+            "format": "date",
+            "title": "Applies To Date",
+            "type": "string"
+          },
+          "baseline_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Applies To Date"
+          },
+          "baseline_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Weight Kg"
+          },
+          "baseline_weight_log_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Weight Log Id"
+          },
+          "budget_change_for_recap_weigh_in": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightRecapBudgetChange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "budget_explanation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightBudgetExplanation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "change_from_baseline_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change From Baseline Kg"
+          },
+          "latest_change_from_previous_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Change From Previous Kg"
+          },
+          "latest_previous_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Previous Applies To Date"
+          },
+          "latest_previous_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Previous Weight Kg"
+          },
+          "latest_unseen_budget_change": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightRecapBudgetChange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "logged_at": {
+            "format": "date-time",
+            "title": "Logged At",
+            "type": "string"
+          },
+          "milestones_hit_on_recap_weigh_in": {
+            "items": {
+              "$ref": "#/components/schemas/WeightRecapMilestone"
+            },
+            "title": "Milestones Hit On Recap Weigh In",
+            "type": "array"
+          },
+          "milestones_hit_since_acknowledged": {
+            "items": {
+              "$ref": "#/components/schemas/WeightRecapMilestone"
+            },
+            "title": "Milestones Hit Since Acknowledged",
+            "type": "array"
+          },
+          "next_milestone": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightRecapMilestone"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plateau_decision_status": {
+            "default": "not_applicable",
+            "enum": [
+              "not_applicable",
+              "pending",
+              "accepted",
+              "rejected"
+            ],
+            "title": "Plateau Decision Status",
+            "type": "string"
+          },
+          "plateau_suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlateauBudgetSuggestion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "projection_summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightProjectionSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recap_scope": {
+            "enum": [
+              "since_acknowledged",
+              "since_first_recorded",
+              "single_entry"
+            ],
+            "title": "Recap Scope",
+            "type": "string"
+          },
+          "recent_trend": {
+            "$ref": "#/components/schemas/WeightRecentTrend"
+          },
+          "target_progress": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightRecapTargetProgress"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "total_weight_lost_kg": {
+            "title": "Total Weight Lost Kg",
+            "type": "number"
+          },
+          "unseen_weigh_in_count": {
+            "title": "Unseen Weigh In Count",
+            "type": "integer"
+          },
+          "weekly_coaching": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightWeeklyCoaching"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "weight_kg": {
+            "title": "Weight Kg",
+            "type": "number"
+          },
+          "weight_log_id": {
+            "title": "Weight Log Id",
+            "type": "integer"
+          },
+          "window_end_applies_to_date": {
+            "format": "date",
+            "title": "Window End Applies To Date",
+            "type": "string"
+          },
+          "window_start_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Window Start Applies To Date"
+          }
+        },
+        "required": [
+          "acknowledge_through_weight_log_id",
+          "weight_log_id",
+          "weight_kg",
+          "applies_to_date",
+          "logged_at",
+          "recap_scope",
+          "window_start_applies_to_date",
+          "window_end_applies_to_date",
+          "baseline_weight_log_id",
+          "baseline_weight_kg",
+          "baseline_applies_to_date",
+          "change_from_baseline_kg",
+          "total_weight_lost_kg",
+          "latest_previous_weight_kg",
+          "latest_previous_applies_to_date",
+          "latest_change_from_previous_kg",
+          "unseen_weigh_in_count",
+          "target_progress",
+          "milestones_hit_since_acknowledged",
+          "milestones_hit_on_recap_weigh_in",
+          "next_milestone",
+          "budget_change_for_recap_weigh_in",
+          "latest_unseen_budget_change",
+          "recent_trend"
+        ],
+        "title": "WeightRecap",
+        "type": "object"
+      },
+      "WeightRecapBudgetChange": {
+        "properties": {
+          "applies_from_date": {
+            "format": "date",
+            "title": "Applies From Date",
+            "type": "string"
+          },
+          "base_daily_points": {
+            "title": "Base Daily Points",
+            "type": "integer"
+          },
+          "change_points": {
+            "title": "Change Points",
+            "type": "integer"
+          },
+          "source_applies_to_date": {
+            "format": "date",
+            "title": "Source Applies To Date",
+            "type": "string"
+          },
+          "source_weight_log_id": {
+            "title": "Source Weight Log Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source_weight_log_id",
+          "source_applies_to_date",
+          "base_daily_points",
+          "change_points",
+          "applies_from_date"
+        ],
+        "title": "WeightRecapBudgetChange",
+        "type": "object"
+      },
+      "WeightRecapMilestone": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "progress_percent": {
+            "title": "Progress Percent",
+            "type": "number"
+          },
+          "source_applies_to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Applies To Date"
+          },
+          "source_weight_log_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Weight Log Id"
+          },
+          "target_weight_kg": {
+            "title": "Target Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "label",
+          "target_weight_kg",
+          "progress_percent",
+          "source_weight_log_id",
+          "source_applies_to_date"
+        ],
+        "title": "WeightRecapMilestone",
+        "type": "object"
+      },
+      "WeightRecapPendingResponse": {
+        "properties": {
+          "has_pending": {
+            "title": "Has Pending",
+            "type": "boolean"
+          },
+          "recap": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeightRecap"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "has_pending",
+          "recap"
+        ],
+        "title": "WeightRecapPendingResponse",
+        "type": "object"
+      },
+      "WeightRecapTargetProgress": {
+        "properties": {
+          "direction": {
+            "enum": [
+              "lose",
+              "gain"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "distance_to_target_kg": {
+            "title": "Distance To Target Kg",
+            "type": "number"
+          },
+          "progress_percent": {
+            "title": "Progress Percent",
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "in_progress",
+              "at_target",
+              "beyond_target"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "target_weight_kg": {
+            "title": "Target Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "target_weight_kg",
+          "distance_to_target_kg",
+          "progress_percent",
+          "direction",
+          "status"
+        ],
+        "title": "WeightRecapTargetProgress",
+        "type": "object"
+      },
+      "WeightRecentTrend": {
+        "properties": {
+          "days_span": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Span"
+          },
+          "end_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Weight Kg"
+          },
+          "eta_status": {
+            "enum": [
+              "estimated",
+              "insufficient_data",
+              "moving_away",
+              "at_target",
+              "no_target"
+            ],
+            "title": "Eta Status",
+            "type": "string"
+          },
+          "net_change_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Net Change Kg"
+          },
+          "start_weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Weight Kg"
+          },
+          "target_eta_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Eta Days"
+          },
+          "weekly_rate_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weekly Rate Kg"
+          },
+          "window_days": {
+            "title": "Window Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "window_days",
+          "days_span",
+          "start_weight_kg",
+          "end_weight_kg",
+          "net_change_kg",
+          "weekly_rate_kg",
+          "eta_status",
+          "target_eta_days"
+        ],
+        "title": "WeightRecentTrend",
+        "type": "object"
+      },
+      "WeightTargetProgress": {
+        "properties": {
+          "completed_distance_kg": {
+            "title": "Completed Distance Kg",
+            "type": "number"
+          },
+          "current_weight_kg": {
+            "title": "Current Weight Kg",
+            "type": "number"
+          },
+          "direction": {
+            "enum": [
+              "lose",
+              "gain"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "distance_to_target_kg": {
+            "title": "Distance To Target Kg",
+            "type": "number"
+          },
+          "progress_percent": {
+            "title": "Progress Percent",
+            "type": "number"
+          },
+          "start_weight_kg": {
+            "title": "Start Weight Kg",
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "in_progress",
+              "at_target",
+              "beyond_target"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "target_weight_kg": {
+            "title": "Target Weight Kg",
+            "type": "number"
+          },
+          "total_distance_kg": {
+            "title": "Total Distance Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "target_weight_kg",
+          "start_weight_kg",
+          "current_weight_kg",
+          "distance_to_target_kg",
+          "total_distance_kg",
+          "completed_distance_kg",
+          "progress_percent",
+          "direction",
+          "status"
+        ],
+        "title": "WeightTargetProgress",
+        "type": "object"
+      },
+      "WeightTrendline": {
+        "properties": {
+          "end_applies_to_date": {
+            "format": "date",
+            "title": "End Applies To Date",
+            "type": "string"
+          },
+          "end_weight_kg": {
+            "title": "End Weight Kg",
+            "type": "number"
+          },
+          "points_used": {
+            "title": "Points Used",
+            "type": "integer"
+          },
+          "slope_kg_per_day": {
+            "title": "Slope Kg Per Day",
+            "type": "number"
+          },
+          "slope_kg_per_week": {
+            "title": "Slope Kg Per Week",
+            "type": "number"
+          },
+          "start_applies_to_date": {
+            "format": "date",
+            "title": "Start Applies To Date",
+            "type": "string"
+          },
+          "start_weight_kg": {
+            "title": "Start Weight Kg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "start_applies_to_date",
+          "end_applies_to_date",
+          "start_weight_kg",
+          "end_weight_kg",
+          "slope_kg_per_day",
+          "slope_kg_per_week",
+          "points_used"
+        ],
+        "title": "WeightTrendline",
+        "type": "object"
+      },
+      "WeightWeeklyCoaching": {
+        "properties": {
+          "bullets": {
+            "items": {
+              "$ref": "#/components/schemas/WeightWeeklyCoachingBullet"
+            },
+            "maxItems": 2,
+            "title": "Bullets",
+            "type": "array"
+          },
+          "days_in_budget": {
+            "minimum": 0.0,
+            "title": "Days In Budget",
+            "type": "integer"
+          },
+          "days_over_budget": {
+            "minimum": 0.0,
+            "title": "Days Over Budget",
+            "type": "integer"
+          },
+          "days_with_food_logs": {
+            "minimum": 0.0,
+            "title": "Days With Food Logs",
+            "type": "integer"
+          },
+          "dominant_meal_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MealType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "headline": {
+            "title": "Headline",
+            "type": "string"
+          },
+          "recurring_food_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Recurring Food Names",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "available",
+              "insufficient_data"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "window_anchor": {
+            "enum": [
+              "preferred_weigh_in_weekday",
+              "calendar_week"
+            ],
+            "title": "Window Anchor",
+            "type": "string"
+          },
+          "window_end_applies_to_date": {
+            "format": "date",
+            "title": "Window End Applies To Date",
+            "type": "string"
+          },
+          "window_start_applies_to_date": {
+            "format": "date",
+            "title": "Window Start Applies To Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "window_start_applies_to_date",
+          "window_end_applies_to_date",
+          "window_anchor",
+          "headline",
+          "days_with_food_logs",
+          "days_over_budget",
+          "days_in_budget"
+        ],
+        "title": "WeightWeeklyCoaching",
+        "type": "object"
+      },
+      "WeightWeeklyCoachingBullet": {
+        "properties": {
+          "code": {
+            "enum": [
+              "budget_pattern",
+              "meal_slot_pattern",
+              "recurring_food_pattern",
+              "insufficient_data"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "text"
+        ],
+        "title": "WeightWeeklyCoachingBullet",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "Nutri Points",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/days/today": {
+      "get": {
+        "operationId": "status_today_api_v1_days_today_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "discriminator": {
+                    "mapping": {
+                      "ready": "#/components/schemas/DayStatusReady",
+                      "setup_blocked": "#/components/schemas/DayStatusSetupBlocked"
+                    },
+                    "propertyName": "status"
+                  },
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DayStatusReady"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DayStatusSetupBlocked"
+                    }
+                  ],
+                  "title": "Response Status Today Api V1 Days Today Get"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Status Today",
+        "tags": [
+          "status"
+        ]
+      }
+    },
+    "/api/v1/days/today/readiness": {
+      "get": {
+        "operationId": "read_readiness_api_v1_days_today_readiness_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Read Readiness",
+        "tags": [
+          "readiness"
+        ]
+      }
+    },
+    "/api/v1/days/{day}": {
+      "get": {
+        "operationId": "status_day_api_v1_days__day__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "day",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "title": "Day",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "discriminator": {
+                    "mapping": {
+                      "ready": "#/components/schemas/DayStatusReady",
+                      "setup_blocked": "#/components/schemas/DayStatusSetupBlocked"
+                    },
+                    "propertyName": "status"
+                  },
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DayStatusReady"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DayStatusSetupBlocked"
+                    }
+                  ],
+                  "title": "Response Status Day Api V1 Days  Day  Get"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Status Day",
+        "tags": [
+          "status"
+        ]
+      }
+    },
+    "/api/v1/foods": {
+      "get": {
+        "operationId": "get_food_items_api_v1_foods_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_archived",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Include Archived",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_FoodItemRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Food Items",
+        "tags": [
+          "food-items"
+        ]
+      }
+    },
+    "/api/v1/foods/{food_id}": {
+      "get": {
+        "operationId": "get_food_item_api_v1_foods__food_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "food_id",
+            "required": true,
+            "schema": {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "title": "Food Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Food Item",
+        "tags": [
+          "food-items"
+        ]
+      }
+    },
+    "/api/v1/logs/activity": {
+      "get": {
+        "operationId": "list_activity_logs_api_v1_logs_activity_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date_from",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start At"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "End At"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 500,
+              "maximum": 2000,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_ActivityLogRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Activity Logs",
+        "tags": [
+          "log"
+        ]
+      },
+      "post": {
+        "operationId": "create_activity_log_api_v1_logs_activity_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityLogCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityLogRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Activity Log",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/activity/{activity_log_id}": {
+      "delete": {
+        "operationId": "delete_activity_log_api_v1_logs_activity__activity_log_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "activity_log_id",
+            "required": true,
+            "schema": {
+              "title": "Activity Log Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Activity Log",
+        "tags": [
+          "log"
+        ]
+      },
+      "put": {
+        "operationId": "update_activity_log_api_v1_logs_activity__activity_log_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "activity_log_id",
+            "required": true,
+            "schema": {
+              "title": "Activity Log Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityLogCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityLogRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Activity Log",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/food": {
+      "get": {
+        "operationId": "list_food_logs_api_v1_logs_food_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date_from",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start At"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "End At"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 500,
+              "maximum": 2000,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_FoodLogRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Food Logs",
+        "tags": [
+          "log"
+        ]
+      },
+      "post": {
+        "operationId": "create_food_log_api_v1_logs_food_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodLogCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodLogRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Food Log",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/food/{food_log_id}": {
+      "delete": {
+        "operationId": "delete_food_log_api_v1_logs_food__food_log_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "food_log_id",
+            "required": true,
+            "schema": {
+              "title": "Food Log Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Food Log",
+        "tags": [
+          "log"
+        ]
+      },
+      "put": {
+        "operationId": "update_food_log_api_v1_logs_food__food_log_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "food_log_id",
+            "required": true,
+            "schema": {
+              "title": "Food Log Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodLogCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodLogRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Food Log",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/steps": {
+      "get": {
+        "operationId": "get_step_logs_api_v1_logs_steps_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date_from",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_DailyStepCountRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Step Logs",
+        "tags": [
+          "log"
+        ]
+      },
+      "put": {
+        "operationId": "put_step_log_api_v1_logs_steps_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyStepCountUpsert"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyStepCountRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Step Log",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/weight": {
+      "get": {
+        "operationId": "list_weight_logs_api_v1_logs_weight_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date_from",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start At"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_at",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "End At"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 500,
+              "maximum": 2000,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_WeightLogRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Weight Logs",
+        "tags": [
+          "log"
+        ]
+      },
+      "post": {
+        "operationId": "create_weight_log_api_v1_logs_weight_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeightLogCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeightLogRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Weight Log",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/weight/{weight_log_id}": {
+      "delete": {
+        "operationId": "delete_weight_log_api_v1_logs_weight__weight_log_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "weight_log_id",
+            "required": true,
+            "schema": {
+              "title": "Weight Log Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Weight Log",
+        "tags": [
+          "log"
+        ]
+      },
+      "put": {
+        "operationId": "update_weight_log_api_v1_logs_weight__weight_log_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "weight_log_id",
+            "required": true,
+            "schema": {
+              "title": "Weight Log Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeightLogUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeightLogRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Weight Log",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/meals/templates": {
+      "get": {
+        "operationId": "get_meal_templates_api_v1_meals_templates_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_MealTemplateListItem_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Meal Templates",
+        "tags": [
+          "meal-templates"
+        ]
+      }
+    },
+    "/api/v1/meals/templates/{meal_template_id}": {
+      "get": {
+        "operationId": "get_meal_template_api_v1_meals_templates__meal_template_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "meal_template_id",
+            "required": true,
+            "schema": {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "title": "Meal Template Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MealTemplateRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Meal Template",
+        "tags": [
+          "meal-templates"
+        ]
+      }
+    },
+    "/api/v1/recipes": {
+      "get": {
+        "operationId": "get_recipes_api_v1_recipes_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_RecipeListItem_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Recipes",
+        "tags": [
+          "recipes"
+        ]
+      }
+    },
+    "/api/v1/recipes/{recipe_id}": {
+      "get": {
+        "operationId": "get_recipe_api_v1_recipes__recipe_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipe_id",
+            "required": true,
+            "schema": {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "title": "Recipe Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Recipe",
+        "tags": [
+          "recipes"
+        ]
+      }
+    },
+    "/api/v1/recipes/{recipe_id}/print": {
+      "post": {
+        "operationId": "post_recipe_print_api_v1_recipes__recipe_id__print_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipe_id",
+            "required": true,
+            "schema": {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "title": "Recipe Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipePrintRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipePrintResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Post Recipe Print",
+        "tags": [
+          "recipes"
+        ]
+      }
+    },
+    "/api/v1/system/runtime": {
+      "get": {
+        "operationId": "get_runtime_metadata_api_v1_system_runtime_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeMetadataRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Runtime Metadata",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/v1/weighing-sessions": {
+      "post": {
+        "operationId": "start_food_weighing_session_api_v1_weighing_sessions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodWeighingSessionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodWeighingSessionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Food Weighing Session",
+        "tags": [
+          "weighing-sessions"
+        ]
+      }
+    },
+    "/api/v1/weighing-sessions/{session_id}": {
+      "get": {
+        "operationId": "get_food_weighing_session_api_v1_weighing_sessions__session_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodWeighingSessionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Food Weighing Session",
+        "tags": [
+          "weighing-sessions"
+        ]
+      }
+    },
+    "/api/v1/weighing-sessions/{session_id}/cancel": {
+      "post": {
+        "operationId": "cancel_food_weighing_session_api_v1_weighing_sessions__session_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodWeighingSessionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Food Weighing Session",
+        "tags": [
+          "weighing-sessions"
+        ]
+      }
+    },
+    "/api/v1/weighing-sessions/{session_id}/complete": {
+      "post": {
+        "operationId": "complete_food_weighing_session_api_v1_weighing_sessions__session_id__complete_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodWeighingCompletion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodWeighingSessionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Complete Food Weighing Session",
+        "tags": [
+          "weighing-sessions"
+        ]
+      }
+    },
+    "/api/v1/weighing-sessions/{session_id}/preview": {
+      "post": {
+        "operationId": "preview_food_weighing_session_api_v1_weighing_sessions__session_id__preview_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodWeighingMeasurement"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodWeighingPreviewRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview Food Weighing Session",
+        "tags": [
+          "weighing-sessions"
+        ]
+      }
+    },
+    "/api/v1/weight/overview": {
+      "get": {
+        "operationId": "weight_overview_api_v1_weight_overview_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "range",
+            "required": false,
+            "schema": {
+              "default": "90d",
+              "enum": [
+                "30d",
+                "90d",
+                "1y",
+                "all"
+              ],
+              "title": "Range",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeightOverviewResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Weight Overview",
+        "tags": [
+          "weight"
+        ]
+      }
+    },
+    "/api/v1/weight/recap/pending": {
+      "get": {
+        "operationId": "pending_weight_recap_api_v1_weight_recap_pending_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeightRecapPendingResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Pending Weight Recap",
+        "tags": [
+          "weight"
+        ]
+      }
+    }
+  }
+}
