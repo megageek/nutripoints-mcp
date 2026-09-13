@@ -66,7 +66,7 @@ Build and maintain an MCP (Model Context Protocol) server that exposes the [Nutr
 
 ## Required Verification
 - Run `uv run pytest` for every change.
-- For every edited `.py` file, run `uv run ruff check --select E,F,I,UP,B,SIM <edited-python-files>` and fix all findings in edited files before finishing. (No `B008`/`F401` ignores yet — those exist in the `nutripoints` repo for FastAPI `Depends()` defaults and intentional model-registration imports, neither of which applies here; add an ignore only with a similarly clear, documented reason.)
+- For every edited `.py` file, run `uv run ruff format --check <edited-python-files>` and `uv run ruff check --select E,F,I,UP,B,SIM <edited-python-files>`, and fix all findings before finishing. (No `B008`/`F401` ignores yet — those exist in the `nutripoints` repo for FastAPI `Depends()` defaults and intentional model-registration imports, neither of which applies here; add an ignore only with a similarly clear, documented reason.) CI runs both checks, plus Semgrep, Gitleaks, a Trivy filesystem scan, and `pip-audit` on every PR.
 - If a change affects which Nutri Points routes/scopes are used, verify manually against a real (or recorded) Nutri Points instance before considering the change done, in addition to unit tests.
 - If the Dockerfile, `docker-compose.yml`, or the server's runtime/entrypoint behavior changes, verify `docker compose up --build` (and that `/health` responds) or clearly state why it was not run.
 

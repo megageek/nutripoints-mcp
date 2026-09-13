@@ -1,0 +1,29 @@
+name: Dev Container
+
+on:
+  pull_request:
+    paths:
+      - ".devcontainer/**"
+      - ".githooks/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/devcontainer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build and smoke-test development container
+        uses: devcontainers/ci@v0.3
+        with:
+          push: never
+          runCmd: uv run pytest
