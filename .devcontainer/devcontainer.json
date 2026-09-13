@@ -25,12 +25,16 @@
     "UV_LINK_MODE": "copy",
     "UV_PROJECT_ENVIRONMENT": "${containerWorkspaceFolder}/.venv"
   },
-  "runArgs": ["--security-opt=seccomp=unconfined"],
+  "runArgs": [
+    "--security-opt=seccomp=unconfined"
+  ],
   "onCreateCommand": "bash .devcontainer/on-create.sh",
   "updateContentCommand": "bash .devcontainer/update-content.sh",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "postStartCommand": "bash .devcontainer/post-start.sh",
-  "forwardPorts": [8000],
+  "forwardPorts": [
+    8000
+  ],
   "portsAttributes": {
     "8000": {
       "label": "MCP HTTP transport",
@@ -53,7 +57,9 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "redhat.vscode-yaml",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "Anthropic.claude-code",
+        "openai.chatgpt"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -61,7 +67,9 @@
         "files.trimTrailingWhitespace": true,
         "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
         "python.testing.pytestEnabled": true,
-        "python.testing.pytestArgs": ["tests"],
+        "python.testing.pytestArgs": [
+          "tests"
+        ],
         "terminal.integrated.defaultProfile.linux": "zsh",
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
