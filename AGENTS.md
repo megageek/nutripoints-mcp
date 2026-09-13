@@ -18,6 +18,7 @@ Build and maintain an MCP (Model Context Protocol) server that exposes the [Nutr
 - When a new dependency or library would materially improve correctness, reliability, maintainability, performance, developer experience, or user experience, explicitly offer it as an option before choosing a workaround. Include a brief recommendation and tradeoffs; if declined, proceed with the best workaround and clearly state resulting limitations.
 - Do not silently introduce avoidable workarounds solely to bypass adding a dependency when a dependency-backed solution is cleaner and safer.
 - For security-sensitive changes (auth/API-key handling, credential storage), evaluate dependency-backed security tooling (for example vulnerability scanning/SAST tooling) as a first-class option; if not adopted, document the rationale and residual risk in the same change.
+- When a dependency ships a fix for a real vulnerability, prioritize the fix over an upstream "pin below vN for stability" recommendation — verify compatibility (tests, a server smoke test, and a Docker build/run) before bumping past the pin, but bump. This came up for real: FastMCP 2.x's own startup banner recommends pinning `<3`, but 3.2.0 fixes a CVSS 10.0 SSRF/path-traversal issue in the exact `from_openapi()` feature this server is meant to use — the security fix won, after verifying the new major version still worked.
 - Commit completed project changes to git with a clear commit message.
 - Never use timeouts or automatic resolution for questions. If you ask me a question, wait until I explicitly answer it.
 
