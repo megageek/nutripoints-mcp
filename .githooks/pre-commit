@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+git diff --cached --check
+
+python_files=()
+while IFS= read -r path; do
+    case "$path" in
+        *.py)
+            python_files+=("$path")
+            ;;
+    esac
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+
+if [[ ${#python_files[@]} -gt 0 ]]; then
+    if [[ ! -x .venv/bin/ruff ]]; then
+        echo "Ruff is not installed. Run 'uv sync --extra dev' before committing." >&2
+        exit 1
+    fi
+
+    .venv/bin/ruff format --check "${python_files[@]}"
+    .venv/bin/ruff check --select E,F,I,UP,B,SIM "${python_files[@]}"
+fi
