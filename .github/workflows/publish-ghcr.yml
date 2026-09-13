@@ -1,0 +1,109 @@
+name: Publish Docker image to GHCR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "SemVer to publish (for republishing an existing release, for example 0.1.1)"
+        required: true
+        type: string
+      source_ref:
+        description: "Release tag to build (for example nutripoints-mcp-v0.1.1)"
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      version:
+        description: "SemVer released by Release Please"
+        required: true
+        type: string
+      source_ref:
+        description: "Release tag created by Release Please"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: publish-ghcr-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate manual publication inputs
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          VERSION: ${{ inputs.version }}
+          SOURCE_REF: ${{ inputs.source_ref }}
+        run: |
+          [[ "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$ ]]
+          test "${SOURCE_REF}" = "nutripoints-mcp-v${VERSION}"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.source_ref }}
+
+      - name: Verify release version
+        if: ${{ inputs.version != '' }}
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          project_version=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          test "${VERSION}" = "${project_version}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Compute image name
+        id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ steps.image.outputs.name }}
+          tags: |
+            type=semver,pattern={{version}},value=${{ inputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.version }}
+            type=raw,value=latest
+            type=sha
+
+      - name: Build release image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          push: false
+          platforms: linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Scan release image
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ${{ steps.image.outputs.name }}:${{ inputs.version }}
+          scanners: vuln
+          trivyignores: .trivyignore
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push scanned release image
+        env:
+          IMAGE_NAME: ${{ steps.image.outputs.name }}
+        run: docker push --all-tags "${IMAGE_NAME}"

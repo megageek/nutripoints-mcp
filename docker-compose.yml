@@ -1,0 +1,11 @@
+services:
+  mcp:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      NUTRIPOINTS_BASE_URL: ${NUTRIPOINTS_BASE_URL}
+      NUTRIPOINTS_API_KEY: ${NUTRIPOINTS_API_KEY}
+      MCP_HOST: ${MCP_HOST:-0.0.0.0}
+      MCP_PORT: ${MCP_PORT:-8000}

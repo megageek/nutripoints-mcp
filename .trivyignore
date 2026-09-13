@@ -1,0 +1,3 @@
+# No active Trivy ignore exceptions.
+# Add entries only when no fixed package is available, and include:
+# Owner, Added date, and Review by date.

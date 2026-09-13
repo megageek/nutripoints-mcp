@@ -9,6 +9,7 @@ Build and maintain an MCP (Model Context Protocol) server that exposes the [Nutr
 - `httpx` as the HTTP client to the Nutri Points API
 - `uv` for dependency management
 - No database and no frontend — this server is a stateless bridge between MCP clients and the Nutri Points HTTP API
+- Single-container Docker distribution, released and published to GHCR via Release Please
 
 ## Rules
 - This server is not authoritative for anything: nutrition points, validation, and recipe/food state all live in Nutri Points. Never recompute, fabricate, or "helpfully" correct a value the Nutri Points API already returned or rejected.
@@ -67,6 +68,7 @@ Build and maintain an MCP (Model Context Protocol) server that exposes the [Nutr
 - Run `uv run pytest` for every change.
 - For every edited `.py` file, run `uv run ruff check --select E,F,I,UP,B,SIM <edited-python-files>` and fix all findings in edited files before finishing. (No `B008`/`F401` ignores yet — those exist in the `nutripoints` repo for FastAPI `Depends()` defaults and intentional model-registration imports, neither of which applies here; add an ignore only with a similarly clear, documented reason.)
 - If a change affects which Nutri Points routes/scopes are used, verify manually against a real (or recorded) Nutri Points instance before considering the change done, in addition to unit tests.
+- If the Dockerfile, `docker-compose.yml`, or the server's runtime/entrypoint behavior changes, verify `docker compose up --build` (and that `/health` responds) or clearly state why it was not run.
 
 ## Keep In Sync
 - Update `README.md` when setup, usage, configuration, or the pinned Nutri Points contract generation changes.
@@ -76,8 +78,9 @@ Build and maintain an MCP (Model Context Protocol) server that exposes the [Nutr
 
 ## Git Workflow
 - Completed changes must be committed to git.
-- Use Conventional Commit messages (`feat: ...`, `fix: ...`, `feat!: ...` for breaking changes, etc.) even though Commitlint is not yet wired into CI for this repo.
+- Use Conventional Commit messages (`feat: ...`, `fix: ...`, `feat!: ...` for breaking changes, etc.) that pass Commitlint; pull request titles must follow the same format for squash merges and Release Please.
 - In restricted or sandboxed agent environments, if `gh auth status` reports an invalid token, retry the same check with approved network access before asking the user to reauthenticate. The GitHub CLI can misreport blocked API access as an authentication failure; only treat the token as invalid if the network-enabled check also fails.
+- Do not manually create release tags. Merge the Release Please pull request to create the version, changelog, GitHub release, and container image.
 - Do not rewrite history unless explicitly requested.
 - Leave the repo in a clean state when finishing work.
 - If a commit cannot be made, explain why.
@@ -97,4 +100,5 @@ Build and maintain an MCP (Model Context Protocol) server that exposes the [Nutr
 - `uv run pytest` passes.
 - Edited Python files pass `uv run ruff check --select E,F,I,UP,B,SIM <edited-python-files>`.
 - `README.md` and tool descriptions are updated when setup, usage, or tool behavior changes.
+- `docker compose up --build` is verified (or its omission explained) when Docker/runtime behavior changes.
 - Completed changes are committed to git.
