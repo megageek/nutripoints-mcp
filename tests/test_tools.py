@@ -209,6 +209,26 @@ async def test_tool_schemas_bound_all_scalar_and_collection_inputs() -> None:
 
 
 @pytest.mark.anyio
+async def test_tools_are_annotated_as_read_or_write() -> None:
+    async with Client(mcp) as client:
+        tools = {tool.name: tool for tool in await client.list_tools()}
+
+    read_tools = {
+        "ping",
+        "validate_recipe_draft",
+        *(f"search_{domain}s" for domain in ("recipe", "food", "generic_ingredient")),
+        *(f"get_{domain}" for domain in ("recipe", "food", "generic_ingredient")),
+        *(f"get_{domain}_draft" for domain in ("food", "generic_ingredient")),
+        *(f"get_{domain}_draft_for_item" for domain in ("recipe", "food", "generic_ingredient")),
+    }
+
+    assert read_tools <= tools.keys()
+    for name, tool in tools.items():
+        assert tool.annotations is not None
+        assert tool.annotations.read_only_hint is (name in read_tools)
+
+
+@pytest.mark.anyio
 async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> None:
     async with Client(mcp) as client:
         tools = {tool.name: tool for tool in await client.list_tools()}

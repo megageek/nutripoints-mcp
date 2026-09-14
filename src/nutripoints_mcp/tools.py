@@ -6,6 +6,7 @@ from typing import Any
 
 from fastmcp import FastMCP
 from fastmcp.tools.function_tool import FunctionTool
+from mcp_types import ToolAnnotations
 
 from nutripoints_mcp import api_client
 from nutripoints_mcp.contract import COMPONENTS, ID_SCHEMA, KEY_SCHEMA, OPENAPI, input_schema, validate
@@ -50,6 +51,8 @@ def _add(
     description: str,
     method: str,
     path: str,
+    *,
+    category: str | None = None,
 ) -> None:
     properties, required, body_fields = _parameters(path, method)
     schema = input_schema(properties, required)
@@ -70,7 +73,19 @@ def _add(
             idempotency_key=arguments.get("idempotency_key"),
         )
 
-    mcp.add_tool(FunctionTool(name=name, description=description, parameters=schema, fn=handle))
+    category = category or ("read" if method == "GET" else "write")
+    if category not in {"read", "write"}:
+        raise ValueError(f"Unsupported tool category: {category}")
+    mcp.add_tool(
+        FunctionTool(
+            name=name,
+            description=description,
+            parameters=schema,
+            fn=handle,
+            tags={category},
+            annotations=ToolAnnotations(readOnlyHint=category == "read"),
+        )
+    )
 
 
 DOMAINS = {
@@ -167,4 +182,5 @@ def register_tools(mcp: FastMCP) -> None:
         "Ask Nutri Points to validate and calculate a recipe draft.",
         "POST",
         "/api/v1/recipe-drafts/{draft_id}/validate",
+        category="read",
     )

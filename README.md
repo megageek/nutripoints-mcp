@@ -4,6 +4,8 @@ An MCP server exposing the [Nutri Points](https://github.com/megageek/nutripoint
 
 Tools search saved recipes, food items, and generic ingredients; read published items and drafts; and save, update, publish, or discard drafts. Recipe drafts can also be validated before publishing. Each write is a separate call, so callers can review the draft and its version before publication. Nutri Points calculates nutrition and points.
 
+Every tool has the standard MCP `readOnlyHint` annotation: searches, detail and draft reads, recipe validation, and `ping` are read-only; saving, updating, publishing, and discarding drafts are writes. Tools are also tagged `read` or `write` within FastMCP, allowing FastMCP-based deployments to filter each set independently. MCP itself does not define a separate category field, so wrappers should use `readOnlyHint` to apply different requirements.
+
 The MCP server sends workflow instructions when a client connects. They direct assistants to search for reusable recipes and ingredients before creating new ones, inspect candidate details, and prefer generic ingredients for reusable categories. A specific food item is appropriate when an exact product or its nutrition matters. Assistants should request missing nutrition facts and use Nutri Points' draft validation and calculated values; these instructions guide the assistant and do not block tool calls.
 
 ## API contract

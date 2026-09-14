@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 
 from fastmcp import FastMCP
+from mcp_types import ToolAnnotations
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
@@ -30,7 +31,7 @@ mcp = FastMCP("Nutri Points", instructions=SERVER_INSTRUCTIONS)
 register_tools(mcp)
 
 
-@mcp.tool
+@mcp.tool(tags={"read"}, annotations=ToolAnnotations(readOnlyHint=True))
 async def ping() -> str:
     """Confirm the MCP server is reachable."""
     return "pong"
