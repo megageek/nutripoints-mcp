@@ -27,6 +27,8 @@ Update affected tools and tests in the same change when advancing the generation
 
 Open this repository in the Dev Container (VS Code "Reopen in Container", or GitHub Codespaces). It provisions Python 3.11 with [uv](https://docs.astral.sh/uv/) and Node.js (for the MCP Inspector via `npx`, and for Commitlint).
 
+The Dev Container also installs Docker Engine, the Docker CLI, Buildx, and Compose through the [Docker-in-Docker feature](https://github.com/devcontainers/features/tree/main/src/docker-in-docker). Rebuild the Dev Container after changing this configuration, then run `docker version` and `docker compose version` inside it. Its Docker daemon is separate from the host daemon and requires a host that allows privileged Dev Containers. To deploy beside an existing Nutri Points container on another Docker host, run Compose on that host or select a Docker context for it. Dev Container CI builds the Compose service and checks `/health`.
+
 Copy `.env.example` to `.env` and fill in a Nutri Points base URL and scoped API key before running anything against a real instance.
 For all tools, the key needs `recipes:read`, `recipes:write`, `foods:read`, `foods:write`, `ingredient-types:read`, and `ingredient-types:write`; a narrower key works for the tools in its domain. API errors, including version conflicts and missing items, are returned as tool errors. Mutating tools accept an optional `idempotency_key` for replay-safe retries.
 
