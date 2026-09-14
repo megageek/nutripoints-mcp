@@ -79,6 +79,28 @@ DOMAINS = {
     "generic_ingredient": ("/api/v1/ingredient-types", "/api/v1/ingredient-type-drafts", "ingredient_type_id"),
 }
 
+_WRITE_GUIDANCE = {
+    "recipe": (
+        " Writable ingredient examples: fixed food "
+        '{"kind":"fixed_food","food_item_id":12,"quantity":{"mode":"grams","value":100}}; '
+        "generic "
+        '{"kind":"generic","ingredient_type_id":34,"resolution_policy":"generic_allowed",'
+        '"quantity":{"mode":"grams","value":10}}. Use only payload fields in this schema; '
+        "get_recipe display, nutrition, and calculated fields are read-only."
+    ),
+    "food": (
+        ' Example payload: {"name":"Basil","nutrition_input_mode":"per_100g",'
+        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Optional serving variants use '
+        '{"label":"tbsp","grams":4}. Read-only IDs, timestamps, basis_type, and calculated fields must not be sent.'
+    ),
+    "generic_ingredient": (
+        ' Example payload: {"name":"Basil","nutrition_input_mode":"per_100g",'
+        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Optional base serving fields are '
+        "base_serving_label with base_serving_grams or base_serving_milliliters. Read-only IDs, timestamps, "
+        "basis_type, archive, and origin fields must not be sent."
+    ),
+}
+
 
 def register_tools(mcp: FastMCP) -> None:
     """Expose only the stable-rw-v15 routes used by the initial workflow."""
@@ -104,14 +126,16 @@ def register_tools(mcp: FastMCP) -> None:
         _add(
             mcp,
             f"save_{domain}_draft",
-            f"Save a new {domain.replace('_', ' ')} draft; pass {item_id} to edit an existing item.",
+            f"Save a new {domain.replace('_', ' ')} draft; pass {item_id} to edit an existing item."
+            f"{_WRITE_GUIDANCE[domain]} Use idempotency_key for replay-safe retries.",
             "POST",
             drafts,
         )
         _add(
             mcp,
             f"update_{domain}_draft",
-            f"Replace a {domain.replace('_', ' ')} draft using its version.",
+            f"Replace a {domain.replace('_', ' ')} draft using its version."
+            f"{_WRITE_GUIDANCE[domain]} expected_version is required and must be the draft's current version.",
             "PUT",
             f"{drafts}/{{draft_id}}",
         )

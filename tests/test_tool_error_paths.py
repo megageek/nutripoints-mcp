@@ -85,3 +85,30 @@ async def test_each_tool_rejects_bad_input_and_surfaces_api_errors(monkeypatch: 
             assert upstream.is_error, name
             assert "Nutri Points HTTP 422" in str(upstream.content), name
     assert calls == len(names)
+
+
+@pytest.mark.anyio
+async def test_structured_upstream_validation_errors_are_path_aware(monkeypatch: pytest.MonkeyPatch) -> None:
+    async def structured_error(*_args: Any, **_kwargs: Any) -> Any:
+        raise api_client.NutriPointsAPIError(
+            "Nutri Points HTTP 422: body.payload.ingredients.0: invalid ingredient (value_error)"
+        )
+
+    monkeypatch.setattr(api_client, "request", structured_error)
+    async with Client(mcp) as client:
+        result = await client.call_tool("save_recipe_draft", {"payload": RECIPE_PAYLOAD}, raise_on_error=False)
+    assert result.is_error
+    assert "body.payload.ingredients.0" in str(result.content)
+
+
+def test_structured_validation_details_keep_path_message_and_type() -> None:
+    detail = api_client._format_error_detail(
+        [
+            {
+                "loc": ["body", "payload", "ingredients", 0],
+                "msg": "invalid ingredient",
+                "type": "value_error",
+            }
+        ]
+    )
+    assert detail == "body.payload.ingredients.0: invalid ingredient (value_error)"

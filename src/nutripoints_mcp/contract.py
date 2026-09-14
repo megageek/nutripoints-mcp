@@ -9,6 +9,7 @@ from importlib.resources import files
 from typing import Any
 
 from jsonschema import Draft202012Validator
+from jsonschema.exceptions import ValidationError
 
 OPENAPI = json.loads(files("nutripoints_mcp").joinpath("contracts/openapi.json").read_text())
 COMPONENTS = OPENAPI["components"]["schemas"]
@@ -17,12 +18,30 @@ ID_SCHEMA = {"type": "integer", "minimum": 1, "maximum": 9223372036854775807}
 _CONTROLS = re.compile(r"[\x00-\x08\x0b-\x1f\x7f-\x9f]")
 
 
+def _is_object_union_member(value: Any) -> bool:
+    """Return whether an OpenAPI union branch resolves to an object schema."""
+    if not isinstance(value, dict):
+        return False
+    reference = value.get("$ref")
+    if reference:
+        return COMPONENTS[reference.rsplit("/", 1)[-1]].get("type") == "object"
+    return value.get("type") == "object"
+
+
 def _bounded(value: Any, definitions: dict[str, Any]) -> Any:
     if isinstance(value, list):
         return [_bounded(item, definitions) for item in value]
     if not isinstance(value, dict):
         return value
     result = copy.deepcopy(value)
+    if (
+        "anyOf" in result
+        and len(result["anyOf"]) > 1
+        and all(_is_object_union_member(member) for member in result["anyOf"])
+    ):
+        # The API's object alternatives are discriminated by const fields.  oneOf
+        # conveys that fact to MCP clients more clearly than OpenAPI's anyOf.
+        result["oneOf"] = result.pop("anyOf")
     reference = result.get("$ref")
     if reference:
         name = reference.rsplit("/", 1)[-1]
@@ -63,13 +82,39 @@ def input_schema(properties: dict[str, Any], required: list[str]) -> dict[str, A
     return schema
 
 
+def _location(error: ValidationError) -> str:
+    return ".".join(map(str, error.absolute_path)) or "arguments"
+
+
+def _union_message(error: ValidationError) -> str | None:
+    """Describe the closest object-union branch instead of a generic anyOf error."""
+    if error.validator not in {"anyOf", "oneOf"} or not error.context:
+        return None
+    branches: dict[int, list[ValidationError]] = {}
+    for child in error.context:
+        branch = next((part for part in child.schema_path if isinstance(part, int)), None)
+        if branch is not None:
+            branches.setdefault(branch, []).append(child)
+    if not branches:
+        return None
+    _, problems = min(branches.items(), key=lambda item: len(item[1]))
+    title = problems[0].schema.get("title", "matching")
+    details = "; ".join(problem.message for problem in problems[:3])
+    return f"Invalid {_location(error)} for {title}: {details}"
+
+
+def _validation_message(error: ValidationError) -> str:
+    union_message = _union_message(error)
+    if union_message:
+        return union_message
+    return f"Invalid {_location(error)}: {error.message}"
+
+
 def validate(arguments: dict[str, Any], schema: dict[str, Any]) -> None:
     """Reject malformed arguments before the API request, including control text."""
     errors = sorted(Draft202012Validator(schema).iter_errors(arguments), key=lambda error: str(error.path))
     if errors:
-        error = errors[0]
-        location = ".".join(map(str, error.path)) or "arguments"
-        raise ValueError(f"Invalid {location}: {error.message}")
+        raise ValueError(_validation_message(errors[0]))
 
     def check_text(value: Any) -> None:
         if isinstance(value, str) and _CONTROLS.search(value):

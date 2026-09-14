@@ -12,6 +12,20 @@ class NutriPointsAPIError(Exception):
     """A transport or Nutri Points API failure suitable for an MCP tool error."""
 
 
+def _format_error_detail(detail: Any) -> Any:
+    """Make contract-standard validation details readable without dropping fields."""
+    if not isinstance(detail, list) or not all(isinstance(item, dict) for item in detail):
+        return detail
+    formatted = []
+    for item in detail:
+        if {"loc", "msg", "type"}.issubset(item):
+            location = ".".join(map(str, item["loc"])) or "body"
+            formatted.append(f"{location}: {item['msg']} ({item['type']})")
+        else:
+            formatted.append(str(item))
+    return "; ".join(formatted)
+
+
 async def request(
     method: str,
     path: str,
@@ -37,6 +51,7 @@ async def request(
         try:
             error_body = response.json()
             detail = error_body.get("detail", error_body) if isinstance(error_body, dict) else error_body
+            detail = _format_error_detail(detail)
         except ValueError:
             detail = response.text
         raise NutriPointsAPIError(f"Nutri Points HTTP {response.status_code}: {detail}")

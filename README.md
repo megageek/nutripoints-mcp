@@ -36,6 +36,25 @@ Search tools pass `q` to Nutri Points (up to 120 characters). Food-item and gene
 
 For example, `search_generic_ingredients` with `{"q":"basil"}` finds saved generic ingredients. `save_generic_ingredient_draft` with a complete `payload` returns a draft `id` and `version`; `publish_generic_ingredient_draft` then takes those as `draft_id` and `expected_version`. The same tool naming applies to `recipe` and `food` drafts. Search results and published detail reads come directly from Nutri Points.
 
+### Draft write payloads
+
+Write only fields advertised by a save or update tool's `payload` schema. Published and draft reads include
+server-generated IDs, timestamps, calculated/display nutrition and points, archive/origin metadata, and basis
+fields; do not copy those fields back into a draft payload unless the write schema explicitly includes them.
+
+- A recipe ingredient is either `{"kind":"fixed_food","food_item_id":12,"quantity":{"mode":"grams","value":100}}`
+  or `{"kind":"generic","ingredient_type_id":34,"resolution_policy":"generic_allowed","quantity":{"mode":"grams","value":10}}`.
+  A draft ingredient may use the corresponding `food_draft_id` or `ingredient_type_draft_id` instead. Quantity
+  modes are `grams`, `milliliters`, `serving_variant`, and `base_servings`.
+- A food payload needs `name`, `nutrition_input_mode`, `protein_g`, `carbs_g`, `fat_g`, and `fiber_g`; for example,
+  `{"name":"Basil","nutrition_input_mode":"per_100g","protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}`.
+  Optional serving variants use writable fields such as `{"label":"tbsp","grams":4}`.
+- A generic-ingredient payload has the same required nutrition fields. It can additionally provide
+  `base_serving_label` with `base_serving_grams` or `base_serving_milliliters` when applicable.
+
+`update_*_draft` requires the draft's current `expected_version`. Use `idempotency_key` on writes that might be
+retried, and run `validate_recipe_draft` before publishing a recipe.
+
 The API key stays in process memory and is sent only in the Bearer header to the configured base URL; the server does not log it. Existing CI runs Semgrep, Gitleaks, Trivy, and `pip-audit`, so this change adds no separate security-scanning dependency. An HTTP base URL transmits the key without TLS; use HTTPS for a remote instance.
 
 ```bash

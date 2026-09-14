@@ -20,6 +20,10 @@ If required nutrition facts are missing, ask for them rather than inventing valu
 Save or update a draft first, use its returned version for further edits, and publish only when the
 caller intends to make it available. Validate recipe drafts and follow Nutri Points' required_next_actions
 before publishing. Pass through Nutri Points errors and calculated values without changing them.
+Recipe write ingredients use kind "fixed_food" with food_item_id or food_draft_id, or kind "generic" with
+ingredient_type_id or ingredient_type_draft_id; both require quantity with a supported mode. Do not copy
+display, calculated, ID, timestamp, archive, origin, or basis fields from read responses into draft payloads
+unless that field is explicitly present in the write tool schema.
 """
 
 mcp = FastMCP("Nutri Points", instructions=SERVER_INSTRUCTIONS)

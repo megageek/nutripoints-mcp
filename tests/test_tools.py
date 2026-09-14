@@ -209,6 +209,27 @@ async def test_tool_schemas_bound_all_scalar_and_collection_inputs() -> None:
 
 
 @pytest.mark.anyio
+async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> None:
+    async with Client(mcp) as client:
+        tools = {tool.name: tool for tool in await client.list_tools()}
+
+    for domain in ("recipe", "food", "generic_ingredient"):
+        for action in ("save", "update"):
+            payload = tools[f"{action}_{domain}_draft"].input_schema["properties"]["payload"]
+            assert payload["type"] == "object"
+            assert payload["additionalProperties"] is False
+
+    ingredients = tools["save_recipe_draft"].input_schema["properties"]["payload"]["properties"]["ingredients"]
+    assert "oneOf" in ingredients["items"]
+    branches = ingredients["items"]["oneOf"]
+    assert {branch["properties"]["kind"]["const"] for branch in branches} == {"fixed_food", "generic"}
+    assert all(branch["additionalProperties"] is False for branch in branches)
+    assert {"grams", "milliliters", "serving_variant", "base_servings"} == set(
+        branches[0]["properties"]["quantity"]["properties"]["mode"]["enum"]
+    )
+
+
+@pytest.mark.anyio
 async def test_api_errors_are_tool_errors(recorded_api: list[httpx.Request]) -> None:
     async with Client(mcp) as client:
         missing = await client.call_tool("get_generic_ingredient", {"ingredient_type_id": 999}, raise_on_error=False)
@@ -218,3 +239,65 @@ async def test_api_errors_are_tool_errors(recorded_api: list[httpx.Request]) -> 
     assert missing.is_error and "ingredient_type_not_found" in str(missing.content)
     assert conflict.is_error and "draft_version_conflict" in str(conflict.content)
     assert len(recorded_api) == 2
+
+
+@pytest.mark.anyio
+async def test_write_validation_reports_closest_union_branch_without_api_call(
+    recorded_api: list[httpx.Request],
+) -> None:
+    malformed_recipe = {
+        "name": "Soup",
+        "total_servings": 2,
+        "ingredients": [
+            {"kind": "fixed_food", "resolution_policy": "fixed_food", "quantity": {"mode": "grams", "value": 10}}
+        ],
+    }
+    async with Client(mcp) as client:
+        result = await client.call_tool("save_recipe_draft", {"payload": malformed_recipe}, raise_on_error=False)
+    assert result.is_error
+    assert "payload.ingredients.0" in str(result.content)
+    assert "DraftFixedIngredient" in str(result.content)
+    assert "resolution_policy" in str(result.content)
+    assert not recorded_api
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("tool", "payload", "field"),
+    [
+        (
+            "save_food_draft",
+            {
+                "name": "Basil",
+                "nutrition_input_mode": "per_100g",
+                "protein_g": 1,
+                "carbs_g": 2,
+                "fat_g": 0,
+                "fiber_g": 1,
+                "basis_type": "weight",
+            },
+            "basis_type",
+        ),
+        (
+            "save_generic_ingredient_draft",
+            {
+                "name": "Basil",
+                "nutrition_input_mode": "per_100g",
+                "protein_g": 1,
+                "carbs_g": 2,
+                "fat_g": 0,
+                "fiber_g": 1,
+                "created_at": "2026-09-14T00:00:00Z",
+            },
+            "created_at",
+        ),
+    ],
+)
+async def test_food_and_generic_writes_reject_read_only_fields_locally(
+    recorded_api: list[httpx.Request], tool: str, payload: dict[str, Any], field: str
+) -> None:
+    async with Client(mcp) as client:
+        result = await client.call_tool(tool, {"payload": payload}, raise_on_error=False)
+    assert result.is_error
+    assert field in str(result.content)
+    assert not recorded_api
