@@ -1,0 +1,9 @@
+# `openapi_sha256` records the public OpenAPI snapshot's integrity digest.  It is
+# not a credential, but its 64-character hexadecimal value matches Gitleaks'
+# generic API-key heuristic.
+[allowlist]
+description = "OpenAPI snapshot SHA-256 integrity digest"
+regexTarget = "match"
+regexes = [
+  '''"openapi_sha256":\s*"[a-f0-9]{64}"''',
+]
