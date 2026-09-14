@@ -10,7 +10,19 @@ from starlette.responses import PlainTextResponse
 
 from nutripoints_mcp.tools import register_tools
 
-mcp = FastMCP("Nutri Points")
+SERVER_INSTRUCTIONS = """Use Nutri Points as the source of truth for saved items, nutrition, points, and validation.
+Before creating a recipe, search saved recipes for a reusable match. Before creating any ingredient,
+search both generic ingredients and specific food items. Inspect promising results by ID; a search
+result is a candidate, not proof of an exact match. Reuse a suitable saved item instead of duplicating it.
+When a new ingredient is needed, prefer a generic ingredient for a reusable ingredient category.
+Create a specific food item when the exact product, brand, preparation, or nutrition is necessary.
+If required nutrition facts are missing, ask for them rather than inventing values.
+Save or update a draft first, use its returned version for further edits, and publish only when the
+caller intends to make it available. Validate recipe drafts and follow Nutri Points' required_next_actions
+before publishing. Pass through Nutri Points errors and calculated values without changing them.
+"""
+
+mcp = FastMCP("Nutri Points", instructions=SERVER_INSTRUCTIONS)
 register_tools(mcp)
 
 

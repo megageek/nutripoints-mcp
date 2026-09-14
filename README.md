@@ -4,6 +4,8 @@ An MCP server exposing the [Nutri Points](https://github.com/megageek/nutripoint
 
 Tools search saved recipes, food items, and generic ingredients; read published items and drafts; and save, update, publish, or discard drafts. Recipe drafts can also be validated before publishing. Each write is a separate call, so callers can review the draft and its version before publication. Nutri Points calculates nutrition and points.
 
+The MCP server sends workflow instructions when a client connects. They direct assistants to search for reusable recipes and ingredients before creating new ones, inspect candidate details, and prefer generic ingredients for reusable categories. A specific food item is appropriate when an exact product or its nutrition matters. Assistants should request missing nutrition facts and use Nutri Points' draft validation and calculated values; these instructions guide the assistant and do not block tool calls.
+
 ## API contract
 
 The server is pinned to Nutri Points `stable-rw-v15` through the public
