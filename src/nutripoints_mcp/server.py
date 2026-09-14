@@ -21,6 +21,8 @@ If required nutrition facts are missing, ask for them rather than inventing valu
 Save or update a draft first, use its returned version for further edits, and publish only when the
 caller intends to make it available. Validate recipe drafts and follow Nutri Points' required_next_actions
 before publishing. Pass through Nutri Points errors and calculated values without changing them.
+Before editing a published item, read its current edit draft. Update that draft with its id and version when one
+exists; otherwise create a linked draft using the published item ID.
 Recipe write ingredients use kind "fixed_food" with food_item_id or food_draft_id, or kind "generic" with
 ingredient_type_id or ingredient_type_draft_id; both require quantity with a supported mode. Do not copy
 display, calculated, ID, timestamp, archive, origin, or basis fields from read responses into draft payloads

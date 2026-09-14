@@ -225,7 +225,9 @@ def register_tools(mcp: FastMCP) -> None:
         _add(
             mcp,
             f"save_{domain}_draft",
-            f"Save a new {domain.replace('_', ' ')} draft; pass {item_id} to edit an existing item."
+            f"Save a new {domain.replace('_', ' ')} draft. To edit a published item, first call "
+            f"get_{domain}_draft_for_item; if it returns a draft, use update_{domain}_draft with its id and version. "
+            f"If no draft exists, pass {item_id} to begin an edit draft."
             f"{_WRITE_GUIDANCE[domain]} Use idempotency_key for replay-safe retries.",
             "POST",
             drafts,
