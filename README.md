@@ -1,13 +1,13 @@
 # Nutri Points MCP Server
 
-An MCP server exposing the [Nutri Points](https://github.com/megageek/nutripoints) API's stable, scoped contract (recipes, foods, and generic-ingredient drafts) as MCP tools/resources for LLM assistants.
+An MCP server exposing the [Nutri Points](https://github.com/megageek/nutripoints) API's stable, scoped recipe, food-item, and generic-ingredient draft workflow as MCP tools.
 
-This repository currently holds the development container, release, and Docker packaging setup plus a placeholder server; real Nutri Points tools are not yet implemented.
+Tools search saved recipes, food items, and generic ingredients; read published items and drafts; and save, update, publish, or discard drafts. Recipe drafts can also be validated before publishing. Each write is a separate call, so callers can review the draft and its version before publication. Nutri Points calculates nutrition and points.
 
 ## API contract
 
-The server is pinned to Nutri Points `stable-rw-v14` through the public
-[`nutripoints-api-contracts` v14.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v14.0.0).
+The server is pinned to Nutri Points `stable-rw-v15` through the public
+[`nutripoints-api-contracts` v15.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v15.0.0).
 The pinned version and wheel SHA-256 are recorded in `contract-version.json`. Its
 OpenAPI document is checked into `src/nutripoints_mcp/contracts/openapi.json` and
 included in the Python package and Docker image, so development and runtime do not
@@ -26,6 +26,13 @@ Update affected tools and tests in the same change when advancing the generation
 Open this repository in the Dev Container (VS Code "Reopen in Container", or GitHub Codespaces). It provisions Python 3.11 with [uv](https://docs.astral.sh/uv/) and Node.js (for the MCP Inspector via `npx`, and for Commitlint).
 
 Copy `.env.example` to `.env` and fill in a Nutri Points base URL and scoped API key before running anything against a real instance.
+For all tools, the key needs `recipes:read`, `recipes:write`, `foods:read`, `foods:write`, `ingredient-types:read`, and `ingredient-types:write`; a narrower key works for the tools in its domain. API errors, including version conflicts and missing items, are returned as tool errors. Mutating tools accept an optional `idempotency_key` for replay-safe retries.
+
+Search tools pass `q` to Nutri Points (up to 120 characters). Food-item and generic-ingredient searches also accept `include_archived`. To edit an existing item, save a draft with its item ID, update that draft using its returned `id` and `version`, then publish it with the current version. To create a new item, omit the item ID. Recipe drafts can reference published or caller-owned draft ingredients; Nutri Points validation reports required next actions before publication.
+
+For example, `search_generic_ingredients` with `{"q":"basil"}` finds saved generic ingredients. `save_generic_ingredient_draft` with a complete `payload` returns a draft `id` and `version`; `publish_generic_ingredient_draft` then takes those as `draft_id` and `expected_version`. The same tool naming applies to `recipe` and `food` drafts. Search results and published detail reads come directly from Nutri Points.
+
+The API key stays in process memory and is sent only in the Bearer header to the configured base URL; the server does not log it. Existing CI runs Semgrep, Gitleaks, Trivy, and `pip-audit`, so this change adds no separate security-scanning dependency. An HTTP base URL transmits the key without TLS; use HTTPS for a remote instance.
 
 ```bash
 uv sync --extra dev   # install dependencies

@@ -4,8 +4,8 @@ requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
     "python_full_version >= '3.14' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'win32'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'emscripten'",
+    "python_full_version < '3.14' and sys_platform == 'win32'",
     "(python_full_version < '3.12' and sys_platform == 'emscripten') or (python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32')",
 ]
 
@@ -755,6 +755,7 @@ source = { editable = "." }
 dependencies = [
     { name = "fastmcp" },
     { name = "httpx" },
+    { name = "jsonschema" },
 ]
 
 [package.optional-dependencies]
@@ -770,6 +771,7 @@ requires-dist = [
     { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.0,<5.0" },
     { name = "fastmcp", specifier = ">=3.2.0,<5.0" },
     { name = "httpx", specifier = ">=0.27,<0.29" },
+    { name = "jsonschema", specifier = ">=4.26,<5" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3,<10.0" },
     { name = "pytest-xdist", marker = "extra == 'dev'", specifier = ">=3.6,<4.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.14,<1.0" },

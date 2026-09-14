@@ -2943,6 +2943,26 @@
         "title": "ListResponse[FoodLogRead]",
         "type": "object"
       },
+      "ListResponse_IngredientTypeRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/IngredientTypeRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ListMeta"
+          }
+        },
+        "required": [
+          "items",
+          "meta"
+        ],
+        "title": "ListResponse[IngredientTypeRead]",
+        "type": "object"
+      },
       "ListResponse_MealTemplateListItem_": {
         "properties": {
           "items": {
@@ -7624,6 +7644,110 @@
         "summary": "Publish Type Draft Route",
         "tags": [
           "drafts"
+        ]
+      }
+    },
+    "/api/v1/ingredient-types": {
+      "get": {
+        "operationId": "get_ingredient_types_api_v1_ingredient_types_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_archived",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Include Archived",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListResponse_IngredientTypeRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Ingredient Types",
+        "tags": [
+          "ingredient-types"
+        ]
+      }
+    },
+    "/api/v1/ingredient-types/{ingredient_type_id}": {
+      "get": {
+        "operationId": "get_ingredient_type_api_v1_ingredient_types__ingredient_type_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ingredient_type_id",
+            "required": true,
+            "schema": {
+              "maximum": 9223372036854775807,
+              "minimum": 1,
+              "title": "Ingredient Type Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngredientTypeRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Ingredient Type",
+        "tags": [
+          "ingredient-types"
         ]
       }
     },

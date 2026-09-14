@@ -1,9 +1,4 @@
-"""The Nutri Points MCP server entrypoint.
-
-Real Nutri Points tools/resources are not implemented yet; this module currently
-exists so the development container, tests, and Docker packaging have a real,
-runnable server to build against.
-"""
+"""The Nutri Points MCP server entrypoint."""
 
 from __future__ import annotations
 
@@ -13,11 +8,14 @@ from fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
+from nutripoints_mcp.tools import register_tools
+
 mcp = FastMCP("Nutri Points")
+register_tools(mcp)
 
 
 @mcp.tool
-def ping() -> str:
+async def ping() -> str:
     """Confirm the MCP server is reachable."""
     return "pong"
 

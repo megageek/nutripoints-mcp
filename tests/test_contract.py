@@ -17,11 +17,13 @@ def test_pinned_openapi_is_packaged() -> None:
     snapshot = resource.read_bytes()
     document = json.loads(snapshot)
 
-    assert pin["generation"] == "stable-rw-v14"
+    assert pin["generation"] == "stable-rw-v15"
     assert hashlib.sha256(snapshot).hexdigest() == pin["openapi_sha256"]
     assert document["openapi"].startswith("3.")
     assert "/api/v1/foods" in document["paths"]
     assert "/api/v1/recipes" in document["paths"]
+    assert "/api/v1/ingredient-types" in document["paths"]
+    assert "/api/v1/ingredient-types/{ingredient_type_id}" in document["paths"]
     assert "/api/v1/food-drafts" in document["paths"]
     assert "/api/v1/foods/{food_item_id}/draft" in document["paths"]
     assert "/api/v1/ingredient-types/{ingredient_type_id}/draft" in document["paths"]
@@ -31,7 +33,7 @@ def test_sync_rejects_unverified_wheel(tmp_path: Path) -> None:
     wheel = tmp_path / "contract.whl"
     with ZipFile(wheel, "w") as archive:
         archive.writestr(
-            "nutripoints_api_contract/data/generations/stable-rw-v14/openapi.json",
+            "nutripoints_api_contract/data/generations/stable-rw-v15/openapi.json",
             '{"openapi":"3.1.0","paths":{"/api/v1/foods":{}}}',
         )
 
