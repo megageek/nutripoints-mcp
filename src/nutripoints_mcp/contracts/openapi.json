@@ -3493,6 +3493,46 @@
             "title": "Prep Time Minutes",
             "type": "integer"
           },
+          "reheat_instructions_freezer": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reheat Instructions Freezer"
+          },
+          "reheat_instructions_fridge": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reheat Instructions Fridge"
+          },
+          "reheat_steps_freezer": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeStepPayload"
+            },
+            "maxItems": 60,
+            "title": "Reheat Steps Freezer",
+            "type": "array"
+          },
+          "reheat_steps_fridge": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeStepPayload"
+            },
+            "maxItems": 60,
+            "title": "Reheat Steps Fridge",
+            "type": "array"
+          },
           "total_servings": {
             "exclusiveMinimum": 0.0,
             "maximum": 1000.0,
@@ -3666,6 +3706,17 @@
             ],
             "title": "Food Item Id"
           },
+          "food_item_serving_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Serving Id"
+          },
           "id": {
             "title": "Id",
             "type": "integer"
@@ -3772,6 +3823,7 @@
           "logged_quantity_value",
           "logged_quantity_display_label",
           "logged_quantity_display_multiplier",
+          "food_item_serving_id",
           "preparation",
           "sort_order"
         ],

@@ -10,8 +10,8 @@ The MCP server sends workflow instructions when a client connects. They direct a
 
 ## API contract
 
-The server is pinned to Nutri Points `stable-rw-v15` through the public
-[`nutripoints-api-contracts` v15.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v15.0.0).
+The server is pinned to Nutri Points `stable-rw-v17` through the public
+[`nutripoints-api-contracts` v17.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v17.0.0).
 The pinned version and wheel SHA-256 are recorded in `contract-version.json`. Its
 OpenAPI document is checked into `src/nutripoints_mcp/contracts/openapi.json` and
 included in the Python package and Docker image, so development and runtime do not
@@ -47,7 +47,12 @@ fields; do not copy those fields back into a draft payload unless the write sche
 - A recipe ingredient is either `{"kind":"fixed_food","food_item_id":12,"quantity":{"mode":"grams","value":100}}`
   or `{"kind":"generic","ingredient_type_id":34,"resolution_policy":"generic_allowed","quantity":{"mode":"grams","value":10}}`.
   A draft ingredient may use the corresponding `food_draft_id` or `ingredient_type_draft_id` instead. Quantity
-  modes are `grams`, `milliliters`, `serving_variant`, and `base_servings`.
+  modes are `grams`, `milliliters`, `serving_variant`, and `base_servings`. For `serving_variant`, provide the
+  selected `food_item_serving_id` and `multiplier`. Published recipe reads now return that serving ID, so it can
+  be retained when preparing a draft payload.
+- Put only `{"section":"cook",...}` steps in `instruction_steps`. Put reheat steps in
+  `reheat_steps_fridge` or `reheat_steps_freezer`, with sections `reheat_fridge` or `reheat_freezer` respectively.
+  The matching `reheat_instructions_fridge` and `reheat_instructions_freezer` text fields are also available.
 - A food payload needs `name`, `nutrition_input_mode`, `protein_g`, `carbs_g`, `fat_g`, and `fiber_g`; for example,
   `{"name":"Basil","nutrition_input_mode":"per_100g","protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}`.
   Optional serving variants use writable fields such as `{"label":"tbsp","grams":4}`.

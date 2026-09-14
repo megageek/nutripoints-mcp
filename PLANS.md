@@ -2,7 +2,7 @@
 
 ## Deferred: daily status and food logging
 
-**Contract:** Nutri Points `stable-rw-v15`
+**Contract:** Nutri Points `stable-rw-v17`
 
 **Blocker:** The available API key does not have the scopes required for these routes. Do not implement or exercise them against a live instance until a suitably scoped key is available.
 

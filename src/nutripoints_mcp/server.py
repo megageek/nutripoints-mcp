@@ -25,6 +25,8 @@ Recipe write ingredients use kind "fixed_food" with food_item_id or food_draft_i
 ingredient_type_id or ingredient_type_draft_id; both require quantity with a supported mode. Do not copy
 display, calculated, ID, timestamp, archive, origin, or basis fields from read responses into draft payloads
 unless that field is explicitly present in the write tool schema.
+For recipe drafts, put cook steps only in instruction_steps. Put reheat_fridge and reheat_freezer steps in
+reheat_steps_fridge and reheat_steps_freezer respectively; do not mix their sections.
 """
 
 mcp = FastMCP("Nutri Points", instructions=SERVER_INSTRUCTIONS)

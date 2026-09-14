@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 from typing import Any
 
 from fastmcp import FastMCP
@@ -45,6 +46,26 @@ def _parameters(path: str, method: str) -> tuple[dict[str, Any], list[str], list
     return properties, list(dict.fromkeys(required)), body_fields
 
 
+def _recipe_draft_step_schema(section: str) -> dict[str, Any]:
+    """Return the documented step schema for one recipe draft payload field."""
+    schema = copy.deepcopy(COMPONENTS["RecipeStepPayload"])
+    schema["properties"]["section"] = {"const": section, "title": "Section", "type": "string"}
+    return schema
+
+
+def _constrain_recipe_draft_steps(properties: dict[str, Any]) -> None:
+    """Make each draft step collection accept only its documented section."""
+    payload = copy.deepcopy(COMPONENTS["RecipeDraftPayload"])
+    for field, section in (
+        ("instruction_steps", "cook"),
+        ("reheat_steps_fridge", "reheat_fridge"),
+        ("reheat_steps_freezer", "reheat_freezer"),
+    ):
+        if field in payload["properties"]:
+            payload["properties"][field]["items"] = _recipe_draft_step_schema(section)
+    properties["payload"] = payload
+
+
 def _add(
     mcp: FastMCP,
     name: str,
@@ -55,6 +76,8 @@ def _add(
     category: str | None = None,
 ) -> None:
     properties, required, body_fields = _parameters(path, method)
+    if path.startswith("/api/v1/recipe-drafts") and method in {"POST", "PUT"}:
+        _constrain_recipe_draft_steps(properties)
     schema = input_schema(properties, required)
     query_fields = {
         parameter["name"] for parameter in _operation(path, method).get("parameters", []) if parameter["in"] == "query"
@@ -100,7 +123,10 @@ _WRITE_GUIDANCE = {
         '{"kind":"fixed_food","food_item_id":12,"quantity":{"mode":"grams","value":100}}; '
         "generic "
         '{"kind":"generic","ingredient_type_id":34,"resolution_policy":"generic_allowed",'
-        '"quantity":{"mode":"grams","value":10}}. Use only payload fields in this schema; '
+        '"quantity":{"mode":"grams","value":10}}. Put only section "cook" steps in instruction_steps; '
+        "put reheat_fridge and reheat_freezer steps in their matching reheat_steps fields. "
+        "Published ingredient reads include food_item_serving_id for serving_variant quantities. "
+        "Use only payload fields in this schema; "
         "get_recipe display, nutrition, and calculated fields are read-only."
     ),
     "food": (
@@ -118,7 +144,7 @@ _WRITE_GUIDANCE = {
 
 
 def register_tools(mcp: FastMCP) -> None:
-    """Expose only the stable-rw-v15 routes used by the initial workflow."""
+    """Expose only the stable-rw-v17 routes used by the initial workflow."""
     for domain, (catalog, drafts, item_id) in DOMAINS.items():
         detail_id = "food_id" if domain == "food" else item_id
         _add(

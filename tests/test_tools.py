@@ -89,6 +89,8 @@ async def test_published_detail_reads(recorded_api: list[httpx.Request], tool: s
                 "ingredients": [
                     {"kind": "generic", "quantity": {"mode": "grams", "value": 10}, "ingredient_type_id": 1}
                 ],
+                "instruction_steps": [{"section": "cook", "body_markdown": "Simmer until tender."}],
+                "reheat_steps_freezer": [{"section": "reheat_freezer", "body_markdown": "Heat until hot."}],
             },
         ),
         (
@@ -138,6 +140,10 @@ async def test_draft_lifecycle(
     assert recorded_api[-4].headers["idempotency-key"] == "save-1"
     assert json.loads(recorded_api[-3].content)["expected_version"] == 2
     assert json.loads(recorded_api[-2].content)["expected_version"] == 2
+    if domain == "recipe":
+        saved_payload = json.loads(recorded_api[-4].content)["payload"]
+        assert saved_payload["instruction_steps"][0]["section"] == "cook"
+        assert saved_payload["reheat_steps_freezer"][0]["section"] == "reheat_freezer"
 
 
 @pytest.mark.anyio
@@ -247,6 +253,33 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert {"grams", "milliliters", "serving_variant", "base_servings"} == set(
         branches[0]["properties"]["quantity"]["properties"]["mode"]["enum"]
     )
+    assert branches[0]["properties"]["quantity"]["properties"]["food_item_serving_id"]
+
+    recipe_payload = tools["save_recipe_draft"].input_schema["properties"]["payload"]
+    assert recipe_payload["properties"]["instruction_steps"]["items"]["properties"]["section"]["const"] == "cook"
+    assert (
+        recipe_payload["properties"]["reheat_steps_fridge"]["items"]["properties"]["section"]["const"]
+        == "reheat_fridge"
+    )
+    assert (
+        recipe_payload["properties"]["reheat_steps_freezer"]["items"]["properties"]["section"]["const"]
+        == "reheat_freezer"
+    )
+
+
+@pytest.mark.anyio
+async def test_recipe_draft_step_sections_are_checked_before_api(recorded_api: list[httpx.Request]) -> None:
+    payload = {
+        "name": "Soup",
+        "total_servings": 2,
+        "ingredients": [{"kind": "generic", "quantity": {"mode": "grams", "value": 10}, "ingredient_type_id": 1}],
+        "instruction_steps": [{"section": "reheat_freezer", "body_markdown": "Heat until hot."}],
+    }
+    async with Client(mcp) as client:
+        result = await client.call_tool("save_recipe_draft", {"payload": payload}, raise_on_error=False)
+    assert result.is_error
+    assert "cook" in str(result.content)
+    assert not recorded_api
 
 
 @pytest.mark.anyio
