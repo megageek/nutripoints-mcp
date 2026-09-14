@@ -33,6 +33,8 @@ def _parameters(path: str, method: str) -> tuple[dict[str, Any], list[str], list
         properties.update(body_schema["properties"])
         required.extend(body_schema.get("required", []))
         body_fields = list(body_schema["properties"])
+    if method == "PUT" and "expected_version" in properties:
+        required.append("expected_version")
     if method != "GET":
         properties["idempotency_key"] = KEY_SCHEMA
     for key, value in properties.items():
@@ -41,8 +43,6 @@ def _parameters(path: str, method: str) -> tuple[dict[str, Any], list[str], list
                 properties[key] = ID_SCHEMA
             elif value.get("anyOf"):
                 properties[key] = {"anyOf": [ID_SCHEMA, {"type": "null"}]}
-    if method == "PUT" and "expected_version" in properties:
-        required.append("expected_version")
     return properties, list(dict.fromkeys(required)), body_fields
 
 
@@ -53,8 +53,48 @@ def _recipe_draft_step_schema(section: str) -> dict[str, Any]:
     return schema
 
 
-def _constrain_recipe_draft_steps(properties: dict[str, Any]) -> None:
-    """Make each draft step collection accept only its documented section."""
+def _exactly_one_reference(first: str, second: str, title: str) -> dict[str, Any]:
+    """Return the documented mutually-exclusive published-or-draft reference rule."""
+    return {
+        "oneOf": [
+            {
+                "title": title,
+                "required": [first],
+                "properties": {first: ID_SCHEMA, second: {"type": "null"}},
+            },
+            {
+                "title": title,
+                "required": [second],
+                "properties": {first: {"type": "null"}, second: ID_SCHEMA},
+            },
+        ]
+    }
+
+
+def _quantity_selection_rules(schema: dict[str, Any]) -> None:
+    """Add Nutri Points' documented mode-dependent quantity requirements."""
+    properties = schema["properties"]
+    value_schema = next(member for member in properties["value"]["anyOf"] if member.get("type") == "number")
+    schema["allOf"] = [
+        {
+            "if": {"properties": {"mode": {"const": "serving_variant"}}, "required": ["mode"]},
+            "then": {
+                "required": ["food_item_serving_id"],
+                "properties": {"food_item_serving_id": ID_SCHEMA},
+            },
+        },
+        {
+            "if": {
+                "properties": {"mode": {"enum": ["grams", "milliliters", "base_servings"]}},
+                "required": ["mode"],
+            },
+            "then": {"required": ["value"], "properties": {"value": value_schema}},
+        },
+    ]
+
+
+def _constrain_recipe_draft_payload(properties: dict[str, Any]) -> None:
+    """Apply documented recipe-draft cross-field constraints missing from OpenAPI."""
     payload = copy.deepcopy(COMPONENTS["RecipeDraftPayload"])
     for field, section in (
         ("instruction_steps", "cook"),
@@ -63,6 +103,18 @@ def _constrain_recipe_draft_steps(properties: dict[str, Any]) -> None:
     ):
         if field in payload["properties"]:
             payload["properties"][field]["items"] = _recipe_draft_step_schema(section)
+    ingredient_options = payload["properties"]["ingredients"]["items"]["anyOf"]
+    ingredients = [copy.deepcopy(COMPONENTS[option["$ref"].rsplit("/", 1)[-1]]) for option in ingredient_options]
+    for ingredient, first, second in (
+        (ingredients[0], "food_item_id", "food_draft_id"),
+        (ingredients[1], "ingredient_type_id", "ingredient_type_draft_id"),
+    ):
+        ingredient.setdefault("allOf", []).append(_exactly_one_reference(first, second, ingredient["title"]))
+        quantity_reference = ingredient["properties"]["quantity"]["$ref"]
+        quantity = copy.deepcopy(COMPONENTS[quantity_reference.rsplit("/", 1)[-1]])
+        _quantity_selection_rules(quantity)
+        ingredient["properties"]["quantity"] = quantity
+    payload["properties"]["ingredients"]["items"]["anyOf"] = ingredients
     properties["payload"] = payload
 
 
@@ -77,7 +129,7 @@ def _add(
 ) -> None:
     properties, required, body_fields = _parameters(path, method)
     if path.startswith("/api/v1/recipe-drafts") and method in {"POST", "PUT"}:
-        _constrain_recipe_draft_steps(properties)
+        _constrain_recipe_draft_payload(properties)
     schema = input_schema(properties, required)
     query_fields = {
         parameter["name"] for parameter in _operation(path, method).get("parameters", []) if parameter["in"] == "query"

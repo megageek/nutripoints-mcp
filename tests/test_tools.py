@@ -254,6 +254,9 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
         branches[0]["properties"]["quantity"]["properties"]["mode"]["enum"]
     )
     assert branches[0]["properties"]["quantity"]["properties"]["food_item_serving_id"]
+    assert all("allOf" in branch for branch in branches)
+    assert all("oneOf" in branch["allOf"][0] for branch in branches)
+    assert all("allOf" in branch["properties"]["quantity"] for branch in branches)
 
     recipe_payload = tools["save_recipe_draft"].input_schema["properties"]["payload"]
     assert recipe_payload["properties"]["instruction_steps"]["items"]["properties"]["section"]["const"] == "cook"
@@ -270,6 +273,14 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert "reheat_steps_fridge" in description
     assert "reheat_steps_freezer" in description
 
+    update_schema = tools["update_recipe_draft"].input_schema
+    assert {"draft_id", "expected_version", "payload"} <= set(update_schema["required"])
+    assert update_schema["properties"]["expected_version"] == {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9223372036854775807,
+    }
+
 
 @pytest.mark.anyio
 async def test_recipe_draft_step_sections_are_checked_before_api(recorded_api: list[httpx.Request]) -> None:
@@ -283,6 +294,56 @@ async def test_recipe_draft_step_sections_are_checked_before_api(recorded_api: l
         result = await client.call_tool("save_recipe_draft", {"payload": payload}, raise_on_error=False)
     assert result.is_error
     assert "cook" in str(result.content)
+    assert not recorded_api
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    "ingredient",
+    [
+        {"kind": "fixed_food", "quantity": {"mode": "grams", "value": 10}},
+        {
+            "kind": "fixed_food",
+            "food_item_id": 1,
+            "food_draft_id": 2,
+            "quantity": {"mode": "grams", "value": 10},
+        },
+        {"kind": "generic", "quantity": {"mode": "grams", "value": 10}},
+        {
+            "kind": "generic",
+            "ingredient_type_id": 1,
+            "ingredient_type_draft_id": 2,
+            "quantity": {"mode": "grams", "value": 10},
+        },
+        {"kind": "fixed_food", "food_item_id": 1, "quantity": {"mode": "grams"}},
+        {"kind": "fixed_food", "food_item_id": 1, "quantity": {"mode": "serving_variant"}},
+    ],
+)
+async def test_recipe_draft_rejects_invalid_ingredient_references_and_quantities_locally(
+    recorded_api: list[httpx.Request], ingredient: dict[str, Any]
+) -> None:
+    payload = {"name": "Soup", "total_servings": 2, "ingredients": [ingredient]}
+    async with Client(mcp) as client:
+        result = await client.call_tool("save_recipe_draft", {"payload": payload}, raise_on_error=False)
+    assert result.is_error
+    assert not recorded_api
+
+
+@pytest.mark.anyio
+async def test_recipe_draft_update_rejects_null_expected_version_locally(recorded_api: list[httpx.Request]) -> None:
+    payload = {
+        "name": "Soup",
+        "total_servings": 2,
+        "ingredients": [{"kind": "generic", "ingredient_type_id": 1, "quantity": {"mode": "grams", "value": 10}}],
+    }
+    async with Client(mcp) as client:
+        result = await client.call_tool(
+            "update_recipe_draft",
+            {"draft_id": 1, "expected_version": None, "payload": payload},
+            raise_on_error=False,
+        )
+    assert result.is_error
+    assert "expected_version" in str(result.content)
     assert not recorded_api
 
 
@@ -306,7 +367,12 @@ async def test_write_validation_reports_closest_union_branch_without_api_call(
         "name": "Soup",
         "total_servings": 2,
         "ingredients": [
-            {"kind": "fixed_food", "resolution_policy": "fixed_food", "quantity": {"mode": "grams", "value": 10}}
+            {
+                "kind": "fixed_food",
+                "food_item_id": 1,
+                "resolution_policy": "fixed_food",
+                "quantity": {"mode": "grams", "value": 10},
+            }
         ],
     }
     async with Client(mcp) as client:
