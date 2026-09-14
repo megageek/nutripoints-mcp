@@ -29,6 +29,11 @@ display, calculated, ID, timestamp, archive, origin, or basis fields from read r
 unless that field is explicitly present in the write tool schema.
 For recipe drafts, put cook steps only in instruction_steps. Put reheat_fridge and reheat_freezer steps in
 reheat_steps_fridge and reheat_steps_freezer respectively; do not mix their sections.
+When recipe instructions explicitly give a timed appliance setting or rest, add a matching automation action to
+that step. Use timer or rest with duration_seconds; oven with temperature_c and duration_seconds (optional preheat);
+hob with level and duration_seconds; microwave with power_watts and duration_seconds; or air_fryer with
+temperature_c and duration_seconds (optional shake). Durations are whole seconds. Never invent a duration,
+temperature, wattage, or hob level in order to add automation.
 """
 
 mcp = FastMCP("Nutri Points", instructions=SERVER_INSTRUCTIONS)

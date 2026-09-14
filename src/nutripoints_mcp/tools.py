@@ -183,6 +183,8 @@ _WRITE_GUIDANCE = {
         'instruction_steps:[{"section":"cook","body_markdown":"Cook."}], '
         'reheat_steps_fridge:[{"section":"reheat_fridge","body_markdown":"Reheat."}], and '
         'reheat_steps_freezer:[{"section":"reheat_freezer","body_markdown":"Reheat."}]. '
+        "When a recipe explicitly supplies a timed appliance setting or rest, add the matching automation action; "
+        "durations are whole seconds. Never invent a duration, temperature, wattage, or hob level. "
         "Published ingredient reads include food_item_serving_id for serving_variant quantities. "
         "Use only payload fields in this schema; "
         "get_recipe display, nutrition, and calculated fields are read-only."

@@ -272,6 +272,8 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert "food_item_serving_id" in description
     assert "reheat_steps_fridge" in description
     assert "reheat_steps_freezer" in description
+    assert "automation action" in description
+    assert "whole seconds" in description
     save_description = tools["save_recipe_draft"].description
     assert "get_recipe_draft_for_item" in save_description
     assert "update_recipe_draft" in save_description

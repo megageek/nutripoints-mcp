@@ -53,6 +53,11 @@ fields; do not copy those fields back into a draft payload unless the write sche
 - Put only `{"section":"cook",...}` steps in `instruction_steps`. Put reheat steps in
   `reheat_steps_fridge` or `reheat_steps_freezer`, with sections `reheat_fridge` or `reheat_freezer` respectively.
   The matching `reheat_instructions_fridge` and `reheat_instructions_freezer` text fields are also available.
+- When the recipe explicitly gives a timed cooking action, add it to that step's `automation_actions`: use
+  `{"action_kind":"timer","duration_seconds":...}` or `{"action_kind":"rest","duration_seconds":...}`; oven with `temperature_c` and `duration_seconds`,
+  hob with `level` (1–9) and `duration_seconds`, microwave with `power_watts` and `duration_seconds`, or air fryer
+  with `temperature_c` and `duration_seconds`. `preheat` (oven) and `shake` (air fryer) are optional booleans.
+  Durations are whole seconds; do not invent missing times, temperatures, power, or hob levels.
 - A food payload needs `name`, `nutrition_input_mode`, `protein_g`, `carbs_g`, `fat_g`, and `fiber_g`; for example,
   `{"name":"Basil","nutrition_input_mode":"per_100g","protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}`.
   Optional serving variants use writable fields such as `{"label":"tbsp","grams":4}`.
