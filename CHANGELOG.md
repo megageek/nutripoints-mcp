@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.2...nutripoints-mcp-v0.1.3) (2026-09-14)
+
+
+### Features
+
+* annotate read and write tools ([b3f19f5](https://github.com/megageek/nutripoints-mcp/commit/b3f19f52ee041384dd1f6b4231aae25d7785b3f2))
+* update Nutri Points contract to v17 ([1a9fab1](https://github.com/megageek/nutripoints-mcp/commit/1a9fab124a8ec39c301140b5fc2fba2724e9f465))
+
 ## [0.1.2](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.1...nutripoints-mcp-v0.1.2) (2026-09-14)
 
 
