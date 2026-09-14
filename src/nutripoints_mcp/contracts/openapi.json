@@ -574,6 +574,219 @@
         "title": "DayStatusSetupBlocked",
         "type": "object"
       },
+      "DraftFixedIngredient": {
+        "properties": {
+          "food_draft_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Draft Id"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "kind": {
+            "const": "fixed_food",
+            "title": "Kind",
+            "type": "string"
+          },
+          "preparation": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation"
+          },
+          "quantity": {
+            "$ref": "#/components/schemas/FoodQuantitySelection"
+          }
+        },
+        "required": [
+          "kind",
+          "quantity"
+        ],
+        "title": "DraftFixedIngredient",
+        "type": "object"
+      },
+      "DraftGenericIngredient": {
+        "properties": {
+          "ingredient_type_draft_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Type Draft Id"
+          },
+          "ingredient_type_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Type Id"
+          },
+          "kind": {
+            "const": "generic",
+            "title": "Kind",
+            "type": "string"
+          },
+          "preparation": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation"
+          },
+          "quantity": {
+            "$ref": "#/components/schemas/FoodQuantitySelection"
+          },
+          "resolution_policy": {
+            "default": "resolve_required",
+            "enum": [
+              "resolve_required",
+              "generic_allowed"
+            ],
+            "title": "Resolution Policy",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "quantity"
+        ],
+        "title": "DraftGenericIngredient",
+        "type": "object"
+      },
+      "DraftPublishRequest": {
+        "properties": {
+          "expected_version": {
+            "minimum": 1.0,
+            "title": "Expected Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_version"
+        ],
+        "title": "DraftPublishRequest",
+        "type": "object"
+      },
+      "DraftRead": {
+        "properties": {
+          "base_revision_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Revision Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "ingredient_type_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Type Id"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "title": "Payload",
+            "type": "object"
+          },
+          "recipe_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Id"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "recipe_id",
+          "base_revision_id",
+          "version",
+          "payload",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "DraftRead",
+        "type": "object"
+      },
       "FoodBasisType": {
         "enum": [
           "weight",
@@ -582,6 +795,74 @@
         ],
         "title": "FoodBasisType",
         "type": "string"
+      },
+      "FoodDraftWrite": {
+        "properties": {
+          "expected_version": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Version"
+          },
+          "food_item_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Id"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/FoodItemCreate"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "FoodDraftWrite",
+        "type": "object"
+      },
+      "FoodItemBarcodePayload": {
+        "properties": {
+          "barcode": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Barcode",
+            "type": "string"
+          },
+          "format": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Format"
+          },
+          "is_primary": {
+            "default": false,
+            "title": "Is Primary",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "barcode"
+        ],
+        "title": "FoodItemBarcodePayload",
+        "type": "object"
       },
       "FoodItemBarcodeRead": {
         "properties": {
@@ -616,6 +897,151 @@
           "is_primary"
         ],
         "title": "FoodItemBarcodeRead",
+        "type": "object"
+      },
+      "FoodItemCreate": {
+        "properties": {
+          "barcodes": {
+            "items": {
+              "$ref": "#/components/schemas/FoodItemBarcodePayload"
+            },
+            "maxItems": 20,
+            "title": "Barcodes",
+            "type": "array"
+          },
+          "base_serving_grams": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Grams"
+          },
+          "base_serving_label": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Label"
+          },
+          "base_serving_milliliters": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Milliliters"
+          },
+          "brand_name": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand Name"
+          },
+          "carbs_g": {
+            "minimum": 0.0,
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "fat_g": {
+            "minimum": 0.0,
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "minimum": 0.0,
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "instruction_steps": {
+            "items": {
+              "$ref": "#/components/schemas/FoodItemStepPayload"
+            },
+            "maxItems": 60,
+            "title": "Instruction Steps",
+            "type": "array"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "nutrition_input_mode": {
+            "enum": [
+              "per_100g",
+              "per_100ml",
+              "per_serving"
+            ],
+            "title": "Nutrition Input Mode",
+            "type": "string"
+          },
+          "protein_g": {
+            "minimum": 0.0,
+            "title": "Protein G",
+            "type": "number"
+          },
+          "serving_variants": {
+            "items": {
+              "$ref": "#/components/schemas/FoodItemServingPayload"
+            },
+            "maxItems": 20,
+            "title": "Serving Variants",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "nutrition_input_mode",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g"
+        ],
+        "title": "FoodItemCreate",
         "type": "object"
       },
       "FoodItemRead": {
@@ -858,6 +1284,73 @@
         "title": "FoodItemRead",
         "type": "object"
       },
+      "FoodItemServingPayload": {
+        "properties": {
+          "grams": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grams"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "label": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "milliliters": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Milliliters"
+          },
+          "serving_multiplier": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Multiplier"
+          },
+          "sort_order": {
+            "default": 0,
+            "title": "Sort Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "label"
+        ],
+        "title": "FoodItemServingPayload",
+        "type": "object"
+      },
       "FoodItemServingRead": {
         "properties": {
           "grams": {
@@ -915,6 +1408,69 @@
           "sort_order"
         ],
         "title": "FoodItemServingRead",
+        "type": "object"
+      },
+      "FoodItemStepPayload": {
+        "properties": {
+          "automation_actions": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RecipeTimerAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeOvenAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeHobAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeMicrowaveAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeAirFryerAction"
+                }
+              ]
+            },
+            "maxItems": 8,
+            "title": "Automation Actions",
+            "type": "array"
+          },
+          "body_markdown": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Body Markdown",
+            "type": "string"
+          },
+          "section": {
+            "const": "cook",
+            "default": "cook",
+            "title": "Section",
+            "type": "string"
+          },
+          "sort_order": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "body_markdown"
+        ],
+        "title": "FoodItemStepPayload",
         "type": "object"
       },
       "FoodItemStepRead": {
@@ -1522,6 +2078,17 @@
             ],
             "title": "Recipe Logged Servings"
           },
+          "recipe_revision_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Revision Id"
+          },
           "recipe_total_servings": {
             "anyOf": [
               {
@@ -1559,6 +2126,7 @@
           "logged_quantity_display_label",
           "logged_quantity_display_multiplier",
           "recipe_id",
+          "recipe_revision_id",
           "cooking_instance_id",
           "recipe_logged_servings",
           "recipe_total_servings",
@@ -1660,6 +2228,54 @@
           }
         },
         "title": "FoodPointsCalculationDescriptor",
+        "type": "object"
+      },
+      "FoodQuantitySelection": {
+        "properties": {
+          "food_item_serving_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Item Serving Id"
+          },
+          "mode": {
+            "enum": [
+              "grams",
+              "milliliters",
+              "serving_variant",
+              "base_servings"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "multiplier": {
+            "default": 1,
+            "exclusiveMinimum": 0.0,
+            "title": "Multiplier",
+            "type": "number"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "FoodQuantitySelection",
         "type": "object"
       },
       "FoodWeighingCompletion": {
@@ -1967,6 +2583,271 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "IngredientTypeCreate": {
+        "properties": {
+          "base_serving_grams": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100000.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Grams"
+          },
+          "base_serving_label": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Label"
+          },
+          "base_serving_milliliters": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100000.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Milliliters"
+          },
+          "carbs_g": {
+            "maximum": 2000.0,
+            "minimum": 0.0,
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "fat_g": {
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "maximum": 500.0,
+            "minimum": 0.0,
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "nutrition_input_mode": {
+            "enum": [
+              "per_100g",
+              "per_100ml",
+              "per_serving"
+            ],
+            "title": "Nutrition Input Mode",
+            "type": "string"
+          },
+          "protein_g": {
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Protein G",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "nutrition_input_mode",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g"
+        ],
+        "title": "IngredientTypeCreate",
+        "type": "object"
+      },
+      "IngredientTypeDraftWrite": {
+        "properties": {
+          "expected_version": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Version"
+          },
+          "ingredient_type_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Type Id"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/IngredientTypeCreate"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "IngredientTypeDraftWrite",
+        "type": "object"
+      },
+      "IngredientTypeRead": {
+        "properties": {
+          "base_serving_grams": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Grams"
+          },
+          "base_serving_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Label"
+          },
+          "base_serving_milliliters": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Serving Milliliters"
+          },
+          "basis_type": {
+            "$ref": "#/components/schemas/FoodBasisType"
+          },
+          "carbs_g": {
+            "title": "Carbs G",
+            "type": "number"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "fat_g": {
+            "title": "Fat G",
+            "type": "number"
+          },
+          "fiber_g": {
+            "title": "Fiber G",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_archived": {
+            "title": "Is Archived",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "nutrition_input_mode": {
+            "enum": [
+              "per_100g",
+              "per_100ml",
+              "per_serving"
+            ],
+            "title": "Nutrition Input Mode",
+            "type": "string"
+          },
+          "origin_api_key_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Api Key Id"
+          },
+          "origin_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Kind"
+          },
+          "origin_replay_batch_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Replay Batch Id"
+          },
+          "protein_g": {
+            "title": "Protein G",
+            "type": "number"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "nutrition_input_mode",
+          "basis_type",
+          "protein_g",
+          "carbs_g",
+          "fat_g",
+          "fiber_g",
+          "base_serving_label",
+          "base_serving_grams",
+          "base_serving_milliliters",
+          "is_archived",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "IngredientTypeRead",
         "type": "object"
       },
       "ListMeta": {
@@ -2513,6 +3394,191 @@
           "duration_seconds"
         ],
         "title": "RecipeAirFryerAction",
+        "type": "object"
+      },
+      "RecipeDraftPayload": {
+        "properties": {
+          "cook_time_minutes": {
+            "default": 0,
+            "maximum": 10080.0,
+            "minimum": 0.0,
+            "title": "Cook Time Minutes",
+            "type": "integer"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "ingredients": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/DraftFixedIngredient"
+                },
+                {
+                  "$ref": "#/components/schemas/DraftGenericIngredient"
+                }
+              ]
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Ingredients",
+            "type": "array"
+          },
+          "instruction_steps": {
+            "items": {
+              "$ref": "#/components/schemas/RecipeStepPayload"
+            },
+            "maxItems": 60,
+            "title": "Instruction Steps",
+            "type": "array"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "passive_time_minutes": {
+            "default": 0,
+            "maximum": 10080.0,
+            "minimum": 0.0,
+            "title": "Passive Time Minutes",
+            "type": "integer"
+          },
+          "prep_time_minutes": {
+            "default": 0,
+            "maximum": 10080.0,
+            "minimum": 0.0,
+            "title": "Prep Time Minutes",
+            "type": "integer"
+          },
+          "total_servings": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1000.0,
+            "title": "Total Servings",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "total_servings",
+          "ingredients"
+        ],
+        "title": "RecipeDraftPayload",
+        "type": "object"
+      },
+      "RecipeDraftValidation": {
+        "properties": {
+          "carbs_g_total": {
+            "title": "Carbs G Total",
+            "type": "number"
+          },
+          "fat_g_total": {
+            "title": "Fat G Total",
+            "type": "number"
+          },
+          "fiber_g_total": {
+            "title": "Fiber G Total",
+            "type": "number"
+          },
+          "points_per_serving": {
+            "title": "Points Per Serving",
+            "type": "integer"
+          },
+          "points_total": {
+            "title": "Points Total",
+            "type": "integer"
+          },
+          "protein_g_total": {
+            "title": "Protein G Total",
+            "type": "number"
+          },
+          "required_next_actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Next Actions",
+            "type": "array"
+          },
+          "valid": {
+            "title": "Valid",
+            "type": "boolean"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "valid",
+          "points_total",
+          "points_per_serving",
+          "protein_g_total",
+          "carbs_g_total",
+          "fat_g_total",
+          "fiber_g_total"
+        ],
+        "title": "RecipeDraftValidation",
+        "type": "object"
+      },
+      "RecipeDraftWrite": {
+        "properties": {
+          "expected_version": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Version"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/RecipeDraftPayload"
+          },
+          "recipe_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Id"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "RecipeDraftWrite",
         "type": "object"
       },
       "RecipeHobAction": {
@@ -3192,6 +4258,73 @@
           "reheat_instructions_freezer"
         ],
         "title": "RecipeRead",
+        "type": "object"
+      },
+      "RecipeStepPayload": {
+        "properties": {
+          "automation_actions": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RecipeTimerAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeOvenAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeHobAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeMicrowaveAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RecipeAirFryerAction"
+                }
+              ]
+            },
+            "maxItems": 8,
+            "title": "Automation Actions",
+            "type": "array"
+          },
+          "body_markdown": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Body Markdown",
+            "type": "string"
+          },
+          "section": {
+            "enum": [
+              "cook",
+              "reheat_fridge",
+              "reheat_freezer"
+            ],
+            "title": "Section",
+            "type": "string"
+          },
+          "sort_order": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "section",
+          "body_markdown"
+        ],
+        "title": "RecipeStepPayload",
         "type": "object"
       },
       "RecipeStepRead": {
@@ -5912,6 +7045,224 @@
         ]
       }
     },
+    "/api/v1/food-drafts": {
+      "post": {
+        "operationId": "save_food_draft_route_api_v1_food_drafts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodDraftWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save Food Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/food-drafts/{draft_id}": {
+      "delete": {
+        "operationId": "discard_food_draft_route_api_v1_food_drafts__draft_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Discard Food Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "get": {
+        "operationId": "get_food_draft_route_api_v1_food_drafts__draft_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Food Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "put": {
+        "operationId": "update_food_draft_route_api_v1_food_drafts__draft_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodDraftWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Food Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/food-drafts/{draft_id}/publish": {
+      "post": {
+        "operationId": "publish_food_draft_route_api_v1_food_drafts__draft_id__publish_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftPublishRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Publish Food Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
     "/api/v1/foods": {
       "get": {
         "operationId": "get_food_items_api_v1_foods_get",
@@ -6013,6 +7364,308 @@
         "summary": "Get Food Item",
         "tags": [
           "food-items"
+        ]
+      }
+    },
+    "/api/v1/foods/{food_item_id}/draft": {
+      "get": {
+        "operationId": "get_food_draft_by_food_item_route_api_v1_foods__food_item_id__draft_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "food_item_id",
+            "required": true,
+            "schema": {
+              "title": "Food Item Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Food Draft By Food Item Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/ingredient-type-drafts": {
+      "post": {
+        "operationId": "save_type_draft_route_api_v1_ingredient_type_drafts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngredientTypeDraftWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save Type Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/ingredient-type-drafts/{draft_id}": {
+      "delete": {
+        "operationId": "discard_type_draft_route_api_v1_ingredient_type_drafts__draft_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Discard Type Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "get": {
+        "operationId": "get_type_draft_route_api_v1_ingredient_type_drafts__draft_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Type Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "put": {
+        "operationId": "update_type_draft_route_api_v1_ingredient_type_drafts__draft_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngredientTypeDraftWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Type Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/ingredient-type-drafts/{draft_id}/publish": {
+      "post": {
+        "operationId": "publish_type_draft_route_api_v1_ingredient_type_drafts__draft_id__publish_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftPublishRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngredientTypeRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Publish Type Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/ingredient-types/{ingredient_type_id}/draft": {
+      "get": {
+        "operationId": "get_type_draft_by_ingredient_type_route_api_v1_ingredient_types__ingredient_type_id__draft_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ingredient_type_id",
+            "required": true,
+            "schema": {
+              "title": "Ingredient Type Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Type Draft By Ingredient Type Route",
+        "tags": [
+          "drafts"
         ]
       }
     },
@@ -6927,6 +8580,226 @@
         ]
       }
     },
+    "/api/v1/recipe-drafts": {
+      "post": {
+        "operationId": "save_recipe_draft_route_api_v1_recipe_drafts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeDraftWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save Recipe Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/recipe-drafts/{draft_id}": {
+      "delete": {
+        "operationId": "discard_recipe_draft_route_api_v1_recipe_drafts__draft_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Discard Recipe Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      },
+      "put": {
+        "operationId": "update_recipe_draft_route_api_v1_recipe_drafts__draft_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipeDraftWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Recipe Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/recipe-drafts/{draft_id}/publish": {
+      "post": {
+        "operationId": "publish_recipe_draft_route_api_v1_recipe_drafts__draft_id__publish_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftPublishRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Publish Recipe Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
+    "/api/v1/recipe-drafts/{draft_id}/validate": {
+      "post": {
+        "operationId": "validate_recipe_draft_route_api_v1_recipe_drafts__draft_id__validate_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeDraftValidation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Validate Recipe Draft Route",
+        "tags": [
+          "drafts"
+        ]
+      }
+    },
     "/api/v1/recipes": {
       "get": {
         "operationId": "get_recipes_api_v1_recipes_get",
@@ -7018,6 +8891,48 @@
         "summary": "Get Recipe",
         "tags": [
           "recipes"
+        ]
+      }
+    },
+    "/api/v1/recipes/{recipe_id}/draft": {
+      "get": {
+        "operationId": "get_recipe_draft_route_api_v1_recipes__recipe_id__draft_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipe_id",
+            "required": true,
+            "schema": {
+              "title": "Recipe Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Recipe Draft Route",
+        "tags": [
+          "drafts"
         ]
       }
     },

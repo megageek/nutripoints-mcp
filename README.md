@@ -6,8 +6,8 @@ This repository currently holds the development container, release, and Docker p
 
 ## API contract
 
-The server is pinned to Nutri Points `stable-rw-v12` through the public
-[`nutripoints-api-contracts` v12.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v12.0.0).
+The server is pinned to Nutri Points `stable-rw-v14` through the public
+[`nutripoints-api-contracts` v14.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v14.0.0).
 The pinned version and wheel SHA-256 are recorded in `contract-version.json`. Its
 OpenAPI document is checked into `src/nutripoints_mcp/contracts/openapi.json` and
 included in the Python package and Docker image, so development and runtime do not
