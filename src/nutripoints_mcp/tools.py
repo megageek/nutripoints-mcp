@@ -125,6 +125,12 @@ _WRITE_GUIDANCE = {
         '{"kind":"generic","ingredient_type_id":34,"resolution_policy":"generic_allowed",'
         '"quantity":{"mode":"grams","value":10}}. Put only section "cook" steps in instruction_steps; '
         "put reheat_fridge and reheat_freezer steps in their matching reheat_steps fields. "
+        "For a serving variant, use "
+        '{"kind":"fixed_food","food_item_id":12,"quantity":{"mode":"serving_variant",'
+        '"food_item_serving_id":34,"multiplier":2}}. Step examples: '
+        'instruction_steps:[{"section":"cook","body_markdown":"Cook."}], '
+        'reheat_steps_fridge:[{"section":"reheat_fridge","body_markdown":"Reheat."}], and '
+        'reheat_steps_freezer:[{"section":"reheat_freezer","body_markdown":"Reheat."}]. '
         "Published ingredient reads include food_item_serving_id for serving_variant quantities. "
         "Use only payload fields in this schema; "
         "get_recipe display, nutrition, and calculated fields are read-only."

@@ -265,6 +265,10 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
         recipe_payload["properties"]["reheat_steps_freezer"]["items"]["properties"]["section"]["const"]
         == "reheat_freezer"
     )
+    description = tools["update_recipe_draft"].description
+    assert "food_item_serving_id" in description
+    assert "reheat_steps_fridge" in description
+    assert "reheat_steps_freezer" in description
 
 
 @pytest.mark.anyio
