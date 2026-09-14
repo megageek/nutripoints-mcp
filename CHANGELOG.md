@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.1...nutripoints-mcp-v0.1.2) (2026-09-14)
+
+
+### Features
+
+* clarify draft write schemas ([3396712](https://github.com/megageek/nutripoints-mcp/commit/3396712f1692598859c6464675c736bbcc5c4964))
+
 ## [0.1.1](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.0...nutripoints-mcp-v0.1.1) (2026-09-14)
 
 
