@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.4...nutripoints-mcp-v0.1.5) (2026-09-15)
+
+
+### Features
+
+* add read-only log tools ([4610265](https://github.com/megageek/nutripoints-mcp/commit/4610265eb0a5f76a40af7ea155ccf0a38c2fd215))
+
 ## [0.1.4](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.3...nutripoints-mcp-v0.1.4) (2026-09-15)
 
 
