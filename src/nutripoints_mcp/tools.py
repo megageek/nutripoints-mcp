@@ -183,6 +183,9 @@ _WRITE_GUIDANCE = {
         'instruction_steps:[{"section":"cook","body_markdown":"Cook."}], '
         'reheat_steps_fridge:[{"section":"reheat_fridge","body_markdown":"Reheat."}], and '
         'reheat_steps_freezer:[{"section":"reheat_freezer","body_markdown":"Reheat."}]. '
+        "Recipe timing fields prep_time_minutes, cook_time_minutes, and passive_time_minutes are writable "
+        "integers from 0 to 10080. Include them in payload when known. update_recipe_draft replaces the full "
+        "recipe payload, so do not send timing fields by themselves. "
         "When a recipe explicitly supplies a timed appliance setting or rest, add the matching automation action; "
         "durations are whole seconds. Never invent a duration, temperature, wattage, or hob level. "
         "Published ingredient reads include food_item_serving_id for serving_variant quantities. "

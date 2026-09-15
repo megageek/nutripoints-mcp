@@ -31,6 +31,9 @@ display, calculated, ID, timestamp, archive, origin, or basis fields from read r
 unless that field is explicitly present in the write tool schema.
 For recipe drafts, put cook steps only in instruction_steps. Put reheat_fridge and reheat_freezer steps in
 reheat_steps_fridge and reheat_steps_freezer respectively; do not mix their sections.
+Recipe drafts support prep_time_minutes, cook_time_minutes, and passive_time_minutes (each 0–10080 minutes).
+Put them in the recipe draft payload when known. update_recipe_draft replaces the full recipe payload, so do not
+send timing fields by themselves.
 When recipe instructions explicitly give a timed appliance setting or rest, add a matching automation action to
 that step. Use timer or rest with duration_seconds; oven with temperature_c and duration_seconds (optional preheat);
 hob with level and duration_seconds; microwave with power_watts and duration_seconds; or air_fryer with

@@ -53,6 +53,9 @@ fields; do not copy those fields back into a draft payload unless the write sche
 - Put only `{"section":"cook",...}` steps in `instruction_steps`. Put reheat steps in
   `reheat_steps_fridge` or `reheat_steps_freezer`, with sections `reheat_fridge` or `reheat_freezer` respectively.
   The matching `reheat_instructions_fridge` and `reheat_instructions_freezer` text fields are also available.
+- Recipe payloads support `prep_time_minutes`, `cook_time_minutes`, and `passive_time_minutes`, each from 0 to
+  10,080. Include known values when saving or updating. `update_recipe_draft` replaces the full recipe payload,
+  so timing fields cannot be sent as a standalone partial update.
 - When the recipe explicitly gives a timed cooking action, add it to that step's `automation_actions`: use
   `{"action_kind":"timer","duration_seconds":...}` or `{"action_kind":"rest","duration_seconds":...}`; oven with `temperature_c` and `duration_seconds`,
   hob with `level` (1–9) and `duration_seconds`, microwave with `power_watts` and `duration_seconds`, or air fryer

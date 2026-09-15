@@ -277,6 +277,14 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert all("allOf" in branch["properties"]["quantity"] for branch in branches)
 
     recipe_payload = tools["save_recipe_draft"].input_schema["properties"]["payload"]
+    for timing_field in ("prep_time_minutes", "cook_time_minutes", "passive_time_minutes"):
+        assert recipe_payload["properties"][timing_field] == {
+            "default": 0,
+            "maximum": 10080.0,
+            "minimum": 0.0,
+            "title": timing_field.replace("_", " ").title(),
+            "type": "integer",
+        }
     assert recipe_payload["properties"]["instruction_steps"]["items"]["properties"]["section"]["const"] == "cook"
     assert (
         recipe_payload["properties"]["reheat_steps_fridge"]["items"]["properties"]["section"]["const"]
@@ -292,6 +300,10 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert "reheat_steps_freezer" in description
     assert "automation action" in description
     assert "whole seconds" in description
+    assert "prep_time_minutes" in description
+    assert "cook_time_minutes" in description
+    assert "passive_time_minutes" in description
+    assert "replaces the full recipe payload" in description
     save_description = tools["save_recipe_draft"].description
     assert "get_recipe_draft_for_item" in save_description
     assert "update_recipe_draft" in save_description
