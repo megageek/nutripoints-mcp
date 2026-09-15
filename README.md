@@ -65,7 +65,8 @@ fields; do not copy those fields back into a draft payload unless the write sche
   `base_serving_label` with `base_serving_grams` or `base_serving_milliliters` when applicable.
 
 `update_*_draft` requires the draft's current `expected_version`. Use `idempotency_key` on writes that might be
-retried, and run `validate_recipe_draft` before publishing a recipe.
+retried. `validate_recipe_draft` accepts only a saved `draft_id`; it does not accept recipe data or save changes.
+Call `save_recipe_draft` first, then validate the returned draft ID before publishing a recipe.
 
 The API key stays in process memory and is sent only in the Bearer header to the configured base URL; the server does not log it. Existing CI runs Semgrep, Gitleaks, Trivy, and `pip-audit`, so this change adds no separate security-scanning dependency. An HTTP base URL transmits the key without TLS; use HTTPS for a remote instance.
 

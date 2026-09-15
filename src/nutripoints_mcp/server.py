@@ -19,8 +19,10 @@ When a new ingredient is needed, prefer a generic ingredient for a reusable ingr
 Create a specific food item when the exact product, brand, preparation, or nutrition is necessary.
 If required nutrition facts are missing, ask for them rather than inventing values.
 Save or update a draft first, use its returned version for further edits, and publish only when the
-caller intends to make it available. Validate recipe drafts and follow Nutri Points' required_next_actions
-before publishing. Pass through Nutri Points errors and calculated values without changing them.
+caller intends to make it available. validate_recipe_draft accepts only a saved draft_id: it cannot accept
+recipe data or save changes. Call save_recipe_draft first, then validate its returned draft_id and follow
+Nutri Points' required_next_actions before publishing. Pass through Nutri Points errors and calculated values
+without changing them.
 Before editing a published item, read its current edit draft. Update that draft with its id and version when one
 exists; otherwise create a linked draft using the published item ID.
 Recipe write ingredients use kind "fixed_food" with food_item_id or food_draft_id, or kind "generic" with

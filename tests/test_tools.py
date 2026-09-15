@@ -164,6 +164,24 @@ async def test_read_drafts_and_validate_recipe(recorded_api: list[httpx.Request]
 
 
 @pytest.mark.anyio
+async def test_validate_recipe_draft_only_accepts_a_saved_draft_id(recorded_api: list[httpx.Request]) -> None:
+    async with Client(mcp) as client:
+        tools = {tool.name: tool for tool in await client.list_tools()}
+        validate_tool = tools["validate_recipe_draft"]
+        result = await client.call_tool(
+            "validate_recipe_draft", {"draft_id": 2, "payload": {"name": "Unsaved recipe"}}, raise_on_error=False
+        )
+
+    assert "existing, saved recipe draft" in validate_tool.description
+    assert "does not accept recipe data" in validate_tool.description
+    assert validate_tool.input_schema["required"] == ["draft_id"]
+    assert set(validate_tool.input_schema["properties"]) == {"draft_id", "idempotency_key"}
+    assert result.is_error
+    assert "payload" in str(result.content)
+    assert not recorded_api
+
+
+@pytest.mark.anyio
 async def test_invalid_inputs_do_not_reach_api(recorded_api: list[httpx.Request]) -> None:
     malformed_food = {
         "name": "Bad\x00name",

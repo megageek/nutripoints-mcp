@@ -128,7 +128,7 @@ def _add(
     category: str | None = None,
 ) -> None:
     properties, required, body_fields = _parameters(path, method)
-    if path.startswith("/api/v1/recipe-drafts") and method in {"POST", "PUT"}:
+    if path.startswith("/api/v1/recipe-drafts") and "payload" in body_fields:
         _constrain_recipe_draft_payload(properties)
     schema = input_schema(properties, required)
     query_fields = {
@@ -267,7 +267,8 @@ def register_tools(mcp: FastMCP) -> None:
     _add(
         mcp,
         "validate_recipe_draft",
-        "Ask Nutri Points to validate and calculate a recipe draft.",
+        "Validate and calculate an existing, saved recipe draft by draft_id. This tool does not accept recipe "
+        "data or save changes: call save_recipe_draft first, then validate the returned draft_id.",
         "POST",
         "/api/v1/recipe-drafts/{draft_id}/validate",
         category="read",
