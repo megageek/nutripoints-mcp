@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.4](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.3...nutripoints-mcp-v0.1.4) (2026-09-15)
+
+
+### Features
+
+* support recipe draft storage life ([0464726](https://github.com/megageek/nutripoints-mcp/commit/046472634be75baea8f08e78e6b25a70ac9ac08a))
+
+
+### Bug Fixes
+
+* clarify recipe draft tool schema ([86b804a](https://github.com/megageek/nutripoints-mcp/commit/86b804a3282e43a9e56b83dca924d02e33d99d93))
+* clarify saved recipe draft validation ([966e256](https://github.com/megageek/nutripoints-mcp/commit/966e25686b963d9f3762c78af80c32ab5a70e8a3))
+* constrain recipe draft inputs ([947e7d9](https://github.com/megageek/nutripoints-mcp/commit/947e7d9c119c1aacaf86a1a95e0ab09aec5decd7))
+
 ## [0.1.3](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.2...nutripoints-mcp-v0.1.3) (2026-09-14)
 
 
