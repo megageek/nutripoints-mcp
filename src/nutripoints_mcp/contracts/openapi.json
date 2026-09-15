@@ -3437,6 +3437,18 @@
             ],
             "title": "Description"
           },
+          "image_url": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url"
+          },
           "ingredients": {
             "items": {
               "anyOf": [
@@ -3532,6 +3544,32 @@
             "maxItems": 60,
             "title": "Reheat Steps Fridge",
             "type": "array"
+          },
+          "storage_life_freezer_days": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Life Freezer Days"
+          },
+          "storage_life_fridge_days": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Life Fridge Days"
           },
           "total_servings": {
             "exclusiveMinimum": 0.0,

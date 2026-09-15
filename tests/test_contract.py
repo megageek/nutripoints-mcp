@@ -17,7 +17,7 @@ def test_pinned_openapi_is_packaged() -> None:
     snapshot = resource.read_bytes()
     document = json.loads(snapshot)
 
-    assert pin["generation"] == "stable-rw-v17"
+    assert pin["generation"] == "stable-rw-v18"
     assert hashlib.sha256(snapshot).hexdigest() == pin["openapi_sha256"]
     assert document["openapi"].startswith("3.")
     assert "/api/v1/foods" in document["paths"]
@@ -29,14 +29,20 @@ def test_pinned_openapi_is_packaged() -> None:
     assert "/api/v1/ingredient-types/{ingredient_type_id}/draft" in document["paths"]
     assert "food_item_serving_id" in document["components"]["schemas"]["RecipeIngredientRead"]["properties"]
     recipe_payload = document["components"]["schemas"]["RecipeDraftPayload"]["properties"]
-    assert {"reheat_steps_fridge", "reheat_steps_freezer"} <= recipe_payload.keys()
+    assert {
+        "image_url",
+        "reheat_steps_fridge",
+        "reheat_steps_freezer",
+        "storage_life_fridge_days",
+        "storage_life_freezer_days",
+    } <= recipe_payload.keys()
 
 
 def test_sync_rejects_unverified_wheel(tmp_path: Path) -> None:
     wheel = tmp_path / "contract.whl"
     with ZipFile(wheel, "w") as archive:
         archive.writestr(
-            "nutripoints_api_contract/data/generations/stable-rw-v17/openapi.json",
+            "nutripoints_api_contract/data/generations/stable-rw-v18/openapi.json",
             '{"openapi":"3.1.0","paths":{"/api/v1/foods":{}}}',
         )
 

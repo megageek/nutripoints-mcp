@@ -186,6 +186,8 @@ _WRITE_GUIDANCE = {
         "Recipe timing fields prep_time_minutes, cook_time_minutes, and passive_time_minutes are writable "
         "integers from 0 to 10080. Include them in payload when known. update_recipe_draft replaces the full "
         "recipe payload, so do not send timing fields by themselves. "
+        "Recipe payloads also accept image_url and storage_life_fridge_days or storage_life_freezer_days. "
+        "Storage life is an optional whole number of days from 1 to 3650; use null to clear it. "
         "When a recipe explicitly supplies a timed appliance setting or rest, add the matching automation action; "
         "durations are whole seconds. Never invent a duration, temperature, wattage, or hob level. "
         "Published ingredient reads include food_item_serving_id for serving_variant quantities. "
@@ -207,7 +209,7 @@ _WRITE_GUIDANCE = {
 
 
 def register_tools(mcp: FastMCP) -> None:
-    """Expose only the stable-rw-v17 routes used by the initial workflow."""
+    """Expose only the stable-rw-v18 routes used by the initial workflow."""
     for domain, (catalog, drafts, item_id) in DOMAINS.items():
         detail_id = "food_id" if domain == "food" else item_id
         _add(

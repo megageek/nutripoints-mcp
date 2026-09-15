@@ -91,6 +91,9 @@ async def test_published_detail_reads(recorded_api: list[httpx.Request], tool: s
                 ],
                 "instruction_steps": [{"section": "cook", "body_markdown": "Simmer until tender."}],
                 "reheat_steps_freezer": [{"section": "reheat_freezer", "body_markdown": "Heat until hot."}],
+                "image_url": "https://example.com/soup.jpg",
+                "storage_life_fridge_days": 3,
+                "storage_life_freezer_days": 90,
             },
         ),
         (
@@ -144,6 +147,9 @@ async def test_draft_lifecycle(
         saved_payload = json.loads(recorded_api[-4].content)["payload"]
         assert saved_payload["instruction_steps"][0]["section"] == "cook"
         assert saved_payload["reheat_steps_freezer"][0]["section"] == "reheat_freezer"
+        assert saved_payload["image_url"] == "https://example.com/soup.jpg"
+        assert saved_payload["storage_life_fridge_days"] == 3
+        assert saved_payload["storage_life_freezer_days"] == 90
 
 
 @pytest.mark.anyio
@@ -285,6 +291,9 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
             "title": timing_field.replace("_", " ").title(),
             "type": "integer",
         }
+    storage_life_schema = {"type": "integer", "minimum": 1, "maximum": 3650}
+    for storage_field in ("storage_life_fridge_days", "storage_life_freezer_days"):
+        assert recipe_payload["properties"][storage_field]["anyOf"] == [storage_life_schema, {"type": "null"}]
     assert recipe_payload["properties"]["instruction_steps"]["items"]["properties"]["section"]["const"] == "cook"
     assert (
         recipe_payload["properties"]["reheat_steps_fridge"]["items"]["properties"]["section"]["const"]
@@ -304,6 +313,8 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert "cook_time_minutes" in description
     assert "passive_time_minutes" in description
     assert "replaces the full recipe payload" in description
+    assert "storage_life_fridge_days" in description
+    assert "storage_life_freezer_days" in description
     save_description = tools["save_recipe_draft"].description
     assert "get_recipe_draft_for_item" in save_description
     assert "update_recipe_draft" in save_description
@@ -329,6 +340,31 @@ async def test_recipe_draft_step_sections_are_checked_before_api(recorded_api: l
         result = await client.call_tool("save_recipe_draft", {"payload": payload}, raise_on_error=False)
     assert result.is_error
     assert "cook" in str(result.content)
+    assert not recorded_api
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("image_url", "x" * 1001),
+        ("storage_life_fridge_days", 0),
+        ("storage_life_freezer_days", 3651),
+    ],
+)
+async def test_recipe_draft_rejects_invalid_image_and_storage_life_locally(
+    recorded_api: list[httpx.Request], field: str, value: str | int
+) -> None:
+    payload: dict[str, Any] = {
+        "name": "Soup",
+        "total_servings": 2,
+        "ingredients": [{"kind": "generic", "quantity": {"mode": "grams", "value": 10}, "ingredient_type_id": 1}],
+        field: value,
+    }
+    async with Client(mcp) as client:
+        result = await client.call_tool("save_recipe_draft", {"payload": payload}, raise_on_error=False)
+    assert result.is_error
+    assert field in str(result.content)
     assert not recorded_api
 
 

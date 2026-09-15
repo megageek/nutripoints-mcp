@@ -34,6 +34,8 @@ reheat_steps_fridge and reheat_steps_freezer respectively; do not mix their sect
 Recipe drafts support prep_time_minutes, cook_time_minutes, and passive_time_minutes (each 0–10080 minutes).
 Put them in the recipe draft payload when known. update_recipe_draft replaces the full recipe payload, so do not
 send timing fields by themselves.
+Recipe draft payloads also support image_url and storage_life_fridge_days or storage_life_freezer_days. Storage
+life is an optional whole number of days from 1–3650; use null to clear it. Do not invent storage life or image URLs.
 When recipe instructions explicitly give a timed appliance setting or rest, add a matching automation action to
 that step. Use timer or rest with duration_seconds; oven with temperature_c and duration_seconds (optional preheat);
 hob with level and duration_seconds; microwave with power_watts and duration_seconds; or air_fryer with

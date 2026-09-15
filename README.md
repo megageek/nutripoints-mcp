@@ -10,8 +10,8 @@ The MCP server sends workflow instructions when a client connects. They direct a
 
 ## API contract
 
-The server is pinned to Nutri Points `stable-rw-v17` through the public
-[`nutripoints-api-contracts` v17.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v17.0.0).
+The server is pinned to Nutri Points `stable-rw-v18` through the public
+[`nutripoints-api-contracts` v18.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v18.0.0).
 The pinned version and wheel SHA-256 are recorded in `contract-version.json`. Its
 OpenAPI document is checked into `src/nutripoints_mcp/contracts/openapi.json` and
 included in the Python package and Docker image, so development and runtime do not
@@ -56,6 +56,9 @@ fields; do not copy those fields back into a draft payload unless the write sche
 - Recipe payloads support `prep_time_minutes`, `cook_time_minutes`, and `passive_time_minutes`, each from 0 to
   10,080. Include known values when saving or updating. `update_recipe_draft` replaces the full recipe payload,
   so timing fields cannot be sent as a standalone partial update.
+- Recipe payloads also support `image_url`, `storage_life_fridge_days`, and `storage_life_freezer_days`. Storage
+  life is nullable and, when set, must be a whole number of days from 1 to 3,650. Use `null` to clear a value; do
+  not invent storage life or image URLs.
 - When the recipe explicitly gives a timed cooking action, add it to that step's `automation_actions`: use
   `{"action_kind":"timer","duration_seconds":...}` or `{"action_kind":"rest","duration_seconds":...}`; oven with `temperature_c` and `duration_seconds`,
   hob with `level` (1–9) and `duration_seconds`, microwave with `power_watts` and `duration_seconds`, or air fryer
