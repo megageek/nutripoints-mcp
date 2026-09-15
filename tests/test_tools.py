@@ -23,6 +23,27 @@ def recorded_api(monkeypatch: pytest.MonkeyPatch) -> list[httpx.Request]:
             return httpx.Response(404, json={"detail": {"error_code": "ingredient_type_not_found"}})
         if request.url.path == "/api/v1/recipe-drafts/999/publish":
             return httpx.Response(409, json={"detail": {"error_code": "draft_version_conflict"}})
+        if request.url.path == "/api/v1/days/today":
+            return httpx.Response(
+                200,
+                json={
+                    "status": "setup_blocked",
+                    "date": "2026-09-15",
+                    "timezone": "UTC",
+                    "detail": {"error_code": "budget_not_ready", "message": "Add a weigh-in.", "retryable": False},
+                },
+            )
+        if request.url.path == "/api/v1/days/2026-09-14":
+            return httpx.Response(
+                200,
+                json={
+                    "status": "ready",
+                    "date": "2026-09-14",
+                    "timezone": "UTC",
+                    "food_entries": [],
+                    "activity_entries": [],
+                },
+            )
         if request.method == "DELETE":
             return httpx.Response(204)
         return httpx.Response(200, json={"id": 7, "version": 2, "items": []})
@@ -170,6 +191,50 @@ async def test_read_drafts_and_validate_recipe(recorded_api: list[httpx.Request]
 
 
 @pytest.mark.anyio
+@pytest.mark.parametrize(
+    "name",
+    ["list_food_logs", "list_activity_logs", "list_weight_logs"],
+)
+async def test_log_reads_forward_contract_filters(recorded_api: list[httpx.Request], name: str) -> None:
+    arguments = {
+        "date_from": "2026-09-01",
+        "date_to": "2026-09-15",
+        "start_at": "2026-09-01T08:00:00Z",
+        "end_at": "2026-09-15T18:00:00Z",
+        "limit": 25,
+    }
+    async with Client(mcp) as client:
+        result = await client.call_tool(name, arguments)
+    assert not result.is_error
+    assert recorded_api[-1].url.path == f"/api/v1/logs/{name.removeprefix('list_').removesuffix('_logs')}"
+    assert dict(recorded_api[-1].url.params) == {key: str(value) for key, value in arguments.items()}
+
+
+@pytest.mark.anyio
+async def test_weight_and_day_reads_preserve_api_responses(recorded_api: list[httpx.Request]) -> None:
+    async with Client(mcp) as client:
+        overview = await client.call_tool("get_weight_overview", {"range": "1y"})
+        recap = await client.call_tool("get_pending_weight_recap", {})
+        today = await client.call_tool("get_today", {})
+        day = await client.call_tool("get_day", {"day": "2026-09-14"})
+
+    assert not any(result.is_error for result in (overview, recap, today, day))
+    assert overview.data == {"id": 7, "version": 2, "items": []}
+    assert recap.data == {"id": 7, "version": 2, "items": []}
+    assert today.data["status"] == "setup_blocked"
+    assert today.data["detail"]["error_code"] == "budget_not_ready"
+    assert day.data["status"] == "ready"
+    assert day.data["food_entries"] == []
+    assert [request.url.path for request in recorded_api[-4:]] == [
+        "/api/v1/weight/overview",
+        "/api/v1/weight/recap/pending",
+        "/api/v1/days/today",
+        "/api/v1/days/2026-09-14",
+    ]
+    assert recorded_api[-4].url.params["range"] == "1y"
+
+
+@pytest.mark.anyio
 async def test_validate_recipe_draft_only_accepts_a_saved_draft_id(recorded_api: list[httpx.Request]) -> None:
     async with Client(mcp) as client:
         tools = {tool.name: tool for tool in await client.list_tools()}
@@ -212,6 +277,33 @@ async def test_invalid_inputs_do_not_reach_api(recorded_api: list[httpx.Request]
 
 
 @pytest.mark.anyio
+@pytest.mark.parametrize(
+    ("name", "arguments", "field"),
+    [
+        ("list_food_logs", {"date_from": "2026-02-30"}, "date_from"),
+        ("list_activity_logs", {"date_from": "2026-09-16", "date_to": "2026-09-15"}, "date range"),
+        ("list_weight_logs", {"start_at": "2026-09-01"}, "start_at"),
+        (
+            "list_food_logs",
+            {"start_at": "2026-09-16T08:00:00Z", "end_at": "2026-09-15T08:00:00Z"},
+            "datetime range",
+        ),
+        ("list_activity_logs", {"limit": 0}, "limit"),
+        ("get_day", {"day": "20260915"}, "day"),
+        ("get_weight_overview", {"range": "7d"}, "range"),
+    ],
+)
+async def test_log_weight_and_day_reads_reject_invalid_input_locally(
+    recorded_api: list[httpx.Request], name: str, arguments: dict[str, Any], field: str
+) -> None:
+    async with Client(mcp) as client:
+        result = await client.call_tool(name, arguments, raise_on_error=False)
+    assert result.is_error
+    assert field in str(result.content)
+    assert not recorded_api
+
+
+@pytest.mark.anyio
 async def test_tool_schemas_bound_all_scalar_and_collection_inputs() -> None:
     async with Client(mcp) as client:
         tools = await client.list_tools()
@@ -246,6 +338,13 @@ async def test_tools_are_annotated_as_read_or_write() -> None:
     read_tools = {
         "ping",
         "validate_recipe_draft",
+        "list_food_logs",
+        "list_activity_logs",
+        "list_weight_logs",
+        "get_weight_overview",
+        "get_pending_weight_recap",
+        "get_today",
+        "get_day",
         *(f"search_{domain}s" for domain in ("recipe", "food", "generic_ingredient")),
         *(f"get_{domain}" for domain in ("recipe", "food", "generic_ingredient")),
         *(f"get_{domain}_draft" for domain in ("food", "generic_ingredient")),

@@ -18,6 +18,10 @@ result is a candidate, not proof of an exact match. Reuse a suitable saved item 
 When a new ingredient is needed, prefer a generic ingredient for a reusable ingredient category.
 Create a specific food item when the exact product, brand, preparation, or nutrition is necessary.
 If required nutrition facts are missing, ask for them rather than inventing values.
+Use list_food_logs, list_activity_logs, and list_weight_logs to read saved records. Use get_today for the
+current day or get_day for a specific calendar day. Day responses may have status "setup_blocked" when daily
+budget prerequisites are missing; return that Nutri Points response unchanged rather than treating it as an error.
+get_weight_overview and get_pending_weight_recap are read-only views of Nutri Points' calculated weight data.
 Save or update a draft first, use its returned version for further edits, and publish only when the
 caller intends to make it available. validate_recipe_draft accepts only a saved draft_id: it cannot accept
 recipe data or save changes. Call save_recipe_draft first, then validate its returned draft_id and follow

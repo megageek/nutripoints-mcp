@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+from collections.abc import Callable
 from typing import Any
 
 from fastmcp import FastMCP
@@ -10,7 +11,18 @@ from fastmcp.tools.function_tool import FunctionTool
 from mcp_types import ToolAnnotations
 
 from nutripoints_mcp import api_client
-from nutripoints_mcp.contract import COMPONENTS, ID_SCHEMA, KEY_SCHEMA, OPENAPI, input_schema, validate
+from nutripoints_mcp.contract import (
+    COMPONENTS,
+    ID_SCHEMA,
+    KEY_SCHEMA,
+    OPENAPI,
+    input_schema,
+    validate,
+    validate_day,
+    validate_log_filters,
+)
+
+ArgumentValidator = Callable[[dict[str, Any]], None]
 
 
 def _operation(path: str, method: str) -> dict[str, Any]:
@@ -126,6 +138,7 @@ def _add(
     path: str,
     *,
     category: str | None = None,
+    argument_validator: ArgumentValidator | None = None,
 ) -> None:
     properties, required, body_fields = _parameters(path, method)
     if path.startswith("/api/v1/recipe-drafts") and "payload" in body_fields:
@@ -137,6 +150,8 @@ def _add(
 
     async def handle(**arguments: Any) -> Any:
         validate(arguments, schema)
+        if argument_validator is not None:
+            argument_validator(arguments)
         route = path.format(**arguments)
         params = {key: arguments[key] for key in query_fields if key in arguments and arguments[key] is not None}
         body = {key: arguments[key] for key in body_fields if key in arguments and arguments[key] is not None}
@@ -277,4 +292,37 @@ def register_tools(mcp: FastMCP) -> None:
         "POST",
         "/api/v1/recipe-drafts/{draft_id}/validate",
         category="read",
+    )
+    for name, description, path in (
+        ("list_food_logs", "List saved food logs with optional date or timestamp filters.", "/api/v1/logs/food"),
+        (
+            "list_activity_logs",
+            "List saved activity logs with optional date or timestamp filters.",
+            "/api/v1/logs/activity",
+        ),
+        ("list_weight_logs", "List saved weight logs with optional date or timestamp filters.", "/api/v1/logs/weight"),
+    ):
+        _add(mcp, name, description, "GET", path, argument_validator=validate_log_filters)
+    _add(
+        mcp,
+        "get_weight_overview",
+        "Read Nutri Points' calculated weight overview, including trends and coaching, for the selected range.",
+        "GET",
+        "/api/v1/weight/overview",
+    )
+    _add(
+        mcp,
+        "get_pending_weight_recap",
+        "Read Nutri Points' pending weight recap without acknowledging or changing it.",
+        "GET",
+        "/api/v1/weight/recap/pending",
+    )
+    _add(mcp, "get_today", "Read Nutri Points' current-day status and ledger.", "GET", "/api/v1/days/today")
+    _add(
+        mcp,
+        "get_day",
+        "Read Nutri Points' status and ledger for one ISO 8601 calendar day.",
+        "GET",
+        "/api/v1/days/{day}",
+        argument_validator=validate_day,
     )

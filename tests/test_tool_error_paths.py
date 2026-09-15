@@ -26,6 +26,14 @@ RECIPE_PAYLOAD = {
 
 
 def valid_arguments(name: str) -> dict[str, Any]:
+    if name in {"list_food_logs", "list_activity_logs", "list_weight_logs"}:
+        return {"date_from": "2026-09-01", "date_to": "2026-09-15", "limit": 10}
+    if name == "get_weight_overview":
+        return {"range": "90d"}
+    if name in {"get_pending_weight_recap", "get_today"}:
+        return {}
+    if name == "get_day":
+        return {"day": "2026-09-15"}
     if name.startswith("search_"):
         return {"q": "basil"}
     if name.startswith("save_"):
@@ -53,6 +61,14 @@ def valid_arguments(name: str) -> dict[str, Any]:
 
 def invalid_arguments(name: str) -> dict[str, Any]:
     arguments = valid_arguments(name)
+    if name in {"list_food_logs", "list_activity_logs", "list_weight_logs"}:
+        return {"date_from": "2026-09-16", "date_to": "2026-09-15"}
+    if name == "get_weight_overview":
+        return {"range": "invalid"}
+    if name in {"get_pending_weight_recap", "get_today"}:
+        return {"unexpected": True}
+    if name == "get_day":
+        return {"day": "not-a-date"}
     if "q" in arguments:
         arguments["q"] = "x" * 121
     elif "payload" in arguments and name.startswith("save_"):

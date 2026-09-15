@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import json
 import re
+from datetime import date, datetime
 from importlib.resources import files
 from typing import Any
 
@@ -127,3 +128,49 @@ def validate(arguments: dict[str, Any], schema: dict[str, Any]) -> None:
                 check_text(child)
 
     check_text(arguments)
+
+
+def _parse_date(value: str, name: str) -> date:
+    """Parse one documented ISO 8601 calendar date."""
+    if len(value) != 10 or value[4] != "-" or value[7] != "-":
+        raise ValueError(f"Invalid {name}: use an ISO 8601 date (YYYY-MM-DD)")
+    try:
+        return date.fromisoformat(value)
+    except ValueError as error:
+        raise ValueError(f"Invalid {name}: use an ISO 8601 date (YYYY-MM-DD)") from error
+
+
+def _parse_datetime(value: str, name: str) -> datetime:
+    """Parse one documented ISO 8601 datetime without changing its value."""
+    if "T" not in value:
+        raise ValueError(f"Invalid {name}: use an ISO 8601 datetime")
+    normalized = f"{value[:-1]}+00:00" if value.endswith("Z") else value
+    try:
+        return datetime.fromisoformat(normalized)
+    except ValueError as error:
+        raise ValueError(f"Invalid {name}: use an ISO 8601 datetime") from error
+
+
+def validate_log_filters(arguments: dict[str, Any]) -> None:
+    """Validate stable log-listing date and timestamp filters before a request."""
+    date_from = arguments.get("date_from")
+    date_to = arguments.get("date_to")
+    parsed_date_from = _parse_date(date_from, "date_from") if date_from is not None else None
+    parsed_date_to = _parse_date(date_to, "date_to") if date_to is not None else None
+    if parsed_date_from is not None and parsed_date_to is not None and parsed_date_from > parsed_date_to:
+        raise ValueError("Invalid date range: date_from must not be after date_to")
+
+    start_at = arguments.get("start_at")
+    end_at = arguments.get("end_at")
+    parsed_start_at = _parse_datetime(start_at, "start_at") if start_at is not None else None
+    parsed_end_at = _parse_datetime(end_at, "end_at") if end_at is not None else None
+    if parsed_start_at is not None and parsed_end_at is not None:
+        if (parsed_start_at.tzinfo is None) != (parsed_end_at.tzinfo is None):
+            raise ValueError("Invalid datetime range: start_at and end_at must both include a UTC offset or neither")
+        if parsed_start_at > parsed_end_at:
+            raise ValueError("Invalid datetime range: start_at must not be after end_at")
+
+
+def validate_day(arguments: dict[str, Any]) -> None:
+    """Validate the date path argument for the stable day-status route."""
+    _parse_date(arguments["day"], "day")

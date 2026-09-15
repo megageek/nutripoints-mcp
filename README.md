@@ -2,9 +2,16 @@
 
 An MCP server exposing the [Nutri Points](https://github.com/megageek/nutripoints) API's stable, scoped recipe, food-item, and generic-ingredient draft workflow as MCP tools.
 
-Tools search saved recipes, food items, and generic ingredients; read published items and drafts; and save, update, publish, or discard drafts. Recipe drafts can also be validated before publishing. Each write is a separate call, so callers can review the draft and its version before publication. Nutri Points calculates nutrition and points.
+Tools search saved recipes, food items, and generic ingredients; read published items and drafts; read food,
+activity, and weight logs; and save, update, publish, or discard drafts. Recipe drafts can also be validated before
+publishing. Each write is a separate call, so callers can review the draft and its version before publication. Nutri
+Points calculates nutrition and points.
 
-Every tool has the standard MCP `readOnlyHint` annotation: searches, detail and draft reads, recipe validation, and `ping` are read-only; saving, updating, publishing, and discarding drafts are writes. Tools are also tagged `read` or `write` within FastMCP, allowing FastMCP-based deployments to filter each set independently. MCP itself does not define a separate category field, so wrappers should use `readOnlyHint` to apply different requirements.
+Every tool has the standard MCP `readOnlyHint` annotation: searches, detail and draft reads, log/day/weight reads,
+recipe validation, and `ping` are read-only; saving, updating, publishing, and discarding drafts are writes. Tools are
+also tagged `read` or `write` within FastMCP, allowing FastMCP-based deployments to filter each set independently.
+MCP itself does not define a separate category field, so wrappers should use `readOnlyHint` to apply different
+requirements.
 
 The MCP server sends workflow instructions when a client connects. They direct assistants to search for reusable recipes and ingredients before creating new ones, inspect candidate details, and prefer generic ingredients for reusable categories. A specific food item is appropriate when an exact product or its nutrition matters. Assistants should request missing nutrition facts and use Nutri Points' draft validation and calculated values; these instructions guide the assistant and do not block tool calls.
 
@@ -32,9 +39,20 @@ Open this repository in the Dev Container (VS Code "Reopen in Container", or Git
 The Dev Container also installs Docker Engine, the Docker CLI, Buildx, and Compose through the [Docker-in-Docker feature](https://github.com/devcontainers/features/tree/main/src/docker-in-docker). Rebuild the Dev Container after changing this configuration, then run `docker version` and `docker compose version` inside it. Its Docker daemon is separate from the host daemon and requires a host that allows privileged Dev Containers. To deploy beside an existing Nutri Points container on another Docker host, run Compose on that host or select a Docker context for it. Dev Container CI builds the Compose service and checks `/health`.
 
 Copy `.env.example` to `.env` and fill in a Nutri Points base URL and scoped API key before running anything against a real instance.
-For all tools, the key needs `recipes:read`, `recipes:write`, `foods:read`, `foods:write`, `ingredient-types:read`, and `ingredient-types:write`; a narrower key works for the tools in its domain. API errors, including version conflicts and missing items, are returned as tool errors. Mutating tools accept an optional `idempotency_key` for replay-safe retries.
+For draft and catalog tools, the key needs `recipes:read`, `recipes:write`, `foods:read`, `foods:write`,
+`ingredient-types:read`, and `ingredient-types:write`; a narrower key works for the tools in its domain. The
+configured key must also be permitted by Nutri Points to read the selected log, weight, and day routes. API errors,
+including version conflicts and missing items, are returned as tool errors. Mutating tools accept an optional
+`idempotency_key` for replay-safe retries.
 
 Search tools pass `q` to Nutri Points (up to 120 characters). Food-item and generic-ingredient searches also accept `include_archived`. To edit a published item, first call its `get_*_draft_for_item` tool. If it returns a draft, update that draft using its returned `id` and `version`; if no draft exists, call `save_*_draft` with the published item ID to begin one. To create a new item, omit the item ID. Recipe drafts can reference published or caller-owned draft ingredients; Nutri Points validation reports required next actions before publication.
+
+`list_food_logs`, `list_activity_logs`, and `list_weight_logs` accept optional `date_from`/`date_to` ISO dates,
+`start_at`/`end_at` ISO datetimes, and `limit` (1–2,000). `get_today` reads the current day, while `get_day` reads a
+specific ISO date. A day result can be `status: "ready"` with the server-calculated ledger, or `status:
+"setup_blocked"` when daily-budget prerequisites are incomplete; both are returned unchanged. `get_weight_overview`
+reads calculated trends and coaching for `30d`, `90d`, `1y`, or `all`, and `get_pending_weight_recap` reads without
+acknowledging a recap.
 
 For example, `search_generic_ingredients` with `{"q":"basil"}` finds saved generic ingredients. `save_generic_ingredient_draft` with a complete `payload` returns a draft `id` and `version`; `publish_generic_ingredient_draft` then takes those as `draft_id` and `expected_version`. The same tool naming applies to `recipe` and `food` drafts. Search results and published detail reads come directly from Nutri Points.
 

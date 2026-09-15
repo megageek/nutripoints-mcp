@@ -27,6 +27,15 @@ def test_pinned_openapi_is_packaged() -> None:
     assert "/api/v1/food-drafts" in document["paths"]
     assert "/api/v1/foods/{food_item_id}/draft" in document["paths"]
     assert "/api/v1/ingredient-types/{ingredient_type_id}/draft" in document["paths"]
+    assert {
+        "/api/v1/logs/food",
+        "/api/v1/logs/activity",
+        "/api/v1/logs/weight",
+        "/api/v1/weight/overview",
+        "/api/v1/weight/recap/pending",
+        "/api/v1/days/today",
+        "/api/v1/days/{day}",
+    } <= document["paths"].keys()
     assert "food_item_serving_id" in document["components"]["schemas"]["RecipeIngredientRead"]["properties"]
     recipe_payload = document["components"]["schemas"]["RecipeDraftPayload"]["properties"]
     assert {
