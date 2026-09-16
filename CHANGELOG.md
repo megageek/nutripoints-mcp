@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.5...nutripoints-mcp-v0.1.6) (2026-09-16)
+
+
+### Features
+
+* support generic ingredient servings ([7fbc6e6](https://github.com/megageek/nutripoints-mcp/commit/7fbc6e67e59a2750e610e3b74b63d8a89a95bbd9))
+
 ## [0.1.5](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.4...nutripoints-mcp-v0.1.5) (2026-09-15)
 
 
