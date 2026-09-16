@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.6...nutripoints-mcp-v0.1.7) (2026-09-16)
+
+
+### Features
+
+* expose tool output schemas ([c583803](https://github.com/megageek/nutripoints-mcp/commit/c583803705ac4d0b03b1cf31852f2fa1fdc2e26c))
+
 ## [0.1.6](https://github.com/megageek/nutripoints-mcp/compare/nutripoints-mcp-v0.1.5...nutripoints-mcp-v0.1.6) (2026-09-16)
 
 
