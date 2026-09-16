@@ -198,6 +198,9 @@ _WRITE_GUIDANCE = {
         'instruction_steps:[{"section":"cook","body_markdown":"Cook."}], '
         'reheat_steps_fridge:[{"section":"reheat_fridge","body_markdown":"Reheat."}], and '
         'reheat_steps_freezer:[{"section":"reheat_freezer","body_markdown":"Reheat."}]. '
+        "Prefer named servings over grams or milliliters when they describe the ingredient naturally: use "
+        "serving_variant for a food (for example, one egg) or base_servings for a generic ingredient. "
+        "Use grams or milliliters only when no suitable named serving exists. "
         "Recipe timing fields prep_time_minutes, cook_time_minutes, and passive_time_minutes are writable "
         "integers from 0 to 10080. Include them in payload when known. update_recipe_draft replaces the full "
         "recipe payload, so do not send timing fields by themselves. "
@@ -211,14 +214,16 @@ _WRITE_GUIDANCE = {
     ),
     "food": (
         ' Example payload: {"name":"Basil","nutrition_input_mode":"per_100g",'
-        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Optional serving variants use '
-        '{"label":"tbsp","grams":4}. Read-only IDs, timestamps, basis_type, and calculated fields must not be sent.'
+        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Add sensible serving_variants when useful, '
+        'such as pinch, teaspoon, and tablespoon for a spice: {"label":"tbsp","grams":4}. Read-only IDs, '
+        "timestamps, basis_type, and calculated fields must not be sent."
     ),
     "generic_ingredient": (
         ' Example payload: {"name":"Basil","nutrition_input_mode":"per_100g",'
-        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Optional base serving fields are '
-        "base_serving_label with base_serving_grams or base_serving_milliliters. Read-only IDs, timestamps, "
-        "basis_type, archive, and origin fields must not be sent."
+        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Add a useful base serving with '
+        "base_serving_label and base_serving_grams or base_serving_milliliters. Prefer creating a generic "
+        "ingredient unless an exact product, brand, preparation, nutrition, or multiple serving variants require "
+        "a specific food. Read-only IDs, timestamps, basis_type, archive, and origin fields must not be sent."
     ),
 }
 

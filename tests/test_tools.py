@@ -414,9 +414,15 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert "replaces the full recipe payload" in description
     assert "storage_life_fridge_days" in description
     assert "storage_life_freezer_days" in description
+    assert "Prefer named servings over grams or milliliters" in description
+    assert "base_servings for a generic ingredient" in description
     save_description = tools["save_recipe_draft"].description
     assert "get_recipe_draft_for_item" in save_description
     assert "update_recipe_draft" in save_description
+    food_description = tools["save_food_draft"].description
+    assert "pinch, teaspoon, and tablespoon" in food_description
+    generic_description = tools["save_generic_ingredient_draft"].description
+    assert "Prefer creating a generic ingredient" in generic_description
 
     update_schema = tools["update_recipe_draft"].input_schema
     assert {"draft_id", "expected_version", "payload"} <= set(update_schema["required"])

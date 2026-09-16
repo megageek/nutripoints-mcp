@@ -45,7 +45,7 @@ configured key must also be permitted by Nutri Points to read the selected log, 
 including version conflicts and missing items, are returned as tool errors. Mutating tools accept an optional
 `idempotency_key` for replay-safe retries.
 
-Search tools pass `q` to Nutri Points (up to 120 characters). Food-item and generic-ingredient searches also accept `include_archived`. To edit a published item, first call its `get_*_draft_for_item` tool. If it returns a draft, update that draft using its returned `id` and `version`; if no draft exists, call `save_*_draft` with the published item ID to begin one. To create a new item, omit the item ID. Recipe drafts can reference published or caller-owned draft ingredients; Nutri Points validation reports required next actions before publication.
+Search tools pass `q` to Nutri Points (up to 120 characters). Food-item and generic-ingredient searches also accept `include_archived`. To edit a published item, first call its `get_*_draft_for_item` tool. If it returns a draft, update that draft using its returned `id` and `version`; if no draft exists, call `save_*_draft` with the published item ID to begin one. To create a new item, omit the item ID. Agents may create needed ingredients, but should first confirm the user can obtain them. Prefer generic ingredients unless an exact product, brand, preparation, nutrition, or multiple serving variants needs a specific food. Recipe drafts can reference published or caller-owned draft ingredients; Nutri Points validation reports required next actions before publication.
 
 `list_food_logs`, `list_activity_logs`, and `list_weight_logs` accept optional `date_from`/`date_to` ISO dates,
 `start_at`/`end_at` ISO datetimes, and `limit` (1–2,000). `get_today` reads the current day, while `get_day` reads a
@@ -68,6 +68,11 @@ fields; do not copy those fields back into a draft payload unless the write sche
   modes are `grams`, `milliliters`, `serving_variant`, and `base_servings`. For `serving_variant`, provide the
   selected `food_item_serving_id` and `multiplier`. Published recipe reads now return that serving ID, so it can
   be retained when preparing a draft payload.
+- Prefer a named serving when it describes the recipe naturally—such as one egg rather than 120 g. Use
+  `serving_variant` for a food or `base_servings` for a generic ingredient; use grams or milliliters when no
+  suitable named serving exists. When creating a generic ingredient, set its most useful base serving label and
+  amount. Specific foods can add multiple `serving_variants`; add sensible options such as pinch, teaspoon, and
+  tablespoon when they are useful for a spice.
 - Put only `{"section":"cook",...}` steps in `instruction_steps`. Put reheat steps in
   `reheat_steps_fridge` or `reheat_steps_freezer`, with sections `reheat_fridge` or `reheat_freezer` respectively.
   The matching `reheat_instructions_fridge` and `reheat_instructions_freezer` text fields are also available.

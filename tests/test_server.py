@@ -24,4 +24,7 @@ async def test_server_exposes_ingredient_reuse_guidance() -> None:
     assert "Inspect promising results by ID" in instructions
     assert "prefer a generic ingredient" in instructions
     assert "exact product, brand, preparation, or nutrition" in instructions
+    assert "confirm\nthe user can obtain it" in instructions
+    assert "Prefer an attached named serving" in instructions
+    assert "pinch, teaspoon, and tablespoon" in instructions
     assert "rather than inventing values" in instructions
