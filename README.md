@@ -17,8 +17,8 @@ The MCP server sends workflow instructions when a client connects. They direct a
 
 ## API contract
 
-The server is pinned to Nutri Points `stable-rw-v18` through the public
-[`nutripoints-api-contracts` v18.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v18.0.0).
+The server is pinned to Nutri Points `stable-rw-v19` through the public
+[`nutripoints-api-contracts` v19.0.0 release](https://github.com/megageek/nutripoints-api-contracts/releases/tag/v19.0.0).
 The pinned version and wheel SHA-256 are recorded in `contract-version.json`. Its
 OpenAPI document is checked into `src/nutripoints_mcp/contracts/openapi.json` and
 included in the Python package and Docker image, so development and runtime do not
@@ -70,9 +70,9 @@ fields; do not copy those fields back into a draft payload unless the write sche
   be retained when preparing a draft payload.
 - Prefer a named serving when it describes the recipe naturally—such as one egg rather than 120 g. Use
   `serving_variant` for a food or `base_servings` for a generic ingredient; use grams or milliliters when no
-  suitable named serving exists. When creating a generic ingredient, set its most useful base serving label and
-  amount. Specific foods can add multiple `serving_variants`; add sensible options such as pinch, teaspoon, and
-  tablespoon when they are useful for a spice.
+  suitable named serving exists. Both generic ingredients and specific foods can add multiple `serving_variants`;
+  add sensible options such as pinch, teaspoon, and tablespoon when they are useful for a spice. Generic
+  ingredients can also set a base serving label and amount.
 - Put only `{"section":"cook",...}` steps in `instruction_steps`. Put reheat steps in
   `reheat_steps_fridge` or `reheat_steps_freezer`, with sections `reheat_fridge` or `reheat_freezer` respectively.
   The matching `reheat_instructions_fridge` and `reheat_instructions_freezer` text fields are also available.

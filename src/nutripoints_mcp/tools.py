@@ -220,16 +220,17 @@ _WRITE_GUIDANCE = {
     ),
     "generic_ingredient": (
         ' Example payload: {"name":"Basil","nutrition_input_mode":"per_100g",'
-        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Add a useful base serving with '
-        "base_serving_label and base_serving_grams or base_serving_milliliters. Prefer creating a generic "
-        "ingredient unless an exact product, brand, preparation, nutrition, or multiple serving variants require "
-        "a specific food. Read-only IDs, timestamps, basis_type, archive, and origin fields must not be sent."
+        '"protein_g":3,"carbs_g":2,"fat_g":1,"fiber_g":2}. Add useful serving_variants when applicable, '
+        'such as pinch, teaspoon, and tablespoon for a spice: {"label":"tsp","grams":5}. A base serving '
+        "is also available through base_serving_label with base_serving_grams or base_serving_milliliters. Prefer "
+        "creating a generic ingredient unless an exact product, brand, preparation, or nutrition requires a "
+        "specific food. Read-only IDs, timestamps, basis_type, archive, and origin fields must not be sent."
     ),
 }
 
 
 def register_tools(mcp: FastMCP) -> None:
-    """Expose only the stable-rw-v18 routes used by the initial workflow."""
+    """Expose only the stable-rw-v19 routes used by the initial workflow."""
     for domain, (catalog, drafts, item_id) in DOMAINS.items():
         detail_id = "food_id" if domain == "food" else item_id
         _add(

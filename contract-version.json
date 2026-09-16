@@ -1,6 +1,6 @@
 {
-  "generation": "stable-rw-v18",
-  "release": "18.0.0",
-  "wheel_sha256": "400fde5d19f78e197ea0475d52cf477bafb023683d86b0146b6f392861b39a48",
-  "openapi_sha256": "02dafb5aa186ce5105c2c2c08de9f6e108c0ea45a26954252a3efcc13ecbce6d"
+  "generation": "stable-rw-v19",
+  "release": "19.0.0",
+  "wheel_sha256": "9782df324c396b82c40f82b7bff73d4aed3ef0726ad592f7858f71d630f57844",
+  "openapi_sha256": "fa9ee316afdb819bc50799ea85d01d02be485344cb53403cda559c6a43002e74"
 }

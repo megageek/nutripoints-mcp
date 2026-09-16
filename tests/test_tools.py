@@ -141,6 +141,11 @@ async def test_published_detail_reads(recorded_api: list[httpx.Request], tool: s
                 "carbs_g": 2,
                 "fat_g": 0,
                 "fiber_g": 1,
+                "serving_variants": [
+                    {"label": "pinch", "grams": 0.5},
+                    {"label": "tsp", "grams": 5},
+                    {"label": "tbsp", "grams": 15},
+                ],
             },
         ),
     ],
@@ -171,6 +176,9 @@ async def test_draft_lifecycle(
         assert saved_payload["image_url"] == "https://example.com/soup.jpg"
         assert saved_payload["storage_life_fridge_days"] == 3
         assert saved_payload["storage_life_freezer_days"] == 90
+    if domain == "generic_ingredient":
+        saved_payload = json.loads(recorded_api[-4].content)["payload"]
+        assert [serving["label"] for serving in saved_payload["serving_variants"]] == ["pinch", "tsp", "tbsp"]
 
 
 @pytest.mark.anyio
@@ -423,6 +431,8 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert "pinch, teaspoon, and tablespoon" in food_description
     generic_description = tools["save_generic_ingredient_draft"].description
     assert "Prefer creating a generic ingredient" in generic_description
+    assert "serving_variants" in generic_description
+    assert "pinch, teaspoon, and tablespoon" in generic_description
 
     update_schema = tools["update_recipe_draft"].input_schema
     assert {"draft_id", "expected_version", "payload"} <= set(update_schema["required"])
@@ -599,4 +609,31 @@ async def test_food_and_generic_writes_reject_read_only_fields_locally(
         result = await client.call_tool(tool, {"payload": payload}, raise_on_error=False)
     assert result.is_error
     assert field in str(result.content)
+    assert not recorded_api
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize(
+    "serving_variants",
+    [
+        [{"label": "", "grams": 5}],
+        [{"label": f"serving-{index}", "grams": 1} for index in range(21)],
+    ],
+)
+async def test_generic_ingredient_draft_rejects_invalid_serving_variants_locally(
+    recorded_api: list[httpx.Request], serving_variants: list[dict[str, Any]]
+) -> None:
+    payload = {
+        "name": "Salt",
+        "nutrition_input_mode": "per_100g",
+        "protein_g": 0,
+        "carbs_g": 0,
+        "fat_g": 0,
+        "fiber_g": 0,
+        "serving_variants": serving_variants,
+    }
+    async with Client(mcp) as client:
+        result = await client.call_tool("save_generic_ingredient_draft", {"payload": payload}, raise_on_error=False)
+    assert result.is_error
+    assert "serving_variants" in str(result.content)
     assert not recorded_api

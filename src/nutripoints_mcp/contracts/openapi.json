@@ -2663,6 +2663,14 @@
             "minimum": 0.0,
             "title": "Protein G",
             "type": "number"
+          },
+          "serving_variants": {
+            "items": {
+              "$ref": "#/components/schemas/IngredientTypeServingPayload"
+            },
+            "maxItems": 20,
+            "title": "Serving Variants",
+            "type": "array"
           }
         },
         "required": [
@@ -2825,6 +2833,13 @@
             "title": "Protein G",
             "type": "number"
           },
+          "serving_variants": {
+            "items": {
+              "$ref": "#/components/schemas/IngredientTypeServingRead"
+            },
+            "title": "Serving Variants",
+            "type": "array"
+          },
           "updated_at": {
             "format": "date-time",
             "title": "Updated At",
@@ -2848,6 +2863,132 @@
           "updated_at"
         ],
         "title": "IngredientTypeRead",
+        "type": "object"
+      },
+      "IngredientTypeServingPayload": {
+        "properties": {
+          "grams": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grams"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "label": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "milliliters": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Milliliters"
+          },
+          "serving_multiplier": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Multiplier"
+          },
+          "sort_order": {
+            "default": 0,
+            "title": "Sort Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "label"
+        ],
+        "title": "IngredientTypeServingPayload",
+        "type": "object"
+      },
+      "IngredientTypeServingRead": {
+        "properties": {
+          "grams": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grams"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "milliliters": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Milliliters"
+          },
+          "serving_multiplier": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Multiplier"
+          },
+          "sort_order": {
+            "title": "Sort Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "grams",
+          "milliliters",
+          "serving_multiplier",
+          "sort_order"
+        ],
+        "title": "IngredientTypeServingRead",
         "type": "object"
       },
       "ListMeta": {
@@ -3770,6 +3911,17 @@
             ],
             "title": "Ingredient Type Id"
           },
+          "ingredient_type_serving_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Type Serving Id"
+          },
           "logged_quantity_display_label": {
             "anyOf": [
               {
@@ -3862,6 +4014,7 @@
           "logged_quantity_display_label",
           "logged_quantity_display_multiplier",
           "food_item_serving_id",
+          "ingredient_type_serving_id",
           "preparation",
           "sort_order"
         ],

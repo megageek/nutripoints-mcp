@@ -36,10 +36,10 @@ ingredient_type_id or ingredient_type_draft_id; both require quantity with a sup
 display, calculated, ID, timestamp, archive, origin, or basis fields from read responses into draft payloads
 unless that field is explicitly present in the write tool schema.
 Prefer an attached named serving over grams or milliliters when it expresses the recipe naturally: use a food's
-serving_variant (for example, one egg) or a generic ingredient's base_servings. When creating a generic ingredient,
-add its most useful base serving label and amount. A specific food can add multiple serving_variants; add sensible
-ones when needed, such as pinch, teaspoon, and tablespoon for a spice. Use grams or milliliters when no suitable
-named serving exists.
+serving_variant (for example, one egg) or a generic ingredient's base_servings. When creating either type of
+ingredient, add sensible serving_variants when needed, such as pinch, teaspoon, and tablespoon for a spice. A
+generic ingredient can also have a base serving label and amount. Use grams or milliliters when no suitable named
+serving exists.
 For recipe drafts, put cook steps only in instruction_steps. Put reheat_fridge and reheat_freezer steps in
 reheat_steps_fridge and reheat_steps_freezer respectively; do not mix their sections.
 Recipe drafts support prep_time_minutes, cook_time_minutes, and passive_time_minutes (each 0–10080 minutes).
