@@ -10,6 +10,7 @@ import pytest
 from fastmcp import Client
 
 from nutripoints_mcp import api_client
+from nutripoints_mcp.contract import COMPONENTS
 from nutripoints_mcp.server import mcp
 
 
@@ -71,9 +72,8 @@ async def test_search_passes_contract_filters(
     arguments: dict[str, Any] = {"q": "basil"}
     if include_archived:
         arguments["include_archived"] = True
-    async with Client(mcp) as client:
-        result = await client.call_tool(tool, arguments)
-    assert result.data == {"id": 7, "version": 2, "items": []}
+    result = await mcp.call_tool(tool, arguments)
+    assert result.structured_content == {"id": 7, "version": 2, "items": []}
     assert recorded_api[-1].url.path == path
     assert recorded_api[-1].url.params["q"] == "basil"
     assert recorded_api[-1].url.params.get("include_archived") == ("true" if include_archived else None)
@@ -90,9 +90,8 @@ async def test_search_passes_contract_filters(
     ],
 )
 async def test_published_detail_reads(recorded_api: list[httpx.Request], tool: str, argument: str, path: str) -> None:
-    async with Client(mcp) as client:
-        result = await client.call_tool(tool, {argument: 7})
-    assert result.data["id"] == 7
+    result = await mcp.call_tool(tool, {argument: 7})
+    assert result.structured_content["id"] == 7
     assert recorded_api[-1].url.path == path
 
 
@@ -153,15 +152,10 @@ async def test_published_detail_reads(recorded_api: list[httpx.Request], tool: s
 async def test_draft_lifecycle(
     recorded_api: list[httpx.Request], domain: str, base: str, linked_id: str, payload: dict[str, Any]
 ) -> None:
-    async with Client(mcp) as client:
-        saved = await client.call_tool(
-            f"save_{domain}_draft", {"payload": payload, linked_id: 3, "idempotency_key": "save-1"}
-        )
-        updated = await client.call_tool(
-            f"update_{domain}_draft", {"draft_id": 7, "payload": payload, "expected_version": 2}
-        )
-        published = await client.call_tool(f"publish_{domain}_draft", {"draft_id": 7, "expected_version": 2})
-        discarded = await client.call_tool(f"discard_{domain}_draft", {"draft_id": 7})
+    saved = await mcp.call_tool(f"save_{domain}_draft", {"payload": payload, linked_id: 3, "idempotency_key": "save-1"})
+    updated = await mcp.call_tool(f"update_{domain}_draft", {"draft_id": 7, "payload": payload, "expected_version": 2})
+    published = await mcp.call_tool(f"publish_{domain}_draft", {"draft_id": 7, "expected_version": 2})
+    discarded = await mcp.call_tool(f"discard_{domain}_draft", {"draft_id": 7})
     assert not any(result.is_error for result in [saved, updated, published, discarded])
     assert [request.method for request in recorded_api[-4:]] == ["POST", "PUT", "POST", "DELETE"]
     assert [request.url.path for request in recorded_api[-4:]] == [base, f"{base}/7", f"{base}/7/publish", f"{base}/7"]
@@ -191,11 +185,10 @@ async def test_read_drafts_and_validate_recipe(recorded_api: list[httpx.Request]
         ("get_generic_ingredient_draft", {"draft_id": 2}, "/api/v1/ingredient-type-drafts/2"),
         ("validate_recipe_draft", {"draft_id": 2}, "/api/v1/recipe-drafts/2/validate"),
     ]
-    async with Client(mcp) as client:
-        for name, arguments, path in cases:
-            result = await client.call_tool(name, arguments)
-            assert not result.is_error
-            assert recorded_api[-1].url.path == path
+    for name, arguments, path in cases:
+        result = await mcp.call_tool(name, arguments)
+        assert not result.is_error
+        assert recorded_api[-1].url.path == path
 
 
 @pytest.mark.anyio
@@ -211,8 +204,7 @@ async def test_log_reads_forward_contract_filters(recorded_api: list[httpx.Reque
         "end_at": "2026-09-15T18:00:00Z",
         "limit": 25,
     }
-    async with Client(mcp) as client:
-        result = await client.call_tool(name, arguments)
+    result = await mcp.call_tool(name, arguments)
     assert not result.is_error
     assert recorded_api[-1].url.path == f"/api/v1/logs/{name.removeprefix('list_').removesuffix('_logs')}"
     assert dict(recorded_api[-1].url.params) == {key: str(value) for key, value in arguments.items()}
@@ -220,19 +212,18 @@ async def test_log_reads_forward_contract_filters(recorded_api: list[httpx.Reque
 
 @pytest.mark.anyio
 async def test_weight_and_day_reads_preserve_api_responses(recorded_api: list[httpx.Request]) -> None:
-    async with Client(mcp) as client:
-        overview = await client.call_tool("get_weight_overview", {"range": "1y"})
-        recap = await client.call_tool("get_pending_weight_recap", {})
-        today = await client.call_tool("get_today", {})
-        day = await client.call_tool("get_day", {"day": "2026-09-14"})
+    overview = await mcp.call_tool("get_weight_overview", {"range": "1y"})
+    recap = await mcp.call_tool("get_pending_weight_recap", {})
+    today = await mcp.call_tool("get_today", {})
+    day = await mcp.call_tool("get_day", {"day": "2026-09-14"})
 
     assert not any(result.is_error for result in (overview, recap, today, day))
-    assert overview.data == {"id": 7, "version": 2, "items": []}
-    assert recap.data == {"id": 7, "version": 2, "items": []}
-    assert today.data["status"] == "setup_blocked"
-    assert today.data["detail"]["error_code"] == "budget_not_ready"
-    assert day.data["status"] == "ready"
-    assert day.data["food_entries"] == []
+    assert overview.structured_content == {"id": 7, "version": 2, "items": []}
+    assert recap.structured_content == {"id": 7, "version": 2, "items": []}
+    assert today.structured_content["status"] == "setup_blocked"
+    assert today.structured_content["detail"]["error_code"] == "budget_not_ready"
+    assert day.structured_content["status"] == "ready"
+    assert day.structured_content["food_entries"] == []
     assert [request.url.path for request in recorded_api[-4:]] == [
         "/api/v1/weight/overview",
         "/api/v1/weight/recap/pending",
@@ -246,10 +237,11 @@ async def test_weight_and_day_reads_preserve_api_responses(recorded_api: list[ht
 async def test_validate_recipe_draft_only_accepts_a_saved_draft_id(recorded_api: list[httpx.Request]) -> None:
     async with Client(mcp) as client:
         tools = {tool.name: tool for tool in await client.list_tools()}
-        validate_tool = tools["validate_recipe_draft"]
         result = await client.call_tool(
             "validate_recipe_draft", {"draft_id": 2, "payload": {"name": "Unsaved recipe"}}, raise_on_error=False
         )
+
+    validate_tool = tools["validate_recipe_draft"]
 
     assert "existing, saved recipe draft" in validate_tool.description
     assert "does not accept recipe data" in validate_tool.description
@@ -258,6 +250,32 @@ async def test_validate_recipe_draft_only_accepts_a_saved_draft_id(recorded_api:
     assert result.is_error
     assert "payload" in str(result.content)
     assert not recorded_api
+
+
+@pytest.mark.anyio
+async def test_tools_expose_pinned_contract_success_output_schemas() -> None:
+    async with Client(mcp) as client:
+        tools = {tool.name: tool for tool in await client.list_tools()}
+
+    recipe = tools["get_recipe"].output_schema
+    today = tools["get_today"].output_schema
+
+    assert recipe is not None
+    assert recipe["title"] == COMPONENTS["RecipeRead"]["title"]
+    assert recipe["required"] == COMPONENTS["RecipeRead"]["required"]
+    assert recipe["properties"]["id"] == COMPONENTS["RecipeRead"]["properties"]["id"]
+    assert today is not None
+    assert today["type"] == "object"
+    assert len(today["oneOf"]) == 2
+    assert tools["discard_recipe_draft"].output_schema is None
+
+
+@pytest.mark.anyio
+async def test_client_validates_a_contract_shaped_tool_response(recorded_api: list[httpx.Request]) -> None:
+    async with Client(mcp) as client:
+        result = await client.call_tool("get_today")
+
+    assert result.data["status"] == "setup_blocked"
 
 
 @pytest.mark.anyio

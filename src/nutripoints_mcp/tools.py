@@ -17,6 +17,7 @@ from nutripoints_mcp.contract import (
     KEY_SCHEMA,
     OPENAPI,
     input_schema,
+    output_schema,
     validate,
     validate_day,
     validate_log_filters,
@@ -144,6 +145,7 @@ def _add(
     if path.startswith("/api/v1/recipe-drafts") and "payload" in body_fields:
         _constrain_recipe_draft_payload(properties)
     schema = input_schema(properties, required)
+    result_schema = output_schema(path, method)
     query_fields = {
         parameter["name"] for parameter in _operation(path, method).get("parameters", []) if parameter["in"] == "query"
     }
@@ -171,6 +173,7 @@ def _add(
             name=name,
             description=description,
             parameters=schema,
+            output_schema=result_schema,
             fn=handle,
             tags={category},
             annotations=ToolAnnotations(readOnlyHint=category == "read"),

@@ -83,6 +83,53 @@ def input_schema(properties: dict[str, Any], required: list[str]) -> dict[str, A
     return schema
 
 
+def output_schema(path: str, method: str) -> dict[str, Any] | None:
+    """Return a tool-compatible success schema from one contract operation.
+
+    MCP structured output must be an object. Routes with an empty successful
+    response therefore intentionally have no output schema.
+    """
+    responses = OPENAPI["paths"][path][method.lower()].get("responses", {})
+    success = next((response for status, response in responses.items() if status.startswith("2")), None)
+    if success is None:
+        raise ValueError(f"Contract operation {method} {path} has no successful response")
+    response_schema = success.get("content", {}).get("application/json", {}).get("schema")
+    if response_schema is None:
+        return None
+
+    definitions: dict[str, Any] = {}
+    schema = _inline_references(response_schema, definitions)
+    schema["$defs"] = definitions
+    # The only top-level unions in the pinned contract are unions of object
+    # responses. Explicitly expressing that fact makes them valid MCP output
+    # schemas without changing their OpenAPI alternatives.
+    if "oneOf" in schema or "anyOf" in schema:
+        schema.setdefault("type", "object")
+    Draft202012Validator.check_schema(schema)
+    return schema
+
+
+def _inline_references(value: Any, definitions: dict[str, Any]) -> Any:
+    """Copy an OpenAPI schema while replacing component refs with local refs."""
+    if isinstance(value, list):
+        return [_inline_references(item, definitions) for item in value]
+    if not isinstance(value, dict):
+        return value
+
+    result = copy.deepcopy(value)
+    reference = result.get("$ref")
+    if reference:
+        name = reference.rsplit("/", 1)[-1]
+        if name not in definitions:
+            definitions[name] = {}
+            definitions[name] = _inline_references(COMPONENTS[name], definitions)
+        result["$ref"] = f"#/$defs/{name}"
+    for key, item in list(result.items()):
+        if key != "$ref":
+            result[key] = _inline_references(item, definitions)
+    return result
+
+
 def _location(error: ValidationError) -> str:
     return ".".join(map(str, error.absolute_path)) or "arguments"
 
