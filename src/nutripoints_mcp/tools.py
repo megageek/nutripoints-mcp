@@ -84,7 +84,7 @@ def _exactly_one_reference(first: str, second: str, title: str) -> dict[str, Any
     }
 
 
-def _quantity_selection_rules(schema: dict[str, Any]) -> None:
+def _quantity_selection_rules(schema: dict[str, Any], serving_id: str) -> None:
     """Add Nutri Points' documented mode-dependent quantity requirements."""
     properties = schema["properties"]
     value_schema = next(member for member in properties["value"]["anyOf"] if member.get("type") == "number")
@@ -92,8 +92,8 @@ def _quantity_selection_rules(schema: dict[str, Any]) -> None:
         {
             "if": {"properties": {"mode": {"const": "serving_variant"}}, "required": ["mode"]},
             "then": {
-                "required": ["food_item_serving_id"],
-                "properties": {"food_item_serving_id": ID_SCHEMA},
+                "required": [serving_id],
+                "properties": {serving_id: ID_SCHEMA},
             },
         },
         {
@@ -118,14 +118,14 @@ def _constrain_recipe_draft_payload(properties: dict[str, Any]) -> None:
             payload["properties"][field]["items"] = _recipe_draft_step_schema(section)
     ingredient_options = payload["properties"]["ingredients"]["items"]["anyOf"]
     ingredients = [copy.deepcopy(COMPONENTS[option["$ref"].rsplit("/", 1)[-1]]) for option in ingredient_options]
-    for ingredient, first, second in (
-        (ingredients[0], "food_item_id", "food_draft_id"),
-        (ingredients[1], "ingredient_type_id", "ingredient_type_draft_id"),
+    for ingredient, first, second, serving_id in (
+        (ingredients[0], "food_item_id", "food_draft_id", "food_item_serving_id"),
+        (ingredients[1], "ingredient_type_id", "ingredient_type_draft_id", "ingredient_type_serving_id"),
     ):
         ingredient.setdefault("allOf", []).append(_exactly_one_reference(first, second, ingredient["title"]))
         quantity_reference = ingredient["properties"]["quantity"]["$ref"]
         quantity = copy.deepcopy(COMPONENTS[quantity_reference.rsplit("/", 1)[-1]])
-        _quantity_selection_rules(quantity)
+        _quantity_selection_rules(quantity, serving_id)
         ingredient["properties"]["quantity"] = quantity
     payload["properties"]["ingredients"]["items"]["anyOf"] = ingredients
     properties["payload"] = payload
@@ -202,7 +202,8 @@ _WRITE_GUIDANCE = {
         'reheat_steps_fridge:[{"section":"reheat_fridge","body_markdown":"Reheat."}], and '
         'reheat_steps_freezer:[{"section":"reheat_freezer","body_markdown":"Reheat."}]. '
         "Prefer named servings over grams or milliliters when they describe the ingredient naturally: use "
-        "serving_variant for a food (for example, one egg) or base_servings for a generic ingredient. "
+        "serving_variant for a food (with food_item_serving_id) or a generic ingredient "
+        "(with ingredient_type_serving_id); use base_servings for generic ingredients without a named serving. "
         "Use grams or milliliters only when no suitable named serving exists. "
         "Recipe timing fields prep_time_minutes, cook_time_minutes, and passive_time_minutes are writable "
         "integers from 0 to 10080. Include them in payload when known. update_recipe_draft replaces the full "
@@ -211,7 +212,8 @@ _WRITE_GUIDANCE = {
         "Storage life is an optional whole number of days from 1 to 3650; use null to clear it. "
         "When a recipe explicitly supplies a timed appliance setting or rest, add the matching automation action; "
         "durations are whole seconds. Never invent a duration, temperature, wattage, or hob level. "
-        "Published ingredient reads include food_item_serving_id for serving_variant quantities. "
+        "Published ingredient reads retain food_item_serving_id or ingredient_type_serving_id for serving_variant "
+        "quantities. "
         "Use only payload fields in this schema; "
         "get_recipe display, nutrition, and calculated fields are read-only."
     ),
@@ -233,7 +235,7 @@ _WRITE_GUIDANCE = {
 
 
 def register_tools(mcp: FastMCP) -> None:
-    """Expose only the stable-rw-v19 routes used by the initial workflow."""
+    """Expose only the stable-rw-v20 routes used by the initial workflow."""
     for domain, (catalog, drafts, item_id) in DOMAINS.items():
         detail_id = "food_id" if domain == "food" else item_id
         _add(

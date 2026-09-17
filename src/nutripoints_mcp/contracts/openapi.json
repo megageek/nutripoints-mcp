@@ -672,7 +672,7 @@
             "title": "Preparation"
           },
           "quantity": {
-            "$ref": "#/components/schemas/FoodQuantitySelection"
+            "$ref": "#/components/schemas/IngredientTypeQuantitySelection"
           },
           "resolution_policy": {
             "default": "resolve_required",
@@ -2718,6 +2718,55 @@
           "payload"
         ],
         "title": "IngredientTypeDraftWrite",
+        "type": "object"
+      },
+      "IngredientTypeQuantitySelection": {
+        "properties": {
+          "ingredient_type_serving_id": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Type Serving Id"
+          },
+          "mode": {
+            "enum": [
+              "grams",
+              "milliliters",
+              "serving_variant",
+              "base_servings"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "multiplier": {
+            "default": 1,
+            "exclusiveMinimum": 0.0,
+            "title": "Multiplier",
+            "type": "number"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "title": "IngredientTypeQuantitySelection",
         "type": "object"
       },
       "IngredientTypeRead": {

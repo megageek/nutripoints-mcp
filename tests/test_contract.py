@@ -17,7 +17,7 @@ def test_pinned_openapi_is_packaged() -> None:
     snapshot = resource.read_bytes()
     document = json.loads(snapshot)
 
-    assert pin["generation"] == "stable-rw-v19"
+    assert pin["generation"] == "stable-rw-v20"
     assert hashlib.sha256(snapshot).hexdigest() == pin["openapi_sha256"]
     assert document["openapi"].startswith("3.")
     assert "/api/v1/foods" in document["paths"]
@@ -47,6 +47,8 @@ def test_pinned_openapi_is_packaged() -> None:
     } <= recipe_payload.keys()
     generic_payload = document["components"]["schemas"]["IngredientTypeCreate"]["properties"]
     assert "serving_variants" in generic_payload
+    generic_quantity = document["components"]["schemas"]["DraftGenericIngredient"]["properties"]["quantity"]
+    assert generic_quantity["$ref"] == "#/components/schemas/IngredientTypeQuantitySelection"
 
 
 def test_sync_rejects_unverified_wheel(tmp_path: Path) -> None:

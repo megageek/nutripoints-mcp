@@ -403,6 +403,8 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
         branches[0]["properties"]["quantity"]["properties"]["mode"]["enum"]
     )
     assert branches[0]["properties"]["quantity"]["properties"]["food_item_serving_id"]
+    assert branches[1]["properties"]["quantity"]["properties"]["ingredient_type_serving_id"]
+    assert "food_item_serving_id" not in branches[1]["properties"]["quantity"]["properties"]
     assert all("allOf" in branch for branch in branches)
     assert all("oneOf" in branch["allOf"][0] for branch in branches)
     assert all("allOf" in branch["properties"]["quantity"] for branch in branches)
@@ -430,6 +432,7 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     )
     description = tools["update_recipe_draft"].description
     assert "food_item_serving_id" in description
+    assert "ingredient_type_serving_id" in description
     assert "reheat_steps_fridge" in description
     assert "reheat_steps_freezer" in description
     assert "automation action" in description
@@ -441,7 +444,7 @@ async def test_write_schemas_expose_constrained_payloads_and_recipe_unions() -> 
     assert "storage_life_fridge_days" in description
     assert "storage_life_freezer_days" in description
     assert "Prefer named servings over grams or milliliters" in description
-    assert "base_servings for a generic ingredient" in description
+    assert "base_servings for generic ingredients" in description
     save_description = tools["save_recipe_draft"].description
     assert "get_recipe_draft_for_item" in save_description
     assert "update_recipe_draft" in save_description
@@ -474,6 +477,32 @@ async def test_recipe_draft_step_sections_are_checked_before_api(recorded_api: l
     assert result.is_error
     assert "cook" in str(result.content)
     assert not recorded_api
+
+
+@pytest.mark.anyio
+async def test_recipe_draft_keeps_a_generic_named_serving(recorded_api: list[httpx.Request]) -> None:
+    payload = {
+        "name": "Seasoned soup",
+        "total_servings": 2,
+        "ingredients": [
+            {
+                "kind": "generic",
+                "ingredient_type_id": 1,
+                "resolution_policy": "generic_allowed",
+                "quantity": {"mode": "serving_variant", "ingredient_type_serving_id": 12, "multiplier": 2},
+            }
+        ],
+    }
+
+    result = await mcp.call_tool("save_recipe_draft", {"payload": payload})
+
+    assert not result.is_error
+    saved_ingredient = json.loads(recorded_api[-1].content)["payload"]["ingredients"][0]
+    assert saved_ingredient["quantity"] == {
+        "mode": "serving_variant",
+        "ingredient_type_serving_id": 12,
+        "multiplier": 2,
+    }
 
 
 @pytest.mark.anyio
@@ -521,6 +550,7 @@ async def test_recipe_draft_rejects_invalid_image_and_storage_life_locally(
         },
         {"kind": "fixed_food", "food_item_id": 1, "quantity": {"mode": "grams"}},
         {"kind": "fixed_food", "food_item_id": 1, "quantity": {"mode": "serving_variant"}},
+        {"kind": "generic", "ingredient_type_id": 1, "quantity": {"mode": "serving_variant"}},
     ],
 )
 async def test_recipe_draft_rejects_invalid_ingredient_references_and_quantities_locally(
